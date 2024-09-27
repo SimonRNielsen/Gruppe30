@@ -13,6 +13,12 @@ namespace Philip_MasterMind
         enum Farver { Rød, Blå, Gul, Grøn, Lilla, Brun}
         static void Main(string[] args)
         {
+            /* TODO:
+             * Validering af inputs
+             * Feed back på om man har rigtig farve, men ikke plads
+             * Feedback på om man har rigtig farve OG plads
+             */
+
             byte[] kodeTal = new byte[4]; //Array der skal indeholde 4 tilfældigt generede tal, der skal bruges til gætte-koden
             Farver[] kodeFarver = new Farver[4];//Enum array, der indeholder de fire farver der udgør koden
             Farver[] spillerGaet = new Farver[4];//Array, der skal indeholde spillerens gæt
