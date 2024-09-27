@@ -36,16 +36,32 @@ namespace Gamecollection
 
 
             //Placering af båd
-            //Random random = new Random(); //Random placering af båden
+            Random random = new Random(); //Random placering af båden
                                           //Båd 2
-            /*for (int i = 0; i < båd2.Length; i++)
+            for ( int j =0; j <5; j++)
             {
-                
-                int randomNumber1 = random.Next(1, 9);
-                int randomNumber2 = random.Next(1, 9);
+                int randomTing = random.Next(0, 2);
 
-                mitBræt[randomNumber1, randomNumber2 + i] = båd2[i];
-            } */
+                if (randomTing == 0)
+                {
+                    int randomNumber1 = random.Next(1, 9);
+                    int randomNumber2 = random.Next(1, 10);
+                    for (int i = 0; i < båd2.Length; i++)
+                    {
+                        mitBræt[randomNumber1 +i, randomNumber2] = båd2[i];
+                    }
+                }
+                else
+                {
+                    int randomNumber1 = random.Next(1, 10);
+                    int randomNumber2 = random.Next(1, 9);
+                    for (int i = 0; i < båd2.Length; i++)
+                    {
+                        mitBræt[randomNumber1, randomNumber2 + i] = båd2[i];
+                    }
+                }
+            }
+             
 
             //Båd 3 
             /*
