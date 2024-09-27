@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Runtime.DesignerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,25 +13,99 @@ namespace Philip_MasterMind
         enum Farver { Rød, Blå, Gul, Grøn, Lilla, Brun}
         static void Main(string[] args)
         {
+            byte[] kodeTal = new byte[4]; //Array der skal indeholde 4 tilfældigt generede tal, der skal bruges til gætte-koden
+            Farver[] kodeFarver = new Farver[4];//Enum array, der indeholder de fire farver der udgør koden
+            Farver[] spillerGaet = new Farver[4];//Array, der skal indeholde spillerens gæt
             Random rnd = new Random();
-            //MasterMind Spil
-            int rndTal = rnd.Next(0, 6);// Genererer et tilfældigt tal ml. 0-5 og gemmer i rndTal
-           
-            
-            
-            /* Velkomst();
+            int runde; //Variabel der gemmer hvad runde vi er i
+            string highscore; //Variabel der gemmer highscore (skal indeholde Navn + runde)
+            int highscoreRunde = 11; //Variabel der gemmer den highscore runden. 11, fordi der er 10 runder.
+            bool stemningForSpil = true; //Bruges til at gemme om spilleren vil fortsætte 
 
-            Console.WriteLine("\nLad os først starte med dit navn. Hvad vil du gerne kaldes?\n");
-            string spillerNavn = Console.ReadLine();
+            Velkomst();
 
-            Console.WriteLine($"Hej med dig {spillerNavn}, nu er det tid til 1. runde!");
-           */
+            do //Loop, der egentlig bare tager højde for om spilleren stadig vil spille.
+               //Spilleren kan ændre mening efter runde 10, eller de har vundet
+            {
+                //For loop, der genererer 4 random tal, på hver plads i kodeTal array
+                for (byte i = 0; i < kodeTal.Length; i++)
+                {
+                    kodeTal[i] = (byte)rnd.Next(0, 6);
+                }
+                //Loop der indsætter de fire farver (fra tal i kodeTal) i kodeFarver arrayet
+                for (int i = 0; i < kodeFarver.Length; i++)
+                {
+                    kodeFarver[i] = (Farver)kodeTal[i];
+                }
+                runde = 1; /*Sætter runde til 1. Man vender kun tilbage til dette loop,
+                            hvis man har vundet, eller tabt, og valgt at fortsætte */
 
-            Console.ReadKey();
+                //SLET IGEN:
+                foreach (Farver farve in kodeFarver)
+                    Console.WriteLine(farve);
+
+
+                Console.WriteLine("\nLad os først starte med dit navn. Hvad vil du gerne kaldes?");
+                string spillerNavn = Console.ReadLine();
+                Console.WriteLine($"\nHej med dig {spillerNavn}, nu er det tid til 1. runde!\n");
+
+                while (runde < 11) //Loop med selve spille, fra runde 1-10
+                {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("Runde:" + runde);
+                    Console.ResetColor();
+                    Console.WriteLine("Hvilken farve gætter du på plads 1?\nHusk at du kan vælge imellem: Rød, Blå, Gul, Grøn, Lilla, Brun");
+                    spillerGaet[0] = (Farver)Enum.Parse(typeof(Farver), Console.ReadLine());
+                    Console.WriteLine("Hvilken farve gætter du på plads 2?");
+                    spillerGaet[1] = (Farver)Enum.Parse(typeof(Farver), Console.ReadLine());
+                    Console.WriteLine("Hvilken farve gætter du på plads 3?");
+                    spillerGaet[2] = (Farver)Enum.Parse(typeof(Farver), Console.ReadLine());
+                    Console.WriteLine("Hvilken farve gætter du på plads 4?");
+                    spillerGaet[3] = (Farver)Enum.Parse(typeof(Farver), Console.ReadLine());
+
+                    Console.WriteLine("\n\nDit gæt er:\n");
+                    Console.WriteLine(spillerGaet[0] + " | " + spillerGaet[1] + " | " + spillerGaet[2] + " | " + spillerGaet[3] + "\n");
+
+                    //If statement, der tjekker om spilleren har gættet koden
+                    if (spillerGaet[0] == kodeFarver[0] && spillerGaet[1] == kodeFarver[1] &&
+    spillerGaet[2] == kodeFarver[2] && spillerGaet[3] == kodeFarver[3])
+                    {
+                        //Besked med tillykke og score
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("Tillykke du svarede rigtigt! \nKoden var: " + kodeFarver[0] + " | " + kodeFarver[1] + " | " + kodeFarver[2] + " | " + kodeFarver[3] + "\n");
+                        Console.WriteLine("Du gjorde på det på " + runde + " runder!");
+                        if (runde < highscoreRunde) //Tjekker om man har slået highscoren
+                        {
+                            Console.WriteLine("Du har slået highscoren!");
+                            highscore = "Highscoren er: " + Convert.ToString(runde) + ", den blev sat af: " + spillerNavn;
+                            highscoreRunde = runde;
+                            Console.WriteLine(highscore);
+                        }
+                        Console.ResetColor();
+                        stemningForSpil = Afslut(); //Tjekker om de vil afslutte spillet
+                        break; //Breaker ud, så man ender i "do...while" loopet
+                    }
+                    else
+                    {
+                        Console.WriteLine("Du gættede ikke rigtigt.\n");
+                    }
+
+                    if (runde ==10) //Hvis vi er i runde 10, spørges spilleren om de vil afslutte eller forsætte
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Du nåede desværre ikke at gætte koden inden for 10 runder.");
+                        Console.ResetColor();
+                        stemningForSpil = Afslut();
+                    }
+
+                    runde++;
+
+                }
+            } while (stemningForSpil);
         }
 
         /// <summary>
-        /// EN funktion, der skriver en velkomstbesked ud til konsollen, med forklaring af reglerne.
+        /// En funktion, der skriver en velkomstbesked ud til konsollen, med forklaring af reglerne i MasterMind.
         /// </summary>
         static void Velkomst()
         {
@@ -53,5 +129,21 @@ Spillet slutter ved at du enten har gættet den rigtige kode, eller at der er g�
 God fornøjelse!");
             Console.ResetColor();
         }
+        /// <summary>
+        /// Funktion der spørger om spilleren vil afslutte. Hvis de vil, reutrnere funktionen false. Ellers returnere den true.
+        /// </summary>
+        /// <returns></returns>
+        static bool Afslut()
+        {
+            bool afslutRes = true;
+            Console.WriteLine("Ønsker du at afslutte? Hvis ja: skriv \"quit\" og tryk enter.\nHvis du vil fortsætte, tryk enter");
+            if (Console.ReadLine() == "quit")
+            {
+                afslutRes = false;
+            }
+            return afslutRes;
+
+        }
+
     }
 }
