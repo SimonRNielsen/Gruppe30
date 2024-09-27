@@ -10,6 +10,7 @@ namespace Gamecollection
     {
         static void Main(string[] args)
         {
+            Console.OutputEncoding = Encoding.UTF8;
             //Oprettelse af array brættet
             string[,] mitBræt = new string[11, 11];
             for (int x = 0; x < mitBræt.GetLength(0); x++)
@@ -29,10 +30,10 @@ namespace Gamecollection
             }
 
             //Oprettelse af de forskellige både
-            string[] båd2 = new string[] { "X ", "X " }; // 4 både af 2 længde
-            string[] båd3 = new string[] { "X ", "X ", "X " }; // 3 både af 3 længde
-            string[] båd4 = new string[] { "X ", "X ", "X ", "X " }; // 2 både af 4 længde
-            string[] båd5 = new string[] { "X ", "X ", "X ", "X ", "X " }; // 1 både af 5 længde
+            string[] båd2 = new string[] { "🚢 ", "🚢 " }; // 4 både af 2 længde
+            string[] båd3 = new string[] { "🚢 ", "🚢 ", "🚢 " }; // 3 både af 3 længde
+            string[] båd4 = new string[] { "🚢 ", "🚢 ", "🚢 ", "🚢 " }; // 2 både af 4 længde
+            string[] båd5 = new string[] { "🚢 ", "🚢 ", "🚢 ", "🚢 ", "🚢 " }; // 1 både af 5 længde
 
 
             //Placering af båd
