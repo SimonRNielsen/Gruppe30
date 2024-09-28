@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -12,21 +14,27 @@ namespace Minesweeper_simon
 
         static void Main(string[] args)
         {
-            bool no_difficulty_selected = true;
+            bool board_created;
             bool exit = false;
+            bool loss;
+            bool no_difficulty_selected = true;
             bool playing;
             bool win;
-            bool loss;
-            bool board_created;
             int board_x_length;
             int board_y_length;
-            int newInput_x;
-            int newInput_y;
             int bomb_amount;
             int flag_count;
             int max_value;
+            int newInput_x;
+            int newInput_y;
+            int score;
+            int[] highscore_values = new int[10];
             string difficulty;
+            string[] highscore_players = new string[10];
+            string player;
             Console.WriteLine("Velkommen til minesweeper");
+            Console.WriteLine("Skriv dit navn");
+            player = Console.ReadLine();
             //Loops until player chooses to exit the game
             while (exit == false)
             {
@@ -315,7 +323,7 @@ namespace Minesweeper_simon
                         //Safeguards player from involuntary triggering a flag
                         else if (playerboard[newInput_x, newInput_y] == 10)
                         {
-                            
+
                         }
                         //Detects if player triggered a "mine/bomb"
                         else if (board[newInput_x, newInput_y] == 9)
@@ -410,7 +418,83 @@ namespace Minesweeper_simon
                     DrawBoard(board_x_length, board_y_length, board);
                     Console.WriteLine("Du vandt! Du undgik alle bomberne og fandt de sikre felter!");
                     Console.WriteLine("Kunne du tænke dig at prøve igen tryk escape eller \"n\" for nej, ellers tryk på en anden tast");
-                    Console.WriteLine($"Du brugte {timer.TotalSeconds} sekunder");
+                    int timeused = (int)timer.TotalSeconds;
+                    score = timeused * (bomb_amount * 2);
+                    Console.WriteLine($"Du brugte {timer.TotalSeconds} sekunder, din score er {score}");
+                    Console.WriteLine();
+                    Console.WriteLine("Top 9 highscores plus din");
+                    //////////////////////////////  \/ GENERERET AF CHATGPT \/   /////////////////////////////////////////////
+                    List<string> stringList = new List<string>();
+                    List<int> intList = new List<int>();
+                    bool readingStrings = true;
+
+                    foreach (var line in File.ReadLines("highscores.txt"))
+                    {
+                        if (line == "Strings:")
+                        {
+                            readingStrings = true;
+                            continue;
+                        }
+                        else if (line == "Integers:")
+                        {
+                            readingStrings = false;
+                            continue;
+                        }
+
+                        if (readingStrings)
+                        {
+                            stringList.Add(line);
+                        }
+                        else
+                        {
+                            if (int.TryParse(line, out int number))
+                            {
+                                intList.Add(number);
+                            }
+                        }
+                    }
+                    // Convert lists to arrays
+                    highscore_players = stringList.ToArray();
+                    highscore_values = intList.ToArray();
+                    //////////////////////////////// /\ GENERERET AF CHATGPT /\   //////////////////////////////////////
+                    highscore_values[9] = score;
+                    highscore_players[9] = player;
+                    //Variable that "combines" the string and integer array to their respective index
+                    var combiner = new (int highscore_values, string highscore_players)[highscore_values.Length];
+                    //Organises players after highest score and displays them as a top 10
+                    for (int i = 0; i < highscore_values.Length; i++)
+                    {
+                        combiner[i] = (highscore_values[i], highscore_players[i]);
+                    }
+                    //Compares the numeric values of highscores and sorts them from high to low
+                    Array.Sort(combiner, (x, y) => y.highscore_values.CompareTo(x.highscore_values));
+                    //Splits the arrays back up
+                    for (int i = 0; i < highscore_values.Length; i++)
+                    {
+                        highscore_values[i] = combiner[i].highscore_values;
+                        highscore_players[i] = combiner[i].highscore_players;
+                    }
+                    for (int i = 0; i < 10; i++)
+                    {
+                        Console.WriteLine(highscore_players[i] + "   " + highscore_values[i]);
+                    }
+                    //////////////////////////////  \/ GENERERET AF CHATGPT \/   /////////////////////////////////////////////
+                    using (StreamWriter writer = new StreamWriter("highscores.txt"))
+                    {
+                        // Write string array
+                        writer.WriteLine("Strings:");
+                        foreach (var str in highscore_players)
+                        {
+                            writer.WriteLine(str);
+                        }
+                        writer.WriteLine("Integers:");
+                        // Write integer array
+                        foreach (var num in highscore_values)
+                        {
+                            writer.WriteLine(num);
+                        }
+                    }
+                    //////////////////////////////// /\ GENERERET AF CHATGPT /\   //////////////////////////////////////
                     var keyInput = Console.ReadKey(intercept: true);
                     switch (keyInput.Key)
                     {
