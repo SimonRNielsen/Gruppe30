@@ -38,6 +38,7 @@ namespace Minesweeper_simon
             //Loops until player chooses to exit the game
             while (exit == false)
             {
+                //Reset relevant variables in preparation for a new game
                 #region Difficulty&Boardsize
                 win = false;
                 loss = false;
@@ -143,7 +144,7 @@ namespace Minesweeper_simon
                         playerboard[px, py] = 11;
                     }
                 }
-                //Loops current game cycle
+                //Makes a timestamp for later comparison
                 DateTime startTime = DateTime.Now;
                 while (playing)
                 {
@@ -237,12 +238,15 @@ namespace Minesweeper_simon
                         }
                         Console.WriteLine();
                     }
+                    //(Re)sets colors to standard
                     Console.BackgroundColor = ConsoleColor.Black;
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine();
                     Console.WriteLine($"Der er {bomb_amount} bomber på brættet, du har markeret gættet på at {flag_count} er det");
+                    Console.WriteLine();
                     Console.WriteLine("Alle felter uden bomber skal være afdækket og alle bomber SKAL være markeret med et flag (markeres med f) for at vinde");
                     Console.WriteLine("Space eller enter interager med valgte felt, WASD eller piltaster flytter markøren, \"O\" åbner alle felter omkring et \"o\"");
+                    Console.WriteLine("Hvis du ikke har lyst til at spille længere kan du trykke på escape");
                     #endregion
                     //User input
                     #region PlayerInput
@@ -354,7 +358,7 @@ namespace Minesweeper_simon
                         int playerboard_x = playerboard.GetLength(0);
                         int playerboard_y = playerboard.GetLength(1);
                         //Using a 2 by 8 array to define the location of adjacent cells
-                        int[,] directions = { { -1, -1 }, { -1, 0 }, { -1, 1 }, { 0, -1 }, { 0, 1 }, { 1, -1 }, { 1, 0 }, { 1, 1 } };
+                        int[,] adjacent = { { -1, -1 }, { -1, 0 }, { -1, 1 }, { 0, -1 }, { 0, 1 }, { 1, -1 }, { 1, 0 }, { 1, 1 } };
                         for (int cleanx = 0; cleanx < playerboard_x; cleanx++)
                         {
                             for (int cleany = 0; cleany < playerboard_y; cleany++)
@@ -363,8 +367,8 @@ namespace Minesweeper_simon
                                 {
                                     if (playerboard[cleanx, cleany] == 0)
                                     {
-                                        int newX = cleanx + directions[i, 0];
-                                        int newY = cleany + directions[i, 1];
+                                        int newX = cleanx + adjacent[i, 0];
+                                        int newY = cleany + adjacent[i, 1];
                                         //Makes sure that the function doesn't check outside of the arrays confinements
                                         if (newX >= 0 && newX < playerboard_x && newY >= 0 && newY < playerboard_y)
                                         {
@@ -414,16 +418,17 @@ namespace Minesweeper_simon
                 if (win)
                 {
                     Console.Clear();
+                    //Measures difference in time
                     TimeSpan timer = DateTime.Now - startTime;
                     DrawBoard(board_x_length, board_y_length, board);
                     Console.WriteLine("Du vandt! Du undgik alle bomberne og fandt de sikre felter!");
                     Console.WriteLine("Kunne du tænke dig at prøve igen tryk escape eller \"n\" for nej, ellers tryk på en anden tast");
                     int timeused = (int)timer.TotalSeconds;
-                    score = timeused * (bomb_amount * 2);
+                    score = ((board_x_length * board_y_length) / timeused) * (bomb_amount * 2);
                     Console.WriteLine($"Du brugte {timer.TotalSeconds} sekunder, din score er {score}");
                     Console.WriteLine();
                     Console.WriteLine("Top 9 highscores plus din");
-                    //////////////////////////////  \/ GENERERET AF CHATGPT \/   /////////////////////////////////////////////
+                    //////////////////////////////  \/ GENERERET AF CHATGPT \/   ///////////////////////////////////////
                     List<string> stringList = new List<string>();
                     List<int> intList = new List<int>();
                     bool readingStrings = true;
@@ -478,7 +483,7 @@ namespace Minesweeper_simon
                     {
                         Console.WriteLine(highscore_players[i] + "   " + highscore_values[i]);
                     }
-                    //////////////////////////////  \/ GENERERET AF CHATGPT \/   /////////////////////////////////////////////
+                    //////////////////////////////  \/ GENERERET AF CHATGPT \/   ///////////////////////////////////////
                     using (StreamWriter writer = new StreamWriter("highscores.txt"))
                     {
                         // Write string array
@@ -495,6 +500,7 @@ namespace Minesweeper_simon
                         }
                     }
                     //////////////////////////////// /\ GENERERET AF CHATGPT /\   //////////////////////////////////////
+                    //Registers input from user
                     var keyInput = Console.ReadKey(intercept: true);
                     switch (keyInput.Key)
                     {
@@ -516,10 +522,10 @@ namespace Minesweeper_simon
         /// </summary>
         enum Board_UI : int
         {
-            X = 9,
-            o = 0,
-            F = 10,
-            O = 11
+            X = 9,  //Bomb(Mines)
+            o = 0,  //Known/opened til with no adjacent bombs
+            F = 10, //Flag
+            O = 11  //Unknown/unopened tile
         }
         /// <summary>
         /// Function to detect a specific value in "adjacent" array entries
@@ -534,7 +540,7 @@ namespace Minesweeper_simon
             int board_x = board.GetLength(0);
             int board_y = board.GetLength(1);
             //Using a 2 by 8 array to define the location of adjacent cells
-            int[,] directions =
+            int[,] adjacent =
                 {
                     { -1, -1 },
                     { -1, 0 },
@@ -547,8 +553,8 @@ namespace Minesweeper_simon
                 };
             for (int i = 0; i < 8; i++)
             {
-                int newX = x + directions[i, 0];
-                int newY = y + directions[i, 1];
+                int newX = x + adjacent[i, 0];
+                int newY = y + adjacent[i, 1];
                 //Makes sure that the function doesn't check outside of the arrays confinements
                 if (newX >= 0 && newX < board_x && newY >= 0 && newY < board_y)
                 {
@@ -562,6 +568,7 @@ namespace Minesweeper_simon
         }
         /// <summary>
         /// Function to Draw the board by providing nested loop lengths and the array on which to do it
+        /// Also colorcodes background and numbers according to preset values
         /// </summary>
         /// <param name="x">Outer loop duration</param>
         /// <param name="y">Inner loop duration</param>
@@ -610,6 +617,7 @@ namespace Minesweeper_simon
                 }
                 Console.WriteLine();
             }
+            //(Re)sets colors to standard
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
         }
