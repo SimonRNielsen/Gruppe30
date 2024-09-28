@@ -10,11 +10,10 @@ namespace Philip_MasterMind
 {
     internal class Program
     {
-        enum Farver { Rød, Blå, Gul, Grøn, Lilla, Brun}
+        enum Farver { rød, blå, gul, grøn, lilla, brun}
         static void Main(string[] args)
         {
             /* TODO:
-             * Validering af inputs
              * Feed back på om man har rigtig farve, men ikke plads
              * Feedback på om man har rigtig farve OG plads
              */
@@ -27,6 +26,7 @@ namespace Philip_MasterMind
             string highscore; //Variabel der gemmer highscore (skal indeholde Navn + runde)
             int highscoreRunde = 11; //Variabel der gemmer den highscore runden. 11, fordi der er 10 runder.
             bool stemningForSpil = true; //Bruges til at gemme om spilleren vil fortsætte 
+            string inSvar; //Variabel der gemmer spillerens input, så de kan valideres
 
             Velkomst();
 
@@ -61,13 +61,17 @@ namespace Philip_MasterMind
                     Console.WriteLine("Runde:" + runde);
                     Console.ResetColor();
                     Console.WriteLine("Hvilken farve gætter du på plads 1?\nHusk at du kan vælge imellem: Rød, Blå, Gul, Grøn, Lilla, Brun");
-                    spillerGaet[0] = (Farver)Enum.Parse(typeof(Farver), Console.ReadLine());
-                    Console.WriteLine("Hvilken farve gætter du på plads 2?");
-                    spillerGaet[1] = (Farver)Enum.Parse(typeof(Farver), Console.ReadLine());
+                    inSvar = GodkendSvar();
+                    spillerGaet[0] = (Farver)Enum.Parse(typeof(Farver), inSvar);
+                    Console.WriteLine("Hvilken farve gætter du på plads 2?"); 
+                    inSvar = GodkendSvar();
+                    spillerGaet[1] = (Farver)Enum.Parse(typeof(Farver), inSvar);
                     Console.WriteLine("Hvilken farve gætter du på plads 3?");
-                    spillerGaet[2] = (Farver)Enum.Parse(typeof(Farver), Console.ReadLine());
+                    inSvar = GodkendSvar();
+                    spillerGaet[2] = (Farver)Enum.Parse(typeof(Farver), inSvar);
                     Console.WriteLine("Hvilken farve gætter du på plads 4?");
-                    spillerGaet[3] = (Farver)Enum.Parse(typeof(Farver), Console.ReadLine());
+                    inSvar = GodkendSvar();
+                    spillerGaet[3] = (Farver)Enum.Parse(typeof(Farver), inSvar);
 
                     Console.WriteLine("\n\nDit gæt er:\n");
                     Console.WriteLine(spillerGaet[0] + " | " + spillerGaet[1] + " | " + spillerGaet[2] + " | " + spillerGaet[3] + "\n");
@@ -143,12 +147,44 @@ God fornøjelse!");
         {
             bool afslutRes = true;
             Console.WriteLine("Ønsker du at afslutte? Hvis ja: skriv \"quit\" og tryk enter.\nHvis du vil fortsætte, tryk enter");
-            if (Console.ReadLine() == "quit")
+            if (Console.ReadLine().ToLower() == "quit")
             {
                 afslutRes = false;
             }
             return afslutRes;
 
+        }
+        /// <summary>
+        /// Lader spilleren skrive et input, og kontroller at det er et gyldigt svar. 
+        /// Returnere en string, med det gyldige svar.
+        /// </summary>
+        /// <returns></returns>
+        static string GodkendSvar()
+        {
+            string svar;
+            while(true)
+            {
+                svar = Console.ReadLine().ToLower();
+
+                if (svar == "rød")
+                    return svar;
+                else if (svar == "blå")
+                    return svar;
+                else if (svar == "gul")
+                    return svar;
+                else if (svar == "grøn")
+                    return svar;
+                else if (svar == "lilla")
+                    return svar;
+                else if (svar == "brun")
+                    return svar;
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\nDu har ikke indtastet et gyldigt svar.\nDu skal gætte på en af de nævnte farver\nPrøv igen:");
+                    Console.ResetColor();
+                }
+            } 
         }
 
     }
