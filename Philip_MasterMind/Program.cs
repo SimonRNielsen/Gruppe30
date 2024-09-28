@@ -164,7 +164,9 @@ God fornøjelse!");
             string svar;
             while(true)
             {
-                svar = Console.ReadLine().ToLower();
+                svar = Console.ReadLine()
+                    .ToLower()
+                    .Trim(); //fjerner whitespaces, f.eks. hvis spilleren er kommet til at trykke mellemrød
 
                 if (svar == "rød")
                     return svar;
