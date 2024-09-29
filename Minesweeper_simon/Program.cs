@@ -190,20 +190,6 @@ namespace Minesweeper_simon
                         for (int bx = 0; bx < board_y_length; bx++)
                         {
                             //Detects if the players marker is at the same coordinate that the nested loop is drawing, and if so colors it to highlight it
-                            //DOESN'T WORK - WHY?
-                            if (wx == newInput_x && bx == newInput_y && playerboard[newInput_x,newInput_y] == 0)
-                            {
-                                Console.BackgroundColor = ConsoleColor.White;
-                                Console.ForegroundColor = ConsoleColor.White;
-                            }
-                            else if (wx == newInput_x && bx == newInput_y)
-                            {
-                                Console.BackgroundColor = ConsoleColor.White;
-                            }
-                            else
-                            {
-                                Console.BackgroundColor = ConsoleColor.Gray;
-                            }
                             //Colorcodes numbers and characters
                             switch (playerboard[wx, bx])
                             {
@@ -243,6 +229,19 @@ namespace Minesweeper_simon
                                 case 11:
                                     Console.ForegroundColor = ConsoleColor.White;
                                     break;
+                            }
+                            if (wx == newInput_x && bx == newInput_y && (playerboard[newInput_x, newInput_y] == 0))
+                            {
+                                Console.BackgroundColor = ConsoleColor.White;
+                                Console.ForegroundColor = ConsoleColor.White;
+                            }
+                            else if (wx == newInput_x && bx == newInput_y)
+                            {
+                                Console.BackgroundColor = ConsoleColor.White;
+                            }
+                            else
+                            {
+                                Console.BackgroundColor = ConsoleColor.Gray;
                             }
                             Console.Write((Board_UI)playerboard[wx, bx] + " ");
                         }
