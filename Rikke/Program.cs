@@ -30,15 +30,15 @@ namespace Rikke
             }
 
             //Båd char         
-            string baad = "■ ";
+            //string baad = "■ ";
 
 
             // Test af at tegne både ///////////
-            TegnBaade(5, mitBraet);
-            TegnBaade(4, mitBraet);
-            TegnBaade(3, mitBraet);
-            TegnBaade(2, mitBraet);
-
+            TegnBaade(5, mitBraet); //Hangarskib
+            TegnBaade(4, mitBraet); //Slagskib
+            TegnBaade(3, mitBraet); //Destroyer
+            TegnBaade(3, mitBraet); //Ubåd
+            TegnBaade(2, mitBraet); //Patrujlebåd
 
             //Printe brættet
             for (int x = 0; x < mitBraet.GetLength(0); x++)
@@ -49,9 +49,6 @@ namespace Rikke
                 }
                 Console.WriteLine(" ");
             }
-
-
-
             Console.ReadKey();
         }
 
@@ -65,29 +62,40 @@ namespace Rikke
         {
             string baad = "■ ";
             Random random = new Random();
+            bool tegnBaade = true;
 
-            int randomOritering = random.Next(0, 2);
-            int randomNumber1 = random.Next(1, mitBraet.GetLength(0) - baadLaengde);
-            int randomNumber2 = random.Next(1, mitBraet.GetLength(1) - 1);
-
-
-            if (randomOritering == 0)
+            while (tegnBaade)
             {
-                for (int i = 0; i < baadLaengde; i++)
+                int randomOritering = random.Next(0, 2);
+                int randomNumber1 = random.Next(1, mitBraet.GetLength(0) - baadLaengde);
+                int randomNumber2 = random.Next(1, mitBraet.GetLength(1) - 1);
+
+                bool placering = TjekPlacering(randomOritering, baadLaengde, randomNumber1, randomNumber2, mitBraet);
+
+                if (placering == true)
                 {
-                    mitBraet[randomNumber1 + i, randomNumber2] = baad;
-
-
-                }
-            }
-            else
-            {
-                for (int i = 0; i < baadLaengde; i++)
-                {
-
-                    mitBraet[randomNumber2, randomNumber1 + i] = baad;
-
-
+                    if (randomOritering == 0)
+                    {
+                        for (int i = 0; i < baadLaengde; i++)
+                        {
+                            mitBraet[randomNumber1 + i, randomNumber2] = baad;
+                            if (i == baadLaengde-1)
+                            {
+                                tegnBaade = false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < baadLaengde; i++)
+                        {
+                            mitBraet[randomNumber2, randomNumber1 + i] = baad;
+                            if (i == baadLaengde - 1)
+                            {
+                                tegnBaade = false;
+                            }
+                        }
+                    }
                 }
             }
 
@@ -106,11 +114,11 @@ namespace Rikke
             string baad = "■ ";
             if (orientering == 0)
             {
-                for (int i = 0; i < baadLaengde; i++)
+                for (int j = 0; j < baadLaengde; j++)
                 {
-                    if (mitBraet[randomNumber1 + i, randomNumber2].Contains(baad))
+                    if (mitBraet[randomNumber1 + j, randomNumber2].Contains(baad))
                     {
-                        return false;
+                        continue;
                     }
                     return true;
 
@@ -122,12 +130,12 @@ namespace Rikke
                 {
                     if (mitBraet[randomNumber2, randomNumber1 + i].Contains(baad))
                     {
-                        return false;
+                        continue;
                     }
-                    return true;
-                    
+                    return true;          
                 }
             }
+            return false;
         }
     }
 }
