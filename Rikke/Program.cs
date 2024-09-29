@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace Rikke
             string[] mitHorisontal = new string[] { "  ", "1  ", "2  ", "3  ", "4  ", "5  ", "6  ", "7  ", "8  ", "9  ", "10 " };
             for (int i = 0; i < mitBraet.GetLength(1); i++)
             {
-                mitBraet[0, i] = mitVertical[i]; 
+                mitBraet[0, i] = mitVertical[i];
                 mitBraet[i, 0] = mitHorisontal[i];
             }
 
@@ -33,11 +34,10 @@ namespace Rikke
 
 
             // Test af at tegne både ///////////
-            TegnBaade(2, 4, mitBraet);
-
-            
-
-
+            TegnBaade(5, mitBraet);
+            TegnBaade(4, mitBraet);
+            TegnBaade(3, mitBraet);
+            TegnBaade(2, mitBraet);
 
 
             //Printe brættet
@@ -61,32 +61,73 @@ namespace Rikke
         /// <param name="antalBaade">Antal af både</param>
         /// <param name="baadlaengde">Bådens længde</param>
         /// <param name="mitBraet">Spillebræts arrayet</param>
-        static void TegnBaade(int antalBaade, int baadlaengde, string[,] mitBraet)
+        static void TegnBaade(int baadLaengde, string[,] mitBraet)
         {
             string baad = "■ ";
-
             Random random = new Random();
-            for (int j = 0; j < antalBaade; j++)
+
+            int randomOritering = random.Next(0, 2);
+            int randomNumber1 = random.Next(1, mitBraet.GetLength(0) - baadLaengde);
+            int randomNumber2 = random.Next(1, mitBraet.GetLength(1) - 1);
+
+
+            if (randomOritering == 0)
             {
-                int randomOritering = random.Next(0, 2);
-                int randomNumber1 = random.Next(1, mitBraet.GetLength(0)-1);
-                int randomNumber2 = random.Next(1, mitBraet.GetLength(1)-1);
-                if (randomOritering == 0)
+                for (int i = 0; i < baadLaengde; i++)
                 {
-                    for (int i = 0; i < baadlaengde; i++)
-                    {
-                        mitBraet[randomNumber1 + i, randomNumber2] = baad;
-                    }
+                    mitBraet[randomNumber1 + i, randomNumber2] = baad;
+
+
                 }
-                else
+            }
+            else
+            {
+                for (int i = 0; i < baadLaengde; i++)
                 {
-                    for (int i = 0; i < baadlaengde; i++)
-                    {
-                        mitBraet[randomNumber1, randomNumber2 + i] = baad; ;
-                    }
+
+                    mitBraet[randomNumber2, randomNumber1 + i] = baad;
+
+
                 }
             }
 
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="orientering"></param>
+        /// <param name="baadLaengde"></param>
+        /// <param name="randomNumber1"></param>
+        /// <param name="randomNumber2"></param>
+        /// <param name="mitBraet"></param>
+        /// <returns></returns>
+        static bool TjekPlacering (int orientering, int baadLaengde, int randomNumber1, int randomNumber2, string[,] mitBraet)
+        {
+            string baad = "■ ";
+            if (orientering == 0)
+            {
+                for (int i = 0; i < baadLaengde; i++)
+                {
+                    if (mitBraet[randomNumber1 + i, randomNumber2].Contains(baad))
+                    {
+                        return false;
+                    }
+                    return true;
+
+                }
+            }
+            else
+            {
+                for (int i = 0; i < baadLaengde; i++)
+                {
+                    if (mitBraet[randomNumber2, randomNumber1 + i].Contains(baad))
+                    {
+                        return false;
+                    }
+                    return true;
+                    
+                }
+            }
         }
     }
 }
