@@ -7,6 +7,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+/*
+    Todo:
+    Lyde?
+*/
+
 namespace Minesweeper_simon
 {
     internal class Program
@@ -52,11 +57,6 @@ namespace Minesweeper_simon
                 //Selection of difficulty by totalling the amount of entries and setting the amount of bombs to 20%, 30% and 40% respectively
                 do
                 {
-                    if (difficulty != string.Empty)
-                    {
-                        Console.Clear();
-                        Console.WriteLine("Forkert input, prøv venligst igen");
-                    }
                     Console.WriteLine("Hvor svært skal det være? (skriv let, medium, svær)");
                     Console.WriteLine("Alternativt skriv \"exit\" for at lukke dette spil");
                     difficulty = Console.ReadLine().ToLower();
@@ -78,6 +78,9 @@ namespace Minesweeper_simon
                             Console.WriteLine("Tak fordi du gad at spille, kom snart igen!");
                             Console.WriteLine("Tryk en tast for at lukke...");
                             Console.ReadKey();
+                            break;
+                        default:
+                            Console.WriteLine("Forkert input, prøv venligst igen");
                             break;
                     }
                     //Repeats inquiry until a valid input is entered
@@ -146,9 +149,9 @@ namespace Minesweeper_simon
                 }
                 //Makes a timestamp for later comparison
                 DateTime startTime = DateTime.Now;
+                //Loops gameplay cycle
                 while (playing)
                 {
-                    max_value = 0;
                     //Clears console to avoid duplicates of the board, and as such, a cleaner and simple interface
                     Console.Clear();
                     //Counts the amount of flags marked for every loop
@@ -161,6 +164,7 @@ namespace Minesweeper_simon
                         }
                     }
                     //Detects if you've won by comparing flagged mines
+                    max_value = 0;
                     for (int win_x = 0; win_x < board_x_length; win_x++)
                     {
                         for (int win_y = 0; win_y < board_y_length; win_y++)
@@ -186,9 +190,15 @@ namespace Minesweeper_simon
                         for (int bx = 0; bx < board_y_length; bx++)
                         {
                             //Detects if the players marker is at the same coordinate that the nested loop is drawing, and if so colors it to highlight it
-                            if ((wx == newInput_x) && (bx == newInput_y))
+                            //DOESN'T WORK - WHY?
+                            if (wx == newInput_x && bx == newInput_y && playerboard[newInput_x,newInput_y] == 0)
                             {
-                                Console.BackgroundColor = ConsoleColor.Black;
+                                Console.BackgroundColor = ConsoleColor.White;
+                                Console.ForegroundColor = ConsoleColor.White;
+                            }
+                            else if (wx == newInput_x && bx == newInput_y)
+                            {
+                                Console.BackgroundColor = ConsoleColor.White;
                             }
                             else
                             {
@@ -242,10 +252,11 @@ namespace Minesweeper_simon
                     Console.BackgroundColor = ConsoleColor.Black;
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine();
-                    Console.WriteLine($"Der er {bomb_amount} bomber på brættet, du har markeret gættet på at {flag_count} er det");
+                    Console.WriteLine($"Der er i alt {bomb_amount} bomber på brættet");
+                    Console.WriteLine($"Du har markeret {flag_count} potentielle bomber");
                     Console.WriteLine();
                     Console.WriteLine("Alle felter uden bomber skal være afdækket og alle bomber SKAL være markeret med et flag (markeres med f) for at vinde");
-                    Console.WriteLine("Space eller enter interager med valgte felt, WASD eller piltaster flytter markøren, \"O\" åbner alle felter omkring et \"o\"");
+                    Console.WriteLine("Space eller enter interager med valgte felt, WASD eller piltaster flytter markøren, \"O\" åbner alle felter omkring et tomt felt");
                     Console.WriteLine("Hvis du ikke har lyst til at spille længere kan du trykke på escape");
                     #endregion
                     //User input
@@ -277,7 +288,7 @@ namespace Minesweeper_simon
                         //Timer to keep track of elapsed time
                         #region Boardcreation
                         //Creates a board after the player makes his first selection, ensuring that a bomb can't be triggered as the first tile
-                        if (!board_created)
+                        if (!board_created && playerboard[newInput_x, newInput_y] > 10)
                         {
 
                             Random bombplacer = new Random();
@@ -294,7 +305,7 @@ namespace Minesweeper_simon
                                     i--;
                                 }
                                 //Reduces bombclutter somewhat by making the loop try again
-                                else if (LocateAdjacentBombs(board, bomb_x, bomb_y) >= 6)
+                                else if (CountAdjacentBombs(board, bomb_x, bomb_y) > 5)
                                 {
                                     i--;
                                 }
@@ -309,30 +320,61 @@ namespace Minesweeper_simon
                                     board[bomb_x, bomb_y] = 9;
                                 }
                             }
-                            //Reads all entries in the array using the function "LocateAdjacentBombs" specified below, and sets the functions return value on the entrypoint if the entry point doesn't have a bomb (having the value "0"), return value is how many bombs are adjacent to the entry
+                            //Reads all entries in the array using the function "CountAdjacentBombs" specified below, and sets the functions return value on the entrypoint if the entry point doesn't have a bomb (having the value "0"), return value is how many bombs are adjacent to the entry
                             for (int x = 0; x < board_x_length; x++)
                             {
                                 for (int y = 0; y < board_y_length; y++)
                                 {
                                     if (board[x, y] == 0)
                                     {
-                                        board[x, y] = LocateAdjacentBombs(board, x, y);
+                                        board[x, y] = CountAdjacentBombs(board, x, y);
                                     }
                                 }
                             }
                             //Prevents new board from being created until a new game is triggered
                             board_created = true;
-                            #endregion
                         }
+                        #endregion
                         //Safeguards player from involuntary triggering a flag
-                        else if (playerboard[newInput_x, newInput_y] == 10)
+                        if (playerboard[newInput_x, newInput_y] == 10)
                         {
-
+                            //Do nothing
                         }
                         //Detects if player triggered a "mine/bomb"
                         else if (board[newInput_x, newInput_y] == 9)
                         {
                             loss = true;
+                        }
+                        //Detects if player hit a tile with no adjacent bombs and triggers a cascade to reveal all other adjacent tiles (same as the cleanup function below but should trigger automaticly)
+                        //Uses same foundation as the "CountAdjacentBombs" function
+                        else if (board[newInput_x, newInput_y] == 0)
+                        {
+                            playerboard[newInput_x, newInput_y] = board[newInput_x, newInput_y];
+                            for (int i = 0; i < 10; i++)
+                            {
+                                int playerboard_x = playerboard.GetLength(0);
+                                int playerboard_y = playerboard.GetLength(1);
+                                int[,] adjacent = { { -1, -1 }, { -1, 0 }, { -1, 1 }, { 0, -1 }, { 0, 1 }, { 1, -1 }, { 1, 0 }, { 1, 1 } };
+                                for (int cleanx = 0; cleanx < playerboard_x; cleanx++)
+                                {
+                                    for (int cleany = 0; cleany < playerboard_y; cleany++)
+                                    {
+                                        for (int d = 0; d < 8; d++)
+                                        {
+                                            if (playerboard[cleanx, cleany] == 0)
+                                            {
+                                                int newX = cleanx + adjacent[d, 0];
+                                                int newY = cleany + adjacent[d, 1];
+                                                if (newX >= 0 && newX < playerboard_x && newY >= 0 && newY < playerboard_y)
+                                                {
+                                                    playerboard[newX, newY] = board[newX, newY];
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                }
+                            }
                         }
                         //Reveals underlying number of adjacent bombs
                         else
@@ -432,7 +474,6 @@ namespace Minesweeper_simon
                     List<string> stringList = new List<string>();
                     List<int> intList = new List<int>();
                     bool readingStrings = true;
-
                     foreach (var line in File.ReadLines("highscores.txt"))
                     {
                         if (line == "Strings:")
@@ -445,7 +486,6 @@ namespace Minesweeper_simon
                             readingStrings = false;
                             continue;
                         }
-
                         if (readingStrings)
                         {
                             stringList.Add(line);
@@ -506,9 +546,15 @@ namespace Minesweeper_simon
                     {
                         case ConsoleKey.N:
                             exit = true;
+                            Console.WriteLine("Tak fordi du gad at spille :), kom snart igen!");
+                            Console.WriteLine("Tryk en tast for at lukke...");
+                            Console.ReadKey();
                             break;
                         case ConsoleKey.Escape:
                             exit = true;
+                            Console.WriteLine("Tak fordi du gad at spille :), kom snart igen!");
+                            Console.WriteLine("Tryk en tast for at lukke...");
+                            Console.ReadKey();
                             break;
                         default:
                             break;
@@ -530,11 +576,11 @@ namespace Minesweeper_simon
         /// <summary>
         /// Function to detect a specific value in "adjacent" array entries
         /// </summary>
-        /// <param name="board"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="board">Array representing the board</param>
+        /// <param name="x">x-coordinate on board</param>
+        /// <param name="y">y-coordinate on board</param>
         /// <returns>Amount of "adjacent" fields containing a "9" (bomb)</returns>
-        static int LocateAdjacentBombs(int[,] board, int x, int y)
+        static int CountAdjacentBombs(int[,] board, int x, int y)
         {
             int adjacent_bombs = 0;
             int board_x = board.GetLength(0);
@@ -542,14 +588,14 @@ namespace Minesweeper_simon
             //Using a 2 by 8 array to define the location of adjacent cells
             int[,] adjacent =
                 {
-                    { -1, -1 },
-                    { -1, 0 },
-                    { -1, 1 },
-                    { 0, -1 },
-                    { 0, 1 },
-                    { 1, -1 },
-                    { 1, 0 },
-                    { 1, 1 }
+                    { -1, -1 }, //Up + left
+                    { -1, 0 }, //Up
+                    { -1, 1 }, //Up + right 
+                    { 0, -1 }, //Left
+                    { 0, 1 }, //Right
+                    { 1, -1 }, //Down + left
+                    { 1, 0 }, //Down
+                    { 1, 1 } //Down + right
                 };
             for (int i = 0; i < 8; i++)
             {
