@@ -24,9 +24,10 @@ namespace Philip_MasterMind
             int highscoreRunde = 11; //Variabel der gemmer den highscore runden. 11, fordi der er 10 runder.
             bool stemningForSpil = true; //Bruges til at gemme om spilleren vil fortsætte 
             string inSvar; //Variabel der gemmer spillerens input, så de kan valideres
-            int rigtigFarve =0; //Variabel der skal gemme antal farver, uden rigtig plads, som spilleren har gættet
-            int rigtigPlace =0; //Variabel der skal gemme antal farver, på den rigtige plads, som spilleren har gættet
+            int rigtigFarve = 0; //Variabel der skal gemme antal farver, uden rigtig plads, som spilleren har gættet
+            int rigtigPlace = 0; //Variabel der skal gemme antal farver, på den rigtige plads, som spilleren har gættet
             bool[] placeBrugt = new bool[kodeTal.Length];
+            bool[] gaetBrugt = new bool[kodeTal.Length];
 
             Velkomst();//Funktion til velkosmtbesked, fordi den er så lang.
 
@@ -96,147 +97,45 @@ namespace Philip_MasterMind
                     else
                     {
                         Console.WriteLine("\nDu gættede ikke rigtigt.\n");
-                        //Loop, der kontrollere om der er rigtige farver og rigtig palcering (hvis brik) ved spillergæt. 
+                        //Loop, der kontrollere om spillerens gæt svarer til rigtige farver med rigtig palcering (hvid brik)
                         for (int i = 0; i < kodeFarver.Length; i++)
                         {
                             if (kodeFarver[i] == spillerGaet[i] && !placeBrugt[i])
                             {
                                 rigtigPlace++;
                                 placeBrugt[i] = true;
+                                gaetBrugt[i] = true;
                             }
-                           /* else if (spillerGaet.Contains(kodeFarver[i]) && !placeBrugt[i])
+                        }
+                        //Loop der kontrollerer om gættet svarer til en farve uden rigtig placering(sort brik)
+                        //Hvid-loopet er kørt, så alle pladser hvor gættet er rigtigt placeret, er allerede udfyldt.
+                        //Hvis gættet allerede har gættet en hvid, tælles det heller ikke igen.
+
+                        for (int i = 0; i < spillerGaet.Length; i++)
+                        {
+                            if (spillerGaet[i] == kodeFarver[0] && !placeBrugt[0] && !gaetBrugt[i])
                             {
                                 rigtigFarve++;
-                                placeBrugt[i] = true;
+                                placeBrugt[0] = true;
                             }
-                           */
+                            else if (spillerGaet[i] == kodeFarver[1] && !placeBrugt[1] && !gaetBrugt[i])
+                            {
+                                rigtigFarve++;
+                                placeBrugt[1] = true;
+                            }
+                            else if (spillerGaet[i] == kodeFarver[2] && !placeBrugt[2] && !gaetBrugt[i])
+                            {
+                                rigtigFarve++;
+                                placeBrugt[2] = true;
+                            }
+                            else if (spillerGaet[i] == kodeFarver[3] && !placeBrugt[3] && !gaetBrugt[i])
+                            {
+                                rigtigFarve++;
+                                placeBrugt[3] = true;
+                            }
+
 
                         } 
-
-                        /* else if (kodeFarver.Contains(spillerGaet[i]))
-                             { rigtigFarve++; } */
-
-
-                        //Tjekker hvid brik for gæt 1
-                     /*  if (spillerGaet[0] == kodeFarver[0] && !farverBrugt[0])
-                        {
-                            rigtigPlace++;
-                            farverBrugt[0] = true;
-                        } */
-
-                        //Tjekker sort brik for spiller gæt 1
-                        if (spillerGaet[0] == kodeFarver[1] && !placeBrugt[1])
-                        {
-                            rigtigFarve++;
-                            placeBrugt[1] = true;
-                        }
-                        else if (spillerGaet[0] == kodeFarver[2] && !placeBrugt[2])
-                        {
-                            rigtigFarve++;
-                            placeBrugt[2] = true;
-                        }
-
-                        else if (spillerGaet[0] == kodeFarver[3] && !placeBrugt[3])
-                        {
-                            rigtigFarve++;
-                            placeBrugt[3] = true;
-                        }
-
-                        //Tjekker hvid brik for gæt 2
-                       /* if (spillerGaet[1] == kodeFarver[1] )
-                        {
-                            rigtigPlace++;
-                            placeBrugt[1] = true;
-                        } */
-                        //Tjekker sort brik for spiller gæt 2
-                        if ((spillerGaet[1] == kodeFarver[0] && !placeBrugt[0]))
-                        {
-                            rigtigFarve++;
-                            placeBrugt[0] = true;
-                        }
-                        else if (spillerGaet[1] == kodeFarver[2] && !placeBrugt[2])
-                        {
-                            rigtigFarve++;
-                            placeBrugt[2] = true;
-                        }
-
-                        else if (spillerGaet[1] == kodeFarver[3] && !placeBrugt[3])
-                        {
-                            rigtigFarve++;
-                            placeBrugt[3] = true;
-                        }
-
-                        //Tjekker Hvid brik for gæt 3
-                       /* if (spillerGaet[2] == kodeFarver[2])
-                        {
-                            rigtigPlace++;
-                            placeBrugt[2] = true;
-                        } */
-                        //Tjekker sort brik for spiller gæt 3
-                        if ((spillerGaet[2] == kodeFarver[0] && !placeBrugt[0]))
-                        {
-                            rigtigFarve++;
-                            placeBrugt[0] = true;
-                        }
-                        else if (spillerGaet[2] == kodeFarver[1] && !placeBrugt[1])
-                        {
-                            rigtigFarve++;
-                            placeBrugt[1] = true;
-                        }
-
-                        else if (spillerGaet[2] == kodeFarver[3] && !placeBrugt[3])
-                        {
-                            rigtigFarve++;
-                            placeBrugt[3] = true;
-                        }
-
-                       /* //Tjekker hvid brik for gæt 4
-                        if (spillerGaet[3] == kodeFarver[3])
-                        {
-                            rigtigPlace++;
-                            placeBrugt[3] = true;
-                        }*/
-                        //Tjekker sort brik for spiller gæt 4
-                        if ((spillerGaet[3] == kodeFarver[0] && !placeBrugt[0]))
-                        {
-                            rigtigFarve++;
-                            placeBrugt[0] = true;
-                        }
-                        else if (spillerGaet[3] == kodeFarver[1] && !placeBrugt[1])
-                        {
-                            rigtigFarve++;
-                            placeBrugt[1] = true;
-                        }
-
-                        else if (spillerGaet[3] == kodeFarver[2] && !placeBrugt[2])
-                        {
-                            rigtigFarve++;
-                            placeBrugt[2] = true;
-                        }
-                       
-
-
-
-                        /*
-                        if ((spillerGaet[1] == kodeFarver[0] && !farverBrugt[0]) ||
-                            (spillerGaet[1] == kodeFarver[2] && !farverBrugt[2]) ||
-                            (spillerGaet[1] == kodeFarver[3] && !farverBrugt[3]))    
-                        {
-                            rigtigFarve++;
-                        }
-                        if ((spillerGaet[2] == kodeFarver[0] && !farverBrugt[0]) ||
-                            (spillerGaet[2] == kodeFarver[1] && !farverBrugt[1]) ||
-                            (spillerGaet[2] == kodeFarver[3] && !farverBrugt[3]))                         {
-                            rigtigFarve++;
-                        }
-                        if ((spillerGaet[3] == kodeFarver[0] && !farverBrugt[0]) ||
-                            (spillerGaet[3] == kodeFarver[1] && !farverBrugt[1]) ||
-                            (spillerGaet[3] == kodeFarver[2] && !farverBrugt[2]))
-                        {
-                            rigtigFarve++;
-                        }
-                        */
-
                         //Feedback til spilleren, der svarer til de sorte/hvide brikker i klassisk MasterMind.
                         Console.WriteLine($"Du har {rigtigFarve} farver der optræder i koden, men på den forkerte plads\n" +
                             $"og {rigtigPlace} farver på den rigtige plads\n");
@@ -253,8 +152,13 @@ namespace Philip_MasterMind
                     runde++;
                     rigtigFarve = 0; //Sætter rigtig farve og place til 0, så det kun er den aktuelle rundes gæt der evalueres. 
                     rigtigPlace = 0;
-                    for (int i = 0; i < placeBrugt.Length; i++) //resetter farver brug til næste runde
+                    for (int i = 0; i < kodeTal.Length; i++) //Resetter de brugte gæt og placeringer
+                    {
                         placeBrugt[i] = false;
+                        gaetBrugt[i] = false;
+                    }
+
+
                 }
             } while (stemningForSpil);
         }
