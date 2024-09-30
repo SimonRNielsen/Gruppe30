@@ -14,21 +14,25 @@ namespace Gamecollection
     {
         static void Main(string[] args)
         {
+            //Booleans and integers to react and record player input
+            bool exit;
+            bool input;
             int marker = 0;
             int newMarker = 0;
-            int[] spil = new int[4] { 1, 2, 3, 4 };
+            //String array with name of games
+            string[] games = new string[4] {"Minestryger", "Jeopardy", "Sænke Slagskibe", "Mastermind"};
+            //Strings with path to game executables, which are added to same basefolder as "Gamecollection.exe" by referencing it in the project
             string minesweeper = Directory.GetCurrentDirectory() + @"\Minesweeper_simon.exe";
             string jeopardy = Directory.GetCurrentDirectory() + @"\Jeopardy_Irene.exe";
             string battleships = Directory.GetCurrentDirectory() + @"\Rikke.exe";
             string mastermind = Directory.GetCurrentDirectory() + @"\Philip_Mastermind.exe";
-            bool exit;
-            bool input;
             do
             {
+                //Clears screen to avoid clutter
                 Console.Clear();
-                input = false;
-                exit = false;
+                //Updates player marker-position
                 newMarker += marker;
+                //Keeps marker inside bounds
                 if (newMarker < 0)
                 {
                     newMarker = 0;
@@ -37,10 +41,13 @@ namespace Gamecollection
                 {
                     newMarker = 3;
                 }
+                //Welcome message and info on how to input selection
                 Console.WriteLine("Velkommen til vores spilsamling");
                 Console.WriteLine("Vælg et spil nedenfor(pil op og ned + enter), eller tryk escape for at lukke");
-                for (int i = 0; i < spil.Length; i++)
+                //Draws array on a line-by-line basis
+                for (int i = 0; i < games.Length; i++)
                 {
+                    //Highlights player marker
                     if (i == newMarker)
                     {
                         Console.BackgroundColor = ConsoleColor.DarkGreen;
@@ -49,10 +56,12 @@ namespace Gamecollection
                     {
                         Console.BackgroundColor = ConsoleColor.Black;
                     }
-                    Console.WriteLine((Games)spil[i]);
+                    Console.WriteLine(games[i]);
                 }
+                //Resets colorscheme to avoid most of console turning green
                 Console.BackgroundColor = ConsoleColor.Black;
                 PlayerInput(out marker, out exit, out input);
+                //Starts 1 of 4 games up depending on player selection
                 if (input)
                 {
                     switch (newMarker)
@@ -76,7 +85,9 @@ namespace Gamecollection
                     }
                 }
             }
+            //Loops selection progress
             while (!exit);
+            //Displays farewell message if no program was initiated
             if (exit && !input)
             {
                 Console.WriteLine("Tak fordi du gad at spille med os!");
@@ -85,13 +96,12 @@ namespace Gamecollection
                 Console.ReadKey();
             }
         }
-        enum Games : int
-        {
-            Minestryger = 1,
-            Mastermind = 2,
-            Sænkeslagskib = 3,
-            Jeopardy = 4
-        }
+        /// <summary>
+        /// Detects playerinput
+        /// </summary>
+        /// <param name="x">Changes movement on x-axis</param>
+        /// <param name="exit">Logs "escape" being pressed</param>
+        /// <param name="input">Logs "enter" being pressed</param>
         static void PlayerInput(out int x, out bool exit, out bool input)
         {
             x = 0;

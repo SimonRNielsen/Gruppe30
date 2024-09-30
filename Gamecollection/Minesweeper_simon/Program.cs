@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 /*
     Todo:
     Lyde?
-    Integrere i master
 */
 
 namespace Minesweeper_simon
@@ -41,7 +40,7 @@ namespace Minesweeper_simon
             string player;
             string exitDirectory = Directory.GetCurrentDirectory() + @"\Gamecollection.exe";
             Console.WriteLine("Velkommen til minestryger");
-            Console.WriteLine("Skriv dit navn");
+            Console.WriteLine("Skriv venligst dit navn");
             player = Console.ReadLine();
             //Loops until player chooses to exit the game
             while (exit == false)
