@@ -13,27 +13,26 @@ namespace Philip_MasterMind
         enum Farver { rød, blå, gul, grøn, lilla, brun}
         static void Main(string[] args)
         {
-            /* TODO:
-             * Feed back på om man har rigtig farve, men ikke plads
-             * Feedback på om man har rigtig farve OG plads
-             */
-
-            byte[] kodeTal = new byte[4]; //Array der skal indeholde 4 tilfældigt generede tal, der skal bruges til gætte-koden
-            Farver[] kodeFarver = new Farver[4];//Enum array, der indeholder de fire farver der udgør koden
-            Farver[] spillerGaet = new Farver[4];//Array, der skal indeholde spillerens gæt
+            byte[] kodeTal = new byte[4]; //Array der skal indeholde 4 tilfældigt generede tal, der skal bruges til gætte-koden.
+            Farver[] kodeFarver = new Farver[kodeTal.Length];/*Enum array, der indeholder de fire farver der udgør koden. 
+                                                              * Er sat til kodeTals længde, så man nemt kan gøre spilleret sværere, 
+                                                              * ved at andre på antallet af tal i koden. */
+            Farver[] spillerGaet = new Farver[kodeTal.Length];//Array, der skal indeholde spillerens gæt.
             Random rnd = new Random();
             int runde; //Variabel der gemmer hvad runde vi er i
             string highscore; //Variabel der gemmer highscore (skal indeholde Navn + runde)
             int highscoreRunde = 11; //Variabel der gemmer den highscore runden. 11, fordi der er 10 runder.
             bool stemningForSpil = true; //Bruges til at gemme om spilleren vil fortsætte 
             string inSvar; //Variabel der gemmer spillerens input, så de kan valideres
-
-            Velkomst();
+            int rigtigFarve =0; //Variabel der skal gemme antal farver, uden rigtig plads, som spilleren har gættet
+            int rigtigPlace =0; //Variabel der skal gemme antal farver, på den rigtige plads, som spilleren har gættet
+            
+            Velkomst();//Funktion til velkosmtbesked, fordi den er så lang.
 
             do //Loop, der egentlig bare tager højde for om spilleren stadig vil spille.
-               //Spilleren kan ændre mening efter runde 10, eller de har vundet
+               //Spilleren kan ændre mening efter runde 10, eller hvis de har vundet.
             {
-                //For loop, der genererer 4 random tal, på hver plads i kodeTal array
+                //For loop, der genererer random tal, på hver plads i kodeTal array
                 for (byte i = 0; i < kodeTal.Length; i++)
                 {
                     kodeTal[i] = (byte)rnd.Next(0, 6);
@@ -44,7 +43,7 @@ namespace Philip_MasterMind
                     kodeFarver[i] = (Farver)kodeTal[i];
                 }
                 runde = 1; /*Sætter runde til 1. Man vender kun tilbage til dette loop,
-                            hvis man har vundet, eller tabt, og valgt at fortsætte */
+                            hvis man har vundet, eller tabt, og valgt at fortsætte */ 
 
                 //SLET IGEN:
                 foreach (Farver farve in kodeFarver)
@@ -60,29 +59,27 @@ namespace Philip_MasterMind
                     Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.WriteLine("Runde:" + runde);
                     Console.ResetColor();
-                    Console.WriteLine("Hvilken farve gætter du på plads 1?\nHusk at du kan vælge imellem: Rød, Blå, Gul, Grøn, Lilla, Brun");
-                    inSvar = GodkendSvar();
-                    spillerGaet[0] = (Farver)Enum.Parse(typeof(Farver), inSvar);
-                    Console.WriteLine("Hvilken farve gætter du på plads 2?"); 
-                    inSvar = GodkendSvar();
-                    spillerGaet[1] = (Farver)Enum.Parse(typeof(Farver), inSvar);
-                    Console.WriteLine("Hvilken farve gætter du på plads 3?");
-                    inSvar = GodkendSvar();
-                    spillerGaet[2] = (Farver)Enum.Parse(typeof(Farver), inSvar);
-                    Console.WriteLine("Hvilken farve gætter du på plads 4?");
-                    inSvar = GodkendSvar();
-                    spillerGaet[3] = (Farver)Enum.Parse(typeof(Farver), inSvar);
-
+                    for (int i =0; i < kodeTal.Length; i++)
+                    {
+                        Console.WriteLine("Hvilken farve gætter du på plads " +(i+1) + "?" +
+                            "\nHusk at du kan vælge imellem: Rød, Blå, Gul, Grøn, Lilla, Brun");
+                        inSvar = GodkendSvar();
+                        spillerGaet[i] = (Farver)Enum.Parse(typeof(Farver), inSvar);
+                    }
                     Console.WriteLine("\n\nDit gæt er:\n");
-                    Console.WriteLine(spillerGaet[0] + " | " + spillerGaet[1] + " | " + spillerGaet[2] + " | " + spillerGaet[3] + "\n");
+                    for (int i = 0; i < kodeTal.Length; i++)
+                        Console.Write(spillerGaet[i] + " | ");
 
                     //If statement, der tjekker om spilleren har gættet koden
-                    if (spillerGaet[0] == kodeFarver[0] && spillerGaet[1] == kodeFarver[1] &&
-    spillerGaet[2] == kodeFarver[2] && spillerGaet[3] == kodeFarver[3])
+                    if (spillerGaet[0] == kodeFarver[0] && 
+                        spillerGaet[1] == kodeFarver[1] &&
+                        spillerGaet[2] == kodeFarver[2] && 
+                        spillerGaet[3] == kodeFarver[3])
                     {
                         //Besked med tillykke og score
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("Tillykke du svarede rigtigt! \nKoden var: " + kodeFarver[0] + " | " + kodeFarver[1] + " | " + kodeFarver[2] + " | " + kodeFarver[3] + "\n");
+                        Console.WriteLine("\nTillykke du svarede rigtigt! \n" +
+                            "Koden var: " + kodeFarver[0] + " | " + kodeFarver[1] + " | " + kodeFarver[2] + " | " + kodeFarver[3] + " |\n");
                         Console.WriteLine("Du gjorde på det på " + runde + " runder!");
                         if (runde < highscoreRunde) //Tjekker om man har slået highscoren
                         {
@@ -97,7 +94,18 @@ namespace Philip_MasterMind
                     }
                     else
                     {
-                        Console.WriteLine("Du gættede ikke rigtigt.\n");
+                        Console.WriteLine("\nDu gættede ikke rigtigt.\n");
+                        //Loop, der kontrollere om der er rigtige farver og/eller rigtig palcering ved ved de 4 spillergæt. 
+                        for (int i = 0; i < kodeFarver.Length; i++)
+                        {
+                            if (spillerGaet[i] == kodeFarver[i])
+                            { rigtigPlace++; }
+                            else if (kodeFarver.Contains(spillerGaet[i]))
+                                { rigtigFarve++; }
+                        }
+                        //Feedback til spilleren, der svarer til de sorte/hvide brikker i klassisk MasterMind.
+                        Console.WriteLine($"Du har {rigtigFarve} farver der optræder i koden, men på den forkerte plads\n" +
+                            $"og {rigtigPlace} farver på den rigtige plads\n");
                     }
 
                     if (runde ==10) //Hvis vi er i runde 10, spørges spilleren om de vil afslutte eller forsætte
@@ -109,7 +117,8 @@ namespace Philip_MasterMind
                     }
 
                     runde++;
-
+                    rigtigFarve = 0; //Sætter rigtig farve og place til 0, så det kun er den aktuelle rundes gæt der evalueres. 
+                    rigtigPlace = 0;
                 }
             } while (stemningForSpil);
         }
@@ -166,7 +175,7 @@ God fornøjelse!");
             {
                 svar = Console.ReadLine()
                     .ToLower()
-                    .Trim(); //fjerner whitespaces, f.eks. hvis spilleren er kommet til at trykke mellemrød
+                    .Trim(); //fjerner whitespaces, f.eks. hvis spilleren er kommet til at trykke mellemrum før/efter
 
                 if (svar == "rød")
                     return svar;
