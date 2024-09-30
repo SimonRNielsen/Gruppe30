@@ -147,7 +147,7 @@ God fornøjelse!");
         {
             bool afslutRes = true;
             Console.WriteLine("Ønsker du at afslutte? Hvis ja: skriv \"quit\" og tryk enter.\nHvis du vil fortsætte, tryk enter");
-            if (Console.ReadLine().ToLower() == "quit")
+            if (Console.ReadLine().ToLower().Trim() == "quit")
             {
                 afslutRes = false;
             }
