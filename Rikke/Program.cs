@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Schema;
 
 namespace Rikke
 {
@@ -12,35 +13,73 @@ namespace Rikke
         static void Main(string[] args)
         {
             //Oprettelse af array brættet
-            string[,] mitBraet = new string[11, 11]; //Spillerens bræt
-            TegnBraet(mitBraet);
+            string[,] spillerBraet = new string[11, 11]; //Spillerens bræt til at skyde skibe ned med
+            TegnBraet(spillerBraet);
+            string[,] spillerBraetBaade = new string[11, 11]; //Spillerens bræt med skibe
+            TegnBraet(spillerBraetBaade);
 
-            string[,] pcBraet = new string[11, 11]; //Computerens bræt
+            string[,] pcBraet = new string[11, 11]; //Computerens bræt til at skyde skibe ned med
             TegnBraet(pcBraet);
+            string[,] pcBraetBaade = new string[11, 11]; //Computerens bræt
+            TegnBraet(pcBraetBaade);
 
-            //Chars        
+            //Variabler       
             string baad = "■ "; //Båd
             string forbi = "X "; //Forbier
+            int spillerScore = 0; //Antal ramte både
+            int pcScore = 0; //Antal ramte både
+            bool spilstarter = true;
+
+            //Regler
+            Console.WriteLine("Indtast dit navn");
+            string spillerNavn = Console.ReadLine();
+            Console.WriteLine($"Velkommen {spillerNavn} til sænke slagsskibe");
+            Console.WriteLine("Når spillet starter bliver der automatisk tilfældigt placeret bådene for både spilleren og computeren.");
+            Console.WriteLine("Der er i alt 5 forskellige skibe med følgende længde: hangarskib (5), slagskibe (4), destroyer (3), ubåd (3) og patrujlebåd (2).");
+            Console.WriteLine("Derefter vil runden gå på tur, hvor du starter. Du skal oplyse et koordinat fra, hvor du vil skyde efter et skib.");
+            Console.WriteLine($"Hvis du rammer et skibe, fik der på koordinattet fremgå {baad}, hvis det er en forbier fremgår der {forbi}.");
+            Console.WriteLine("Der vil ydermere få oplyst, om du har ramt et skib eller forbi. Du vil også få oplyst, om computeren rammer.");
+            Console.WriteLine("Efter hver runde får du oplyst scoren, hvor den som når først til 17 (den samlet længde skibe) vinder");
+            Console.WriteLine("Held og lykke. Tryk på en tast for at starte.");
+            Console.ReadKey();
+
+            // TEGNE SKIBE
+            // SPILLERENS SKIBE
+            TegnBaade(5, spillerBraetBaade); //Hangarskib
+            TegnBaade(4, spillerBraetBaade); //Slagskib
+            TegnBaade(3, spillerBraetBaade); //Destroyer
+            TegnBaade(3, spillerBraetBaade); //Ubåd
+            TegnBaade(2, spillerBraetBaade); //Patrujlebåd
+
+            //COMPUTERENS SKIBE
+            TegnBaade(5, pcBraetBaade); //Hangarskib
+            TegnBaade(4, pcBraetBaade); //Slagskib
+            TegnBaade(3, pcBraetBaade); //Destroyer
+            TegnBaade(3, pcBraetBaade); //Ubåd
+            TegnBaade(2, pcBraetBaade); //Patrujlebåd
 
 
-            // Test af at tegne både ///////////
-            TegnBaade(5, pcBraet); //Hangarskib
-            TegnBaade(4, pcBraet); //Slagskib
-            TegnBaade(3, pcBraet); //Destroyer
-            TegnBaade(3, pcBraet); //Ubåd
-            TegnBaade(2, pcBraet); //Patrujlebåd
+            Console.WriteLine("PCen skibe");
+            PrintBraet(pcBraetBaade);
+            Console.WriteLine("Spillerens skibe");
+            PrintBraet(spillerBraetBaade);
 
-            Console.WriteLine("PC bræt");
-            PrintBraet(pcBraet);
+            while (spilstarter)
+            {
+                spillerScore = SkydBaad(pcBraetBaade, spillerBraet, spillerScore);
 
-            SkydBaad(pcBraet, mitBraet);
+                pcScore =PCSkydBaad(spillerBraetBaade, pcBraet, pcScore);
 
+                Console.WriteLine($"Spillerens score: {spillerScore}");
+                Console.WriteLine($"Computerens score: {pcScore}");
+                spilstarter = false;
+            }
 
             //Printe brættet
-            Console.WriteLine("Spillers bræt");
-            PrintBraet(mitBraet);
-            Console.WriteLine("PC bræt");
-            PrintBraet(pcBraet);
+            Console.WriteLine("Spillerens bræt");
+            PrintBraet(spillerBraet);
+            Console.WriteLine("Spillerens skibe");
+            PrintBraet(spillerBraetBaade);
             
             Console.ReadKey();
         }
@@ -117,6 +156,8 @@ namespace Rikke
 
         }
 
+        
+
         /// <summary>
         /// Tjekker for at bådene ikke collidere med hinanden
         /// </summary>
@@ -158,9 +199,11 @@ namespace Rikke
         /// <summary>
         /// Angribe pcens skibe
         /// </summary>
-        /// <param name="pcBraet">modstanderens bræt (pc)</param>
-        /// <param name="mitBraet">eget bræt</param>
-        static void SkydBaad (string[,] pcBraet, string[,] mitBraet)
+        /// <param name="pcBraetSkibe">modstanderens bræt (pc)</param>
+        /// <param name="spillerBraet">eget bræt</param>
+        /// <param name="spillerScore">Spillers score</param>
+        /// <returns>Spillerens score</returns>
+        static int SkydBaad (string[,] pcBraetSkibe, string[,] spillerBraet, int spillerScore)
         {
             //Chars        
             string baad = "■ "; //Båd
@@ -172,6 +215,7 @@ namespace Rikke
             string inputBogstav = Console.ReadLine().ToLower();
             Console.WriteLine("Hvilket tal:");
             int angrebTal = Convert.ToInt32(Console.ReadLine());
+            Console.Clear();
 
             // Konvetering af bogstav koordinat til en int
             int angrebBogstav = -1;
@@ -189,18 +233,21 @@ namespace Rikke
                 case ("j"): angrebBogstav = 10; break;
             }
 
-            Console.WriteLine(pcBraet[angrebTal, angrebBogstav]);
+            Console.WriteLine(pcBraetSkibe[angrebTal, angrebBogstav]);
 
             //Tjekker om den har ramt et skib
-            if (pcBraet[angrebTal, angrebBogstav].Contains(baad))
+            if (pcBraetSkibe[angrebTal, angrebBogstav].Contains(baad))
             {
                 Console.WriteLine("Du ramte et skib");
-                mitBraet[angrebTal, angrebBogstav] = baad;
+                spillerBraet[angrebTal, angrebBogstav] = baad;
+                spillerScore++;
+                return spillerScore;
             }
             else
             {
                 Console.WriteLine("Forbier");
-                mitBraet[angrebTal, angrebBogstav] = forbi;
+                spillerBraet[angrebTal, angrebBogstav] = forbi;
+                return spillerScore;
             }
         }
 
@@ -219,5 +266,50 @@ namespace Rikke
                 Console.WriteLine(" ");
             }
         }
+
+        /// <summary>
+        /// PCen skyder
+        /// </summary>
+        /// <param name="spillerBraetSkibe">Spillerens bræt</param>
+        /// <param name="pcBraet">PCen bræt</param>
+        /// <param name="pcScore"> PC score</param>
+        /// <returns>Computerens score</returns>
+        static int PCSkydBaad(string[,] spillerBraetSkibe, string[,] pcBraet, int pcScore)
+        {
+            //Variabler        
+            string baad = "■ "; //Båd
+            string forbi = "X "; //Forbier
+            bool pcSkyde = true;
+            Random random = new Random();
+
+            while (pcSkyde)
+            {
+                //Skyder et random sted i arrayet
+                int randomNumber1 = random.Next(1, 10);
+                int randomNumber2 = random.Next(1, 10);
+
+
+                Console.WriteLine(spillerBraetSkibe[randomNumber1, randomNumber2]);
+
+                //Tjekker om den har ramt et skib
+                if (!spillerBraetSkibe[randomNumber1, randomNumber2].Contains(baad) ||!spillerBraetSkibe[randomNumber1, randomNumber2].Contains(forbi))
+                {
+                    Console.WriteLine("PCen ramte forbi");
+                    pcBraet[randomNumber1, randomNumber2] = forbi;
+                    pcSkyde = false;
+                    return pcScore;
+                }
+                if (spillerBraetSkibe[randomNumber1, randomNumber2].Contains(baad))
+                {
+                    Console.WriteLine("PCen ramte dit skib");
+                    pcBraet[randomNumber1, randomNumber2] = baad;
+                    pcScore++;
+                    pcSkyde = false;
+                    return pcScore;
+                }
+            }
+            return 100;
+        }
+
     }
 }
