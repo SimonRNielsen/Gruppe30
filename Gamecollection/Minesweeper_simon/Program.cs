@@ -39,6 +39,36 @@ namespace Minesweeper_simon
             string[] highscore_players = new string[10];
             string player;
             string exitDirectory = Directory.GetCurrentDirectory() + @"\Gamecollection.exe";
+            #region Highscore_Table
+            //Checks if there's a highscore file, if not = it makes one
+            if (File.Exists("highscores.txt"))
+            {
+
+            }
+            else
+            {
+                for (int i = 0; i < highscore_players.Length; i++)
+                {
+                    highscore_players[i] = "Player";
+                    highscore_values[i] = i + 1;
+                }
+                using (StreamWriter writer = new StreamWriter("highscores.txt"))
+                {
+                    // Write string array
+                    writer.WriteLine("Strings:");
+                    foreach (var str in highscore_players)
+                    {
+                        writer.WriteLine(str);
+                    }
+                    writer.WriteLine("Integers:");
+                    // Write integer array
+                    foreach (var num in highscore_values)
+                    {
+                        writer.WriteLine(num);
+                    }
+                }
+            }
+            #endregion
             Console.WriteLine("Velkommen til minestryger");
             Console.WriteLine("Skriv venligst dit navn");
             player = Console.ReadLine();
@@ -390,6 +420,10 @@ namespace Minesweeper_simon
                         {
                             playerboard[newInput_x, newInput_y]++;
                         }
+                        else if (playerboard[newInput_x, newInput_y] == 0)
+                        {
+                            //Do nothing
+                        }
                         else
                         {
                             playerboard[newInput_x, newInput_y]--;
@@ -471,6 +505,7 @@ namespace Minesweeper_simon
                     Console.WriteLine($"Du brugte {timer.TotalSeconds} sekunder, din score er {score}");
                     Console.WriteLine();
                     Console.WriteLine("Top 9 highscores plus din");
+
                     //////////////////////////////  \/ GENERERET AF CHATGPT \/   ///////////////////////////////////////
                     List<string> stringList = new List<string>();
                     List<int> intList = new List<int>();
