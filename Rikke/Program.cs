@@ -59,10 +59,11 @@ namespace Rikke
             TegnBaade(2, pcBraetBaade); //Patrujlebåd
 
 
-            Console.WriteLine("PCen skibe");
-            PrintBraet(pcBraetBaade);
             Console.WriteLine("Spillerens skibe");
             PrintBraet(spillerBraetBaade);
+            Console.WriteLine("Spillerens plade");
+            PrintBraet(spillerBraet);
+            
 
             while (spilstarter)
             {
@@ -70,9 +71,26 @@ namespace Rikke
 
                 pcScore =PCSkydBaad(spillerBraetBaade, pcBraet, pcScore);
 
+
+                Console.WriteLine("Spillerens skibe");
+                PrintBraet(spillerBraetBaade);
+                Console.WriteLine("PC plade");
+                PrintBraet(pcBraet);
+                Console.WriteLine("Spillerens plade");
+                PrintBraet(spillerBraet);
                 Console.WriteLine($"Spillerens score: {spillerScore}");
                 Console.WriteLine($"Computerens score: {pcScore}");
-                spilstarter = false;
+                
+                if (spillerScore == 17)
+                {
+                    Console.WriteLine("Tillykke, du vandt");
+                    spilstarter = false;
+                }
+                if (pcScore == 17)
+                {
+                    Console.WriteLine("Desvære, du tabte");
+                    spilstarter = false;
+                }
             }
 
             //Printe brættet
@@ -116,42 +134,44 @@ namespace Rikke
         static void TegnBaade(int baadLaengde, string[,] braet)
         {
             string baad = "■ ";
-            Random random = new Random();
             bool tegnBaade = true;
-
             while (tegnBaade)
             {
+                Random random = new Random();
                 int randomOritering = random.Next(0, 2);
-                int randomNumber1 = random.Next(1, braet.GetLength(0) - baadLaengde);
-                int randomNumber2 = random.Next(1, braet.GetLength(1) - 1);
+                int baadPlacering1 = random.Next(1, braet.GetLength(0) - baadLaengde);
+                int baadPlacering2 = random.Next(1, braet.GetLength(1) - 1);
 
-                bool placering = TjekPlacering(randomOritering, baadLaengde, randomNumber1, randomNumber2, braet);
+                bool placering = TjekPlacering(randomOritering, baadLaengde, baadPlacering1, baadPlacering2, braet);
 
-                if (placering == true)
+                if (!placering)
                 {
-                    if (randomOritering == 0)
+                    continue;
+                }
+
+                if (randomOritering == 0)
+                {
+                    for (int i = 0; i < baadLaengde; i++)
                     {
-                        for (int i = 0; i < baadLaengde; i++)
+                        braet[baadPlacering1 + i, baadPlacering2] = baad;
+                        if (i == baadLaengde-1)
                         {
-                            braet[randomNumber1 + i, randomNumber2] = baad;
-                            if (i == baadLaengde-1)
-                            {
-                                tegnBaade = false;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        for (int i = 0; i < baadLaengde; i++)
-                        {
-                            braet[randomNumber2, randomNumber1 + i] = baad;
-                            if (i == baadLaengde - 1)
-                            {
-                                tegnBaade = false;
-                            }
+                            tegnBaade = false;
                         }
                     }
                 }
+                else
+                {
+                    for (int i = 0; i < baadLaengde; i++)
+                    {
+                        braet[baadPlacering2, baadPlacering1 + i] = baad ;
+                        if (i == baadLaengde - 1)
+                        {
+                            tegnBaade = false;
+                        }
+                    }
+                }
+                
             }
 
         }
@@ -163,22 +183,21 @@ namespace Rikke
         /// </summary>
         /// <param name="orientering"></param>
         /// <param name="baadLaengde"></param>
-        /// <param name="randomNumber1"></param>
-        /// <param name="randomNumber2"></param>
+        /// <param name="baadPlacering1"></param>
+        /// <param name="baadPlacering2"></param>
         /// <param name="mitBraet"></param>
         /// <returns></returns>
-        static bool TjekPlacering (int orientering, int baadLaengde, int randomNumber1, int randomNumber2, string[,] braet)
+        static bool TjekPlacering (int orientering, int baadLaengde, int baadPlacering1, int baadPlacering2, string[,] braet)
         {
             string baad = "■ ";
             if (orientering == 0)
             {
                 for (int j = 0; j < baadLaengde; j++)
                 {
-                    if (braet[randomNumber1 + j, randomNumber2].Contains(baad))
+                    if (braet[baadPlacering1 + j, baadPlacering2].Contains(baad))
                     {
-                        continue;
+                        return false;
                     }
-                    return true;
 
                 }
             }
@@ -186,14 +205,13 @@ namespace Rikke
             {
                 for (int i = 0; i < baadLaengde; i++)
                 {
-                    if (braet[randomNumber2, randomNumber1 + i].Contains(baad))
+                    if (braet[baadPlacering2, baadPlacering1 + i].Contains(baad))
                     {
-                        continue;
+                        return false;
                     }
-                    return true;          
                 }
             }
-            return false;
+            return true;
         }
 
         /// <summary>
@@ -280,29 +298,29 @@ namespace Rikke
             string baad = "■ "; //Båd
             string forbi = "X "; //Forbier
             bool pcSkyde = true;
-            Random random = new Random();
 
             while (pcSkyde)
             {
                 //Skyder et random sted i arrayet
-                int randomNumber1 = random.Next(1, 10);
-                int randomNumber2 = random.Next(1, 10);
+                Random random = new Random();
+                int baadPlacering1 = random.Next(1, 10);
+                int baadPlacering2 = random.Next(1, 10);
 
 
-                Console.WriteLine(spillerBraetSkibe[randomNumber1, randomNumber2]);
+                Console.WriteLine(spillerBraetSkibe[baadPlacering1, baadPlacering2]);
 
                 //Tjekker om den har ramt et skib
-                if (!spillerBraetSkibe[randomNumber1, randomNumber2].Contains(baad) ||!spillerBraetSkibe[randomNumber1, randomNumber2].Contains(forbi))
+                if (spillerBraetSkibe[baadPlacering1, baadPlacering2].Contains("_ "))
                 {
                     Console.WriteLine("PCen ramte forbi");
-                    pcBraet[randomNumber1, randomNumber2] = forbi;
+                    pcBraet[baadPlacering1, baadPlacering2] = forbi;
                     pcSkyde = false;
                     return pcScore;
                 }
-                if (spillerBraetSkibe[randomNumber1, randomNumber2].Contains(baad))
+                if (spillerBraetSkibe[baadPlacering1, baadPlacering2].Contains(baad))
                 {
                     Console.WriteLine("PCen ramte dit skib");
-                    pcBraet[randomNumber1, randomNumber2] = baad;
+                    pcBraet[baadPlacering1, baadPlacering2] = baad;
                     pcScore++;
                     pcSkyde = false;
                     return pcScore;
