@@ -125,8 +125,8 @@ namespace Philip_MasterMind
 
                         } 
                         //Feedback til spilleren, der svarer til de sorte/hvide brikker i klassisk MasterMind.
-                        Console.WriteLine($"Du har {rigtigFarve} farver der optræder i koden, men på den forkerte plads\n" +
-                            $"og {rigtigPlace} farver på den rigtige plads\n");
+                        Console.WriteLine($"Du har {rigtigFarve} sort(e) brik(ker). Det er farve(r) der optræder i koden, men på den forkerte plads\n" +
+                            $"og {rigtigPlace} hvid(e) brik(ker). Det er farver på den rigtige plads\n");
                     }
 
                     if (runde ==10) //Hvis vi er i runde 10, spørges spilleren om de vil afslutte eller forsætte
@@ -138,8 +138,8 @@ namespace Philip_MasterMind
                     }
 
                     runde++;
-                    rigtigFarve = 0; //Sætter rigtig farve og place til 0, så det kun er den aktuelle rundes gæt der evalueres. 
-                    rigtigPlace = 0;
+                    rigtigFarve = 0; //Sætter rigtigFarve til 0, så det kun er den aktuelle rundes gæt der evalueres. 
+                    rigtigPlace = 0; //Sætter rigtigPlace til 0, så det kun er den aktuelle rundes gæt der evalueres.
                     for (int i = 0; i < kodeTal.Length; i++) //Resetter de brugte gæt og placeringer
                     {
                         placeBrugt[i] = false;
@@ -168,8 +168,9 @@ For hver runde skal du gætte på hvilke 4 farver du tror der er i koden. Du gæ
 Vær opmærksom på at hver farve godt kan optræde flere gange i samme kode. 
 
 Hvis du har gættet en farve der optræder i koden, men som ikke er på den rette plads,
-viser spillet dig det med en sort brik. Hvis du har gættet både rigtig farve og plads,
-viser spillet en hvid plads. Du får ikke at vide på hvilken plads du har gættet rigtigt. 
+fortæller spillet dig det. Det svarer til en sort brik, i den fysiske udgave af MasterMind.
+Hvis du har gættet både rigtig farve og plads, fortæller spillet dig det. Det svarer til en hvid brik, i den fysiske udgave af MasterMind.
+Du får ikke at vide på hvilken plads du har gættet rigtigt. 
 
 Spillet slutter ved at du enten har gættet den rigtige kode, eller at der er gået 10 runder.
 
@@ -183,7 +184,7 @@ God fornøjelse!");
         static bool Afslut()
         {
             bool afslutRes = true;
-            Console.WriteLine("Ønsker du at afslutte? Hvis ja: skriv \"quit\" og tryk enter.\nHvis du vil spille igen, tryk enter");
+            Console.WriteLine("\nØnsker du at afslutte? Hvis ja: skriv \"quit\" og tryk enter.\nHvis du vil spille igen, tryk enter");
             if (Console.ReadLine().ToLower().Trim() == "quit")
             {
                 afslutRes = false;
