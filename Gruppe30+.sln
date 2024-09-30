@@ -5,7 +5,7 @@ VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gamecollection", "Gamecollection\Gamecollection.csproj", "{38EB8255-CA30-47AE-92D8-BCDE854E6206}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minesweeper_simon", "Minesweeper_simon\Minesweeper_simon.csproj", "{E7E1E164-62F2-42B5-9245-A1EC0CF5266E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minesweeper_simon", "Gamecollection\Minesweeper_simon\Minesweeper_simon.csproj", "{E7E1E164-62F2-42B5-9245-A1EC0CF5266E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

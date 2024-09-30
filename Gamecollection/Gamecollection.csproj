@@ -49,5 +49,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Minesweeper_simon\Minesweeper_simon.csproj">
+      <Project>{e7e1e164-62f2-42b5-9245-a1ec0cf5266e}</Project>
+      <Name>Minesweeper_simon</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

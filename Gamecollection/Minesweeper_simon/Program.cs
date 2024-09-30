@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 /*
     Todo:
     Lyde?
+    Integrere i master
 */
 
 namespace Minesweeper_simon
@@ -37,7 +39,8 @@ namespace Minesweeper_simon
             string difficulty;
             string[] highscore_players = new string[10];
             string player;
-            Console.WriteLine("Velkommen til minesweeper");
+            string exitDirectory = Directory.GetCurrentDirectory() + @"\Gamecollection.exe";
+            Console.WriteLine("Velkommen til minestryger");
             Console.WriteLine("Skriv dit navn");
             player = Console.ReadLine();
             //Loops until player chooses to exit the game
@@ -54,7 +57,7 @@ namespace Minesweeper_simon
                 difficulty = string.Empty;
                 board_created = false;
                 Console.Clear();
-                //Selection of difficulty by totalling the amount of entries and setting the amount of bombs to 20%, 30% and 40% respectively
+                //Selection of difficulty by totalling the amount of entries and setting the amount of bombs to 10%, 20% and 30% respectively
                 do
                 {
                     Console.WriteLine("Hvor svært skal det være? (skriv let, medium, svær)");
@@ -561,6 +564,7 @@ namespace Minesweeper_simon
                 }
                 #endregion
             }
+            Process.Start(exitDirectory);
         }
         /// <summary>
         /// Enum to change 9 with X and 0 to O in a visual representation
