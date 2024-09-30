@@ -113,27 +113,15 @@ namespace Philip_MasterMind
 
                         for (int i = 0; i < spillerGaet.Length; i++)
                         {
-                            if (spillerGaet[i] == kodeFarver[0] && !placeBrugt[0] && !gaetBrugt[i])
+                            for (int j = 0; j < kodeFarver.Length; j++)
                             {
-                                rigtigFarve++;
-                                placeBrugt[0] = true;
+                                if (spillerGaet[i] == kodeFarver[j] && !placeBrugt[j] && !gaetBrugt[i])
+                                {
+                                    rigtigFarve++;
+                                    placeBrugt[j] = true;
+                                    break;
+                                }
                             }
-                            else if (spillerGaet[i] == kodeFarver[1] && !placeBrugt[1] && !gaetBrugt[i])
-                            {
-                                rigtigFarve++;
-                                placeBrugt[1] = true;
-                            }
-                            else if (spillerGaet[i] == kodeFarver[2] && !placeBrugt[2] && !gaetBrugt[i])
-                            {
-                                rigtigFarve++;
-                                placeBrugt[2] = true;
-                            }
-                            else if (spillerGaet[i] == kodeFarver[3] && !placeBrugt[3] && !gaetBrugt[i])
-                            {
-                                rigtigFarve++;
-                                placeBrugt[3] = true;
-                            }
-
 
                         } 
                         //Feedback til spilleren, der svarer til de sorte/hvide brikker i klassisk MasterMind.
