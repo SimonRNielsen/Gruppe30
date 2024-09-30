@@ -26,6 +26,7 @@ namespace Gamecollection
             string jeopardy = Directory.GetCurrentDirectory() + @"\Jeopardy_Irene.exe";
             string battleships = Directory.GetCurrentDirectory() + @"\Rikke.exe";
             string mastermind = Directory.GetCurrentDirectory() + @"\Philip_Mastermind.exe";
+            //Do-While loop to run a minimum of once
             do
             {
                 //Clears screen to avoid clutter
