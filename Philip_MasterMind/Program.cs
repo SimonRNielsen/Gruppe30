@@ -65,18 +65,13 @@ namespace Philip_MasterMind
                     Console.Clear(); //Sletter konsollens indhold. BEMÆRK! KUN EN HVIS DEL, SVARENDE TIL HVAD DER KAN VÆRE I ET VINDUE!
                     if (runde > 1)
                     {
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-                        Console.WriteLine("Tidligere gæt: ");
-                        Console.ResetColor();
+                        SkrivCyan("Tidligere gæt: ");
                         for (int i = 1; i < runde; i++) //Skriver spillerens tidligere gæt og resultater for foregående runder. 
                         {
                             Console.WriteLine(tidlGaet[i]);
                         }
                     }
-                    Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.WriteLine("Runde:" + runde);
-                    Console.ResetColor();
-
+                    SkrivCyan("Runde " + runde);
                     for (int i = 0; i < kodeTal.Length; i++) //Loop hvor spilleren indataster sine 4 (kodeTal.Length) gæt. 
                     {
                         Console.WriteLine("Hvilken farve gætter du på plads " + (i + 1) + "?" +
@@ -85,9 +80,7 @@ namespace Philip_MasterMind
                         spillerGaet[i] = (Farver)Enum.Parse(typeof(Farver), inSvar); //Svaret gemmes i array med spillerens gæt
                     }
                     Console.Clear();
-                    Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.WriteLine("Dit gæt er:\n");
-                    Console.ResetColor();
+                    SkrivCyan("Dit gæt er:\n");
                     for (int i = 0; i < kodeTal.Length; i++)
                         Console.Write(spillerGaet[i] + " | ");
 
@@ -146,9 +139,7 @@ namespace Philip_MasterMind
                         //Feedback til spilleren, der svarer til de sorte/hvide brikker i klassisk MasterMind.
                         Console.WriteLine($"Du har {rigtigFarve} sort(e) brik(ker). Det er farve(r) der optræder i koden, men på den forkerte plads\n" +
                             $"og {rigtigPlace} hvid(e) brik(ker). Det er farver på den rigtige plads\n");
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-                        Console.WriteLine("Tryk på en knap for at forsætte til næste runde");
-                        Console.ResetColor();
+                        SkrivCyan("Tryk på en knap for at forsætte til næste runde");
                         Console.ReadKey();
                     }
                     if (runde == 10) //Hvis vi er i runde 10, er spillet slut og spilleren spørges om de vil afslutte eller forsætte
@@ -183,8 +174,7 @@ namespace Philip_MasterMind
         /// </summary>
         static void Velkomst()
         {
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine(@"Velkommen til MasterMind!
+            SkrivCyan(@"Velkommen til MasterMind!
 
 Her er spillets regler:
 
@@ -202,7 +192,6 @@ Du får ikke at vide på hvilken plads du har gættet rigtigt.
 Spillet slutter ved at du enten har gættet den rigtige kode, eller at der er gået 10 runder.
 
 God fornøjelse!");
-            Console.ResetColor();
         }
         /// <summary>
         /// Funktion der spørger om spilleren vil afslutte. Hvis de vil, reutrnere funktionen false. Ellers returnere den true.
@@ -253,12 +242,11 @@ God fornøjelse!");
                 }
             }
         }
-        /*static void farveSkift(string tekst)
+        static void SkrivCyan(string tekst)
         {
-            switch (tekst)
-            {
-                case ""
-            }
-        }*/
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine(tekst);
+            Console.ResetColor();
+        }
     }
 }
