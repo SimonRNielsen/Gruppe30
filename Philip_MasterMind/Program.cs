@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.DesignerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Markup;
 
 namespace Philip_MasterMind
 {
@@ -82,7 +83,11 @@ namespace Philip_MasterMind
                     Console.Clear();
                     SkrivCyan("Dit gæt er:\n");
                     for (int i = 0; i < kodeTal.Length; i++)
+                    {
+                        skiftFarve(spillerGaet[i]);
                         Console.Write(spillerGaet[i] + " | ");
+                        Console.ResetColor();
+                    }
 
                     //If statement, der tjekker om spilleren har vundet ved at gætte koden
                     if (spillerGaet[0] == kodeFarver[0] &&
@@ -247,6 +252,31 @@ God fornøjelse!");
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine(tekst);
             Console.ResetColor();
+        }
+        static void skiftFarve(Farver farve)
+        {
+            switch (farve)
+            {
+                case Farver.blå:
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    break;
+                case Farver.brun:
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    break;
+                case Farver.grøn:
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    break;
+                case Farver.gul:
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    break;
+                case Farver.lilla:
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    break;
+                case Farver.rød:
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+
+            }
         }
     }
 }
