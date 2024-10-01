@@ -62,7 +62,8 @@ namespace Gamecollection
                     Console.WriteLine(games[i]);
                 }
                 //Resets colorscheme to avoid most of console turning green
-                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ResetColor();
+                //Calls Player input function
                 PlayerInput_main(out marker, out exit, out input);
                 //Starts 1 of 4 games up depending on player selection
                 if (input)
@@ -393,9 +394,12 @@ namespace Gamecollection
                         }
                         Console.WriteLine();
                     }
-                    //(Re)sets colors to standard
+                    //Resets colors to standard
+                    Console.ResetColor();
+                    /*
                     Console.BackgroundColor = ConsoleColor.Black;
                     Console.ForegroundColor = ConsoleColor.White;
+                    */
                     Console.WriteLine();
                     Console.WriteLine($"Der er i alt {bomb_amount} bomber på brættet");
                     Console.WriteLine($"Du har markeret {flag_count} potentielle bomber");
@@ -818,8 +822,11 @@ namespace Gamecollection
                 Console.WriteLine();
             }
             //(Re)sets colors to standard
+            Console.ResetColor();
+            /*
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
+            */
         }
         /// <summary>
         /// Function to record and act on player input
