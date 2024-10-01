@@ -75,12 +75,15 @@ namespace Gamecollection
                             //Process.Start(minesweeper);
                             break;
                         case 1:
+                            Console.Clear();
                             //Process.Start(mastermind);
                             break;
                         case 2:
+                            Console.Clear();
                             //Process.Start(battleships);
                             break;
                         case 3:
+                            Console.Clear();
                             //Process.Start(jeopardy);
                             break;
                     }
