@@ -228,15 +228,26 @@ namespace Rikke
             string forbi = "X "; //Forbier
 
             //Vælg et koordinat at ramme
+            Console.WriteLine("Vær opmærsom på, at du kan vælge et koordinat, som du allerede har gættet. Hvis du gør det, får du ikke et nyt forsøg.");
+            Console.WriteLine("Hvis du ved et uheld indtaster et indvalid svar, vil der blive valgt et tilfældigt koordinat.");
             Console.WriteLine("Hvilket koordinat vil du ramme?");
             Console.WriteLine("Hvilket bogstav:");
             string inputBogstav = Console.ReadLine().ToLower();
             Console.WriteLine("Hvilket tal:");
             int angrebTal = Convert.ToInt32(Console.ReadLine());
+
+            //Hvis spilleren indtaster et invalid koordinat
+            Random random = new Random();
+            int randomBogstav = random.Next(1, 10);
+            if (angrebTal<1 || angrebTal>10)
+            {
+                int randomTal = random.Next(1, 10);
+                angrebTal = randomTal;
+            }
+            int angrebBogstav = -1;
             Console.Clear();
 
-            // Konvetering af bogstav koordinat til en int
-            int angrebBogstav = -1;
+            //Switch til at konvertere bogstav inputtet om til et koordinat
             switch (inputBogstav)
             {
                 case ("a"): angrebBogstav = 1; break;
@@ -249,6 +260,8 @@ namespace Rikke
                 case ("h"): angrebBogstav = 8; break;
                 case ("i"): angrebBogstav = 9; break;
                 case ("j"): angrebBogstav = 10; break;
+                default: Console.WriteLine("Du indtastede et indvalid svar, derfor er der valgt et tilfældigt bogstav.");
+                    angrebBogstav = randomBogstav; break;
             }
 
             Console.WriteLine(pcBraetSkibe[angrebTal, angrebBogstav]);
