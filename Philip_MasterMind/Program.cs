@@ -68,6 +68,7 @@ namespace Philip_MasterMind
                         inSvar = GodkendSvar();
                         spillerGaet[i] = (Farver)Enum.Parse(typeof(Farver), inSvar);
                     }
+                    Console.Clear();
                     Console.WriteLine("\n\nDit gæt er:\n");
                     for (int i = 0; i < kodeTal.Length; i++)
                         Console.Write(spillerGaet[i] + " | ");
@@ -145,8 +146,6 @@ namespace Philip_MasterMind
                         placeBrugt[i] = false;
                         gaetBrugt[i] = false;
                     }
-
-
                 }
             } while (stemningForSpil);
         }
