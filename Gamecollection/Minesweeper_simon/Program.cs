@@ -73,7 +73,7 @@ namespace Minesweeper_simon
             Console.WriteLine("Skriv venligst dit navn");
             player = Console.ReadLine();
             //Loops until player chooses to exit the game
-            while (exit == false)
+            while (!exit)
             {
                 //Reset relevant variables in preparation for a new game
                 #region Difficulty&Boardsize
@@ -420,13 +420,13 @@ namespace Minesweeper_simon
                         {
                             playerboard[newInput_x, newInput_y]++;
                         }
-                        else if (playerboard[newInput_x, newInput_y] == 0)
+                        else if (playerboard[newInput_x, newInput_y] == 11)
                         {
-                            //Do nothing
+                            playerboard[newInput_x, newInput_y]--;
                         }
                         else
                         {
-                            playerboard[newInput_x, newInput_y]--;
+                            //Do nothing
                         }
                     }
                     //Triggers all tiles around a tile with no adjacent bombs
