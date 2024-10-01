@@ -63,7 +63,7 @@ namespace Gamecollection
                 //Resets colorscheme to avoid most of console turning green
                 Console.ResetColor();
                 //Calls Player input function
-                PlayerInput_main(out marker, out exit, out input);
+                PlayerInput_Main(out marker, out exit, out input);
                 //Starts 1 of 4 games up depending on player selection
                 if (input)
                 {
@@ -106,7 +106,7 @@ namespace Gamecollection
         /// <param name="x">Changes movement on x-axis</param>
         /// <param name="exit">Logs "escape" being pressed</param>
         /// <param name="input">Logs "enter" being pressed</param>
-        static void PlayerInput_main(out int x, out bool exit, out bool input)
+        static void PlayerInput_Main(out int x, out bool exit, out bool input)
         {
             x = 0;
             exit = false;
