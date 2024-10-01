@@ -14,9 +14,7 @@ namespace Philip_MasterMind
         static void Main(string[] args)
         {
             byte[] kodeTal = new byte[4]; //Array der skal indeholde 4 tilfældigt generede tal, der skal bruges til gætte-koden.
-            Farver[] kodeFarver = new Farver[kodeTal.Length];/*Enum array, der indeholder de fire farver der udgør koden. 
-                                                              * Er sat til kodeTals længde, så man nemt kan gøre spilleret sværere, 
-                                                              * ved at andre på antallet af tal i koden. */
+            Farver[] kodeFarver = new Farver[kodeTal.Length];//Enum array, der indeholder de fire farver der udgør koden. 
             Farver[] spillerGaet = new Farver[kodeTal.Length];//Array, der skal indeholde spillerens gæt.
             Random rnd = new Random();
             int runde; //Variabel der gemmer hvad runde vi er i
@@ -67,7 +65,7 @@ namespace Philip_MasterMind
                     Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.WriteLine("Runde:" + runde);
                     Console.ResetColor();
-                    
+
                     for (int i = 0; i < kodeTal.Length; i++)
                     {
                         Console.WriteLine("Hvilken farve gætter du på plads " + (i + 1) + "?" +
@@ -236,6 +234,7 @@ namespace Philip_MasterMind
                             break;
 
                             /*for (int i = 0; i < runde; i++) //Skriver spillerens tidligere gæt og resultater for foregående runder. 
+                             * Derfor er det erstattet af ovenstående switch
                             {
                                 Console.WriteLine(tidlGaet[i]);
                             }
