@@ -174,6 +174,7 @@ namespace Philip_MasterMind
                     }
                     runde++;
                 }
+                Console.Clear(); //Cleare konsollen, når et spil er afsluttet, efter sejr eller 10 runder
             } while (stemningForSpil);
         }
 
