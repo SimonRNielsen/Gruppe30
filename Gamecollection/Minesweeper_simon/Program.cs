@@ -34,11 +34,12 @@ namespace Minesweeper_simon
             int newInput_x;
             int newInput_y;
             int score;
-            int[] highscore_values = new int[10];
+            //int[] highscore_values = new int[10];
             string difficulty;
-            string[] highscore_players = new string[10];
+            //string[] highscore_players = new string[10];
             string player;
-            string exitDirectory = Directory.GetCurrentDirectory() + @"\Gamecollection.exe";
+            //string exitDirectory = Directory.GetCurrentDirectory() + @"\Gamecollection.exe";
+            /*
             #region Highscore_Table
             //Checks if there's a highscore file, if not = it makes one
             if (File.Exists("highscores.txt"))
@@ -69,6 +70,7 @@ namespace Minesweeper_simon
                 }
             }
             #endregion
+            */
             Console.WriteLine("Velkommen til minestryger");
             Console.WriteLine("Skriv venligst dit navn");
             player = Console.ReadLine();
@@ -180,7 +182,7 @@ namespace Minesweeper_simon
                     }
                 }
                 //Makes a timestamp for later comparison
-                DateTime startTime = DateTime.Now;
+                //DateTime startTime = DateTime.Now;
                 //Loops gameplay cycle
                 while (playing)
                 {
@@ -275,7 +277,7 @@ namespace Minesweeper_simon
                             {
                                 Console.BackgroundColor = ConsoleColor.Gray;
                             }
-                            Console.Write((Board_UI)playerboard[wx, bx] + " ");
+                            Console.Write((Board_UI_simon)playerboard[wx, bx] + " ");
                         }
                         Console.WriteLine();
                     }
@@ -292,7 +294,7 @@ namespace Minesweeper_simon
                     #endregion
                     //User input
                     #region PlayerInput
-                    PlayerInput(out int input_x, out int input_y, out exit, out bool flag, out bool input, out bool cleanup);
+                    PlayerInput_simon(out int input_x, out int input_y, out exit, out bool flag, out bool input, out bool cleanup);
                     //Adds(or subtracts) user input to another integer so it doesn't get overridden
                     newInput_x += input_x;
                     newInput_y += input_y;
@@ -336,7 +338,7 @@ namespace Minesweeper_simon
                                     i--;
                                 }
                                 //Reduces bombclutter somewhat by making the loop try again
-                                else if (CountAdjacentBombs(board, bomb_x, bomb_y) > 5)
+                                else if (CountAdjacentBombs_simon(board, bomb_x, bomb_y) > 5)
                                 {
                                     i--;
                                 }
@@ -351,14 +353,14 @@ namespace Minesweeper_simon
                                     board[bomb_x, bomb_y] = 9;
                                 }
                             }
-                            //Reads all entries in the array using the function "CountAdjacentBombs" specified below, and sets the functions return value on the entrypoint if the entry point doesn't have a bomb (having the value "0"), return value is how many bombs are adjacent to the entry
+                            //Reads all entries in the array using the function "CountAdjacentBombs_simon" specified below, and sets the functions return value on the entrypoint if the entry point doesn't have a bomb (having the value "0"), return value is how many bombs are adjacent to the entry
                             for (int x = 0; x < board_x_length; x++)
                             {
                                 for (int y = 0; y < board_y_length; y++)
                                 {
                                     if (board[x, y] == 0)
                                     {
-                                        board[x, y] = CountAdjacentBombs(board, x, y);
+                                        board[x, y] = CountAdjacentBombs_simon(board, x, y);
                                     }
                                 }
                             }
@@ -377,7 +379,7 @@ namespace Minesweeper_simon
                             loss = true;
                         }
                         //Detects if player hit a tile with no adjacent bombs and triggers a cascade to reveal all other adjacent tiles (same as the cleanup function below but should trigger automaticly)
-                        //Uses same foundation as the "CountAdjacentBombs" function
+                        //Uses same foundation as the "CountAdjacentBombs_simon" function
                         else if (board[newInput_x, newInput_y] == 0)
                         {
                             playerboard[newInput_x, newInput_y] = board[newInput_x, newInput_y];
@@ -458,12 +460,13 @@ namespace Minesweeper_simon
                         }
                     }
                     #endregion
+                    //End-of-session scenarios
                     #region Win/loss/goodbye
                     //Displays loss message and board with all bombs revealed
                     if (loss)
                     {
                         Console.Clear();
-                        DrawBoard(board_x_length, board_y_length, board);
+                        DrawBoard_simon(board_x_length, board_y_length, board);
                         Console.WriteLine("Du ramte en bombe og har derfor tabt :(");
                         Console.WriteLine("Kunne du tænke dig at prøve igen tryk escape eller \"n\" for nej, ellers tryk på en anden tast");
                         var keyInput = Console.ReadKey(intercept: true);
@@ -496,16 +499,16 @@ namespace Minesweeper_simon
                 {
                     Console.Clear();
                     //Measures difference in time
-                    TimeSpan timer = DateTime.Now - startTime;
-                    DrawBoard(board_x_length, board_y_length, board);
+                    //TimeSpan timer = DateTime.Now - startTime;
+                    DrawBoard_simon(board_x_length, board_y_length, board);
                     Console.WriteLine("Du vandt! Du undgik alle bomberne og fandt de sikre felter!");
                     Console.WriteLine("Kunne du tænke dig at prøve igen tryk escape eller \"n\" for nej, ellers tryk på en anden tast");
-                    int timeused = (int)timer.TotalSeconds;
-                    score = ((board_x_length * board_y_length) / timeused) * (bomb_amount * 2);
-                    Console.WriteLine($"Du brugte {timer.TotalSeconds} sekunder, din score er {score}");
+                    //int timeused = (int)timer.TotalSeconds;
+                    score = ((board_x_length * board_y_length)) * (bomb_amount * 2);
+                    Console.WriteLine($"Din score er {score}");
+                    /*
                     Console.WriteLine();
                     Console.WriteLine("Top 9 highscores plus din");
-
                     //////////////////////////////  \/ GENERERET AF CHATGPT \/   ///////////////////////////////////////
                     List<string> stringList = new List<string>();
                     List<int> intList = new List<int>();
@@ -560,6 +563,7 @@ namespace Minesweeper_simon
                         Console.WriteLine(highscore_players[i] + "   " + highscore_values[i]);
                     }
                     //////////////////////////////  \/ GENERERET AF CHATGPT \/   ///////////////////////////////////////
+                    // Not part of assignment
                     using (StreamWriter writer = new StreamWriter("highscores.txt"))
                     {
                         // Write string array
@@ -576,6 +580,7 @@ namespace Minesweeper_simon
                         }
                     }
                     //////////////////////////////// /\ GENERERET AF CHATGPT /\   //////////////////////////////////////
+                    */
                     //Registers input from user
                     var keyInput = Console.ReadKey(intercept: true);
                     switch (keyInput.Key)
@@ -598,12 +603,12 @@ namespace Minesweeper_simon
                 }
                 #endregion
             }
-            Process.Start(exitDirectory);
+            //Process.Start(exitDirectory);
         }
         /// <summary>
         /// Enum to change 9 with X and 0 to O in a visual representation
         /// </summary>
-        enum Board_UI : int
+        enum Board_UI_simon : int
         {
             X = 9,  //Bomb(Mines)
             o = 0,  //Known/opened til with no adjacent bombs
@@ -617,7 +622,7 @@ namespace Minesweeper_simon
         /// <param name="x">x-coordinate on board</param>
         /// <param name="y">y-coordinate on board</param>
         /// <returns>Amount of "adjacent" fields containing a "9" (bomb)</returns>
-        static int CountAdjacentBombs(int[,] board, int x, int y)
+        static int CountAdjacentBombs_simon(int[,] board, int x, int y)
         {
             int adjacent_bombs = 0;
             int board_x = board.GetLength(0);
@@ -656,7 +661,7 @@ namespace Minesweeper_simon
         /// <param name="x">Outer loop duration</param>
         /// <param name="y">Inner loop duration</param>
         /// <param name="board">Target array</param>
-        static void DrawBoard(int x, int y, int[,] board)
+        static void DrawBoard_simon(int x, int y, int[,] board)
         {
             Console.BackgroundColor = ConsoleColor.Gray;
             for (int a = 0; a < x; a++)
@@ -696,7 +701,7 @@ namespace Minesweeper_simon
                             Console.ForegroundColor = ConsoleColor.Black;
                             break;
                     }
-                    Console.Write((Board_UI)board[a, b] + " ");
+                    Console.Write((Board_UI_simon)board[a, b] + " ");
                 }
                 Console.WriteLine();
             }
@@ -707,7 +712,7 @@ namespace Minesweeper_simon
         /// <summary>
         /// Function to record and act on player input
         /// </summary>
-        static void PlayerInput(out int x, out int y, out bool exit, out bool flag, out bool input, out bool cleanup)
+        static void PlayerInput_simon(out int x, out int y, out bool exit, out bool flag, out bool input, out bool cleanup)
         {
             x = 0;
             y = 0;
