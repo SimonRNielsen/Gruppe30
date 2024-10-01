@@ -110,14 +110,14 @@ namespace Rikke
         /// <param name="spillerBraetBaade">Array brættet</param>
         static void SpillerTegnBaade (int skibslængde, string[,] spillerBraetBaade)
         {
+            //I tilfælde af, at spilleren indtaster et invalid input
+            Random random = new Random();
+
             Console.WriteLine("Hvor vil du sætte dit skib?");
             Console.WriteLine("Hvilken orientering?  0 for vertikal ↓ 1 for for horisontal →");
             int orientering = Convert.ToInt32(Console.ReadLine());
 
             //Hvilke begrænsning har spilleren for at sætte skibet 
-            Random random = new Random();
-            int randomOrientering = random.Next(0, 2);
-
             if (orientering == 0)
             {
                 switch (skibslængde)
@@ -138,9 +138,10 @@ namespace Rikke
                     case (2): Console.WriteLine("Skibet kan ligge mellem 1-9"); break;
                 }
             }
-            if (orientering < 0 || orientering > 1)
+            if (orientering < 0 || orientering > 1) //Invalid input, hvor der bliver generet en tilfældig orientering 
             {
                 Console.WriteLine("Dit input er invalid. Der blive generet en tilfældig orientering.");
+                int randomOrientering = random.Next(0, 2);
                 orientering = randomOrientering;
             }
 
