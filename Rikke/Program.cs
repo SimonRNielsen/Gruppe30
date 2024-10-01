@@ -52,8 +52,11 @@ namespace Rikke
             TegnBaade(3, spillerBraetBaade); //Ubåd
             TegnBaade(2, spillerBraetBaade); //Patrujlebåd
             */
-            SpillerTegnBaade(5, pcBraetBaade);
-
+            SpillerTegnBaade(5, spillerBraetBaade);
+            SpillerTegnBaade(4, spillerBraetBaade);
+            SpillerTegnBaade(3, spillerBraetBaade);
+            SpillerTegnBaade(3, spillerBraetBaade);
+            SpillerTegnBaade(2, spillerBraetBaade);
 
 
             //COMPUTERENS SKIBE
@@ -63,11 +66,13 @@ namespace Rikke
             TegnBaade(3, pcBraetBaade); //Ubåd
             TegnBaade(2, pcBraetBaade); //Patrujlebåd
 
+            //Clear console vinduet for at indikere, at man går til en ny fase i spillet
+            Console.Clear();
 
             Console.WriteLine("Spillerens skibe");
             PrintBraet(spillerBraetBaade);
-            //Console.WriteLine("Spillerens plade");
-            //PrintBraet(spillerBraet);
+            Console.WriteLine("Spillerens plade");
+            PrintBraet(spillerBraet);
             
 
             while (spilstarter)
@@ -78,8 +83,6 @@ namespace Rikke
 
                 Console.WriteLine("Spillerens skibe");
                 PrintBraet(spillerBraetBaade);
-                Console.WriteLine("PC plade");
-                PrintBraet(pcBraet);
                 Console.WriteLine("Spillerens plade");
                 PrintBraet(spillerBraet);
                 Console.WriteLine($"Spillerens score: {spillerScore}");
@@ -96,12 +99,6 @@ namespace Rikke
                     spilstarter = false;
                 }
             }
-
-            //Printe brættet
-            //Console.WriteLine("Spillerens bræt");
-            //PrintBraet(spillerBraet);
-            Console.WriteLine("Spillerens skibe");
-            PrintBraet(spillerBraetBaade);
             
             Console.ReadKey();
         }
@@ -110,7 +107,7 @@ namespace Rikke
         static void SpillerTegnBaade (int baadLaengde, string[,] spillerBraetBaade)
         {
             Console.WriteLine("Hvor vil du sætte dit skib?");
-            Console.WriteLine("Hvilken orientering?  0 for for horisontal → 1 for vertikal ↓");
+            Console.WriteLine("Hvilken orientering?  0 for vertikal ↓ 1 for for horisontal →");
             int orientering = Convert.ToInt32(Console.ReadLine());
 
             //Hvilke begrænsning har spilleren for at sætte skibet 
@@ -139,38 +136,38 @@ namespace Rikke
             Console.WriteLine("Hvilket bogstav:");
             string inputBogstav = Console.ReadLine().ToLower();
             Console.WriteLine("Hvilket tal:");
-            int angrebTal = Convert.ToInt32(Console.ReadLine());
+            int placeringTal = Convert.ToInt32(Console.ReadLine());
 
             //Hvis spilleren indtaster et invalid koordinat
             Random random = new Random();
             int randomBogstav = random.Next(1, 10);
-            if (angrebTal < 1 || angrebTal > 10)
+            if (placeringTal < 1 || placeringTal > 10)
             {
                 int randomTal = random.Next(1, 10);
-                angrebTal = randomTal;
+                placeringTal = randomTal;
             }
-            int angrebBogstav = -1;
+            int placeringBogstav = -1;
 
             //Switch til at konvertere bogstav inputtet om til et koordinat
             switch (inputBogstav)
             {
-                case ("a"): angrebBogstav = 1; break;
-                case ("b"): angrebBogstav = 2; break;
-                case ("c"): angrebBogstav = 3; break;
-                case ("d"): angrebBogstav = 4; break;
-                case ("e"): angrebBogstav = 5; break;
-                case ("f"): angrebBogstav = 6; break;
-                case ("g"): angrebBogstav = 7; break;
-                case ("h"): angrebBogstav = 8; break;
-                case ("i"): angrebBogstav = 9; break;
-                case ("j"): angrebBogstav = 10; break;
+                case ("a"): placeringBogstav = 1; break;
+                case ("b"): placeringBogstav = 2; break;
+                case ("c"): placeringBogstav = 3; break;
+                case ("d"): placeringBogstav = 4; break;
+                case ("e"): placeringBogstav = 5; break;
+                case ("f"): placeringBogstav = 6; break;
+                case ("g"): placeringBogstav = 7; break;
+                case ("h"): placeringBogstav = 8; break;
+                case ("i"): placeringBogstav = 9; break;
+                case ("j"): placeringBogstav = 10; break;
                 default:
                     Console.WriteLine("Du indtastede et indvalid svar, derfor er der valgt et tilfældigt bogstav.");
-                    angrebBogstav = randomBogstav; break;
+                    placeringBogstav = randomBogstav; break;
             }
 
             //Tjekker om skibet kolidere med et andet skib
-            bool placering = TjekPlacering(orientering, baadLaengde, angrebBogstav, angrebTal, spillerBraetBaade);
+            bool placering = TjekPlacering(orientering, baadLaengde, placeringBogstav, placeringTal, spillerBraetBaade);
             string baad = "■ ";
 
 
@@ -180,21 +177,23 @@ namespace Rikke
                 {
                     for (int i = 0; i < baadLaengde; i++)
                     {
-                        spillerBraetBaade[angrebBogstav + i, angrebTal] = baad;
+                        spillerBraetBaade[placeringBogstav + i, placeringTal] = baad;
                     }
                 }
                 if (orientering ==1)
                 {
                     for (int i = 0; i < baadLaengde; i++)
                     {
-                        spillerBraetBaade[angrebBogstav, angrebTal + i] = baad;
+                        spillerBraetBaade[placeringTal, placeringBogstav + i] = baad;
                     }
                 }
             }
-            if (!placering)
+            else
             {
                 TegnBaade(baadLaengde, spillerBraetBaade);
             }
+
+            PrintBraet(spillerBraetBaade);
         }
 
 
@@ -290,6 +289,10 @@ namespace Rikke
             {
                 for (int j = 0; j < baadLaengde; j++)
                 {
+                    if (baadPlacering1 + j == 11)
+                    {
+                        return false;
+                    }
                     if (braet[baadPlacering1 + j, baadPlacering2].Contains(baad))
                     {
                         return false;
@@ -301,6 +304,10 @@ namespace Rikke
             {
                 for (int i = 0; i < baadLaengde; i++)
                 {
+                    if (baadPlacering1 + i == 11)
+                    {
+                        return false;
+                    }
                     if (braet[baadPlacering2, baadPlacering1 + i].Contains(baad))
                     {
                         return false;
