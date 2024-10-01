@@ -130,6 +130,9 @@ namespace Gamecollection
                     break;
             }
         }
+        /// <summary>
+        /// Minesweeper lavet af Simon N
+        /// </summary>
         static void Minesweeper_Simon()
         {
             bool board_created;
@@ -391,7 +394,7 @@ namespace Gamecollection
                             {
                                 Console.BackgroundColor = ConsoleColor.Gray;
                             }
-                            Console.Write((Board_UI_simon)playerboard[wx, bx] + " ");
+                            Console.Write((Board_UI_Simon)playerboard[wx, bx] + " ");
                         }
                         Console.WriteLine();
                     }
@@ -407,7 +410,7 @@ namespace Gamecollection
                     #endregion
                     //User input
                     #region PlayerInput
-                    PlayerInput_simon(out int input_x, out int input_y, out exit, out bool flag, out bool input, out bool cleanup);
+                    PlayerInput_Simon(out int input_x, out int input_y, out exit, out bool flag, out bool input, out bool cleanup);
                     //Adds(or subtracts) user input to another integer so it doesn't get overridden
                     newInput_x += input_x;
                     newInput_y += input_y;
@@ -451,7 +454,7 @@ namespace Gamecollection
                                     i--;
                                 }
                                 //Reduces bombclutter somewhat by making the loop try again
-                                else if (CountAdjacentBombs_simon(board, bomb_x, bomb_y) > 5)
+                                else if (CountAdjacentBombs_Simon(board, bomb_x, bomb_y) > 5)
                                 {
                                     i--;
                                 }
@@ -466,14 +469,14 @@ namespace Gamecollection
                                     board[bomb_x, bomb_y] = 9;
                                 }
                             }
-                            //Reads all entries in the array using the function "CountAdjacentBombs_simon" specified below, and sets the functions return value on the entrypoint if the entry point doesn't have a bomb (having the value "0"), return value is how many bombs are adjacent to the entry
+                            //Reads all entries in the array using the function "CountAdjacentBombs_Simon" specified below, and sets the functions return value on the entrypoint if the entry point doesn't have a bomb (having the value "0"), return value is how many bombs are adjacent to the entry
                             for (int x = 0; x < board_x_length; x++)
                             {
                                 for (int y = 0; y < board_y_length; y++)
                                 {
                                     if (board[x, y] == 0)
                                     {
-                                        board[x, y] = CountAdjacentBombs_simon(board, x, y);
+                                        board[x, y] = CountAdjacentBombs_Simon(board, x, y);
                                     }
                                 }
                             }
@@ -492,7 +495,7 @@ namespace Gamecollection
                             loss = true;
                         }
                         //Detects if player hit a tile with no adjacent bombs and triggers a cascade to reveal all other adjacent tiles (same as the cleanup function below but should trigger automaticly)
-                        //Uses same foundation as the "CountAdjacentBombs_simon" function
+                        //Uses same foundation as the "CountAdjacentBombs_Simon" function
                         else if (board[newInput_x, newInput_y] == 0)
                         {
                             playerboard[newInput_x, newInput_y] = board[newInput_x, newInput_y];
@@ -579,7 +582,7 @@ namespace Gamecollection
                     if (loss)
                     {
                         Console.Clear();
-                        DrawBoard_simon(board_x_length, board_y_length, board);
+                        DrawBoard_Simon(board_x_length, board_y_length, board);
                         Console.WriteLine("Du ramte en bombe og har derfor tabt :(");
                         Console.WriteLine("Kunne du tænke dig at prøve igen tryk escape eller \"n\" for nej, ellers tryk på en anden tast");
                         var keyInput = Console.ReadKey(intercept: true);
@@ -613,7 +616,7 @@ namespace Gamecollection
                     Console.Clear();
                     //Measures difference in time
                     //TimeSpan timer = DateTime.Now - startTime;
-                    DrawBoard_simon(board_x_length, board_y_length, board);
+                    DrawBoard_Simon(board_x_length, board_y_length, board);
                     Console.WriteLine("Du vandt! Du undgik alle bomberne og fandt de sikre felter!");
                     Console.WriteLine("Kunne du tænke dig at prøve igen tryk escape eller \"n\" for nej, ellers tryk på en anden tast");
                     //int timeused = (int)timer.TotalSeconds;
@@ -721,7 +724,7 @@ namespace Gamecollection
         /// <summary>
         /// Enum to change numbers to characters in a visual representation
         /// </summary>
-        enum Board_UI_simon : int
+        enum Board_UI_Simon : int
         {
             X = 9,  //Bomb(Mines)
             o = 0,  //Known/opened til with no adjacent bombs
@@ -735,7 +738,7 @@ namespace Gamecollection
         /// <param name="x">x-coordinate on board</param>
         /// <param name="y">y-coordinate on board</param>
         /// <returns>Amount of "adjacent" fields containing a "9" (bomb)</returns>
-        static int CountAdjacentBombs_simon(int[,] board, int x, int y)
+        static int CountAdjacentBombs_Simon(int[,] board, int x, int y)
         {
             int adjacent_bombs = 0;
             int board_x = board.GetLength(0);
@@ -774,7 +777,7 @@ namespace Gamecollection
         /// <param name="x">Outer loop duration</param>
         /// <param name="y">Inner loop duration</param>
         /// <param name="board">Target array</param>
-        static void DrawBoard_simon(int x, int y, int[,] board)
+        static void DrawBoard_Simon(int x, int y, int[,] board)
         {
             Console.BackgroundColor = ConsoleColor.Gray;
             for (int a = 0; a < x; a++)
@@ -814,7 +817,7 @@ namespace Gamecollection
                             Console.ForegroundColor = ConsoleColor.Black;
                             break;
                     }
-                    Console.Write((Board_UI_simon)board[a, b] + " ");
+                    Console.Write((Board_UI_Simon)board[a, b] + " ");
                 }
                 Console.WriteLine();
             }
@@ -824,7 +827,7 @@ namespace Gamecollection
         /// <summary>
         /// Function to record and act on player input
         /// </summary>
-        static void PlayerInput_simon(out int x, out int y, out bool exit, out bool flag, out bool input, out bool cleanup)
+        static void PlayerInput_Simon(out int x, out int y, out bool exit, out bool flag, out bool input, out bool cleanup)
         {
             x = 0;
             y = 0;
