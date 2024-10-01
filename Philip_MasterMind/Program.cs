@@ -58,15 +58,17 @@ namespace Philip_MasterMind
 
                 Console.WriteLine("\nLad os først starte med dit navn. Hvad vil du gerne kaldes?");
                 string spillerNavn = Console.ReadLine();
-                Console.WriteLine($"\nHej med dig {spillerNavn}, nu er det tid til 1. runde!\n");
-
+                Console.WriteLine($"\nHej med dig {spillerNavn},\n" +
+                    $"Tryk på en vilkårlig tast, for at begynde spillet!");
+                Console.ReadKey();
+                
                 while (runde < 11) //Loop med selve spille, fra runde 1-10
                 {
+                    Console.Clear(); //Sletter konsollens indhold. BEMÆRK! KUN EN HVIS DEL, SVARENDE TIL HVAD DER KAN VÆRE I ET VINDUE!
                     if (runde > 1)
                     {
-                        Console.Clear(); //Sletter konsollens indhold. BEMÆRK! KUN EN HVIS DEL, SVARENDE TIL HVAD DER KAN VÆRE I ET VINDUE!
                         Console.ForegroundColor = ConsoleColor.Cyan;
-                        Console.WriteLine("\nTidligere gæt: ");
+                        Console.WriteLine("Tidligere gæt: ");
                         Console.ResetColor();
                         for (int i = 1; i < runde; i++) //Skriver spillerens tidligere gæt og resultater for foregående runder. 
                         {   
@@ -162,8 +164,7 @@ namespace Philip_MasterMind
                         + " | " + spillerGaet[1]
                         + " | " + spillerGaet[2]
                         + " | " + spillerGaet[3] + " | "
-                        + $"\n\nDu havde {rigtigFarve} sort(e) brik(ker). Det er farve(r) der optræder i koden, men på den forkerte plads\n" +
-                            $"og {rigtigPlace} hvid(e) brik(ker). Det er farver på den rigtige plads\n";
+                        + $"Du havde: {rigtigFarve} sort(e) brik(ker) og {rigtigPlace} hvid(e) brik(ker).\n";
 
                     rigtigFarve = 0; //Sætter rigtigFarve til 0, så det kun er den aktuelle rundes gæt der evalueres. 
                     rigtigPlace = 0; //Sætter rigtigPlace til 0, så det kun er den aktuelle rundes gæt der evalueres.
