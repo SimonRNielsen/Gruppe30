@@ -64,7 +64,7 @@ namespace Philip_MasterMind
                 {
                     if (runde > 1)
                     {
-                        Console.Clear();//Fjerner indholdet af konsollen, så spilleren har et rent overblik
+                        Console.Clear(); //Sletter konsollens indhold. BEMÆRK! KUN EN HVIS DEL, SVARENDE TIL HVAD DER KAN VÆRE I ET VINDUE!
                         Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.WriteLine("\nTidligere gæt: ");
                         Console.ResetColor();
