@@ -24,7 +24,7 @@ namespace Rikke
             TegnBraet(pcBraetBaade);
 
             //Variabler       
-            string baad = "■ "; //Båd
+            string skib = "■ "; //Båd
             string forbi = "X "; //Forbier
             int spillerScore = 0; //Antal ramte både
             int pcScore = 0; //Antal ramte både
@@ -37,14 +37,13 @@ namespace Rikke
             Console.WriteLine("Når spillet starter bliver der automatisk tilfældigt placeret bådene for både spilleren og computeren.");
             Console.WriteLine("Der er i alt 5 forskellige skibe med følgende længde: hangarskib (5), slagskibe (4), destroyer (3), ubåd (3) og patrujlebåd (2).");
             Console.WriteLine("Derefter vil runden gå på tur, hvor du starter. Du skal oplyse et koordinat fra, hvor du vil skyde efter et skib.");
-            Console.WriteLine($"Hvis du rammer et skibe, fik der på koordinattet fremgå {baad}, hvis det er en forbier fremgår der {forbi}.");
+            Console.WriteLine($"Hvis du rammer et skibe, fik der på koordinattet fremgå {skib}, hvis det er en forbier fremgår der {forbi}.");
             Console.WriteLine("Der vil ydermere få oplyst, om du har ramt et skib eller forbi. Du vil også få oplyst, om computeren rammer.");
             Console.WriteLine("Efter hver runde får du oplyst scoren, hvor den som når først til 17 (den samlet længde skibe) vinder");
             Console.WriteLine("Held og lykke. Tryk på en tast for at starte.");
             Console.ReadKey();
 
             // TEGNE SKIBE
-            // SPILLERENS SKIBE
             /*
             TegnBaade(5, spillerBraetBaade); //Hangarskib
             TegnBaade(4, spillerBraetBaade); //Slagskib
@@ -52,6 +51,7 @@ namespace Rikke
             TegnBaade(3, spillerBraetBaade); //Ubåd
             TegnBaade(2, spillerBraetBaade); //Patrujlebåd
             */
+            //Spilleren placer skibene
             SpillerTegnBaade(5, spillerBraetBaade);
             SpillerTegnBaade(4, spillerBraetBaade);
             SpillerTegnBaade(3, spillerBraetBaade);
@@ -74,10 +74,10 @@ namespace Rikke
             Console.WriteLine("Spillerens plade");
             PrintBraet(spillerBraet);
             
-
+            //For at vinde skal man have 17 point i alt, hvilket svare til den samlet længde på skibene. Spilleren starter
             while (spilstarter)
             {
-                spillerScore = SkydBaad(pcBraetBaade, spillerBraet, spillerScore);
+                spillerScore = SkydBaad(pcBraetBaade, spillerBraet, spillerScore); 
 
                 pcScore =PCSkydBaad(spillerBraetBaade, pcBraet, pcScore);
 
@@ -103,17 +103,24 @@ namespace Rikke
             Console.ReadKey();
         }
 
-
-        static void SpillerTegnBaade (int baadLaengde, string[,] spillerBraetBaade)
+        /// <summary>
+        /// Spilleren placere selv sine egne skibe
+        /// </summary>
+        /// <param name="skibslængde">Skibets længde</param>
+        /// <param name="spillerBraetBaade">Array brættet</param>
+        static void SpillerTegnBaade (int skibslængde, string[,] spillerBraetBaade)
         {
             Console.WriteLine("Hvor vil du sætte dit skib?");
             Console.WriteLine("Hvilken orientering?  0 for vertikal ↓ 1 for for horisontal →");
             int orientering = Convert.ToInt32(Console.ReadLine());
 
             //Hvilke begrænsning har spilleren for at sætte skibet 
+            Random random = new Random();
+            int randomOrientering = random.Next(0, 2);
+
             if (orientering == 0)
             {
-                switch (baadLaengde)
+                switch (skibslængde)
                 {
                     case (5): Console.WriteLine("Skibet kan ligge mellem A-F"); break;
                     case (4): Console.WriteLine("Skibet kan ligge mellem A-G"); break;
@@ -123,13 +130,18 @@ namespace Rikke
             }
             else
             {
-                switch (baadLaengde)
+                switch (skibslængde)
                 {
                     case (5): Console.WriteLine("Skibet kan ligge mellem 1-6"); break;
                     case (4): Console.WriteLine("Skibet kan ligge mellem 1-7"); break;
                     case (3): Console.WriteLine("Skibet kan ligge mellem 1-8"); break;
                     case (2): Console.WriteLine("Skibet kan ligge mellem 1-9"); break;
                 }
+            }
+            if (orientering < 0 || orientering > 1)
+            {
+                Console.WriteLine("Dit input er invalid. Der blive generet en tilfældig orientering.");
+                orientering = randomOrientering;
             }
 
             //Indtastning af koordinat
@@ -139,7 +151,6 @@ namespace Rikke
             int placeringTal = Convert.ToInt32(Console.ReadLine());
 
             //Hvis spilleren indtaster et invalid koordinat
-            Random random = new Random();
             int randomBogstav = random.Next(1, 10);
             if (placeringTal < 1 || placeringTal > 10)
             {
@@ -167,30 +178,30 @@ namespace Rikke
             }
 
             //Tjekker om skibet kolidere med et andet skib
-            bool placering = TjekPlacering(orientering, baadLaengde, placeringBogstav, placeringTal, spillerBraetBaade);
-            string baad = "■ ";
+            bool placering = TjekPlacering(orientering, skibslængde, placeringBogstav, placeringTal, spillerBraetBaade);
+            string skib = "■ ";
 
 
             if (placering)
             {
                 if (orientering == 0)
                 {
-                    for (int i = 0; i < baadLaengde; i++)
+                    for (int i = 0; i < skibslængde; i++)
                     {
-                        spillerBraetBaade[placeringBogstav + i, placeringTal] = baad;
+                        spillerBraetBaade[placeringBogstav + i, placeringTal] = skib;
                     }
                 }
                 if (orientering ==1)
                 {
-                    for (int i = 0; i < baadLaengde; i++)
+                    for (int i = 0; i < skibslængde; i++)
                     {
-                        spillerBraetBaade[placeringTal, placeringBogstav + i] = baad;
+                        spillerBraetBaade[placeringTal, placeringBogstav + i] = skib;
                     }
                 }
             }
             else
             {
-                TegnBaade(baadLaengde, spillerBraetBaade);
+                TegnBaade(skibslængde, spillerBraetBaade);
             }
 
             PrintBraet(spillerBraetBaade);
@@ -203,6 +214,7 @@ namespace Rikke
         /// <param name="braet">Array brættet</param>
         static void TegnBraet(string[,] braet)
         {
+            //Udfylder hele arrayet med "_ "
             for (int x = 0; x < braet.GetLength(0); x++)
             {
                 for (int y = 0; y < braet.GetLength(1); y++)
@@ -223,46 +235,49 @@ namespace Rikke
         /// <summary>
         /// Placering af både
         /// </summary>
-        /// <param name="antalBaade">Antal af både</param>
-        /// <param name="baadlaengde">Bådens længde</param>
-        /// <param name="mitBraet">Spillebræts arrayet</param>
-        static void TegnBaade(int baadLaengde, string[,] braet)
+        /// <param name="skibsLaengde">Bådens længde</param>
+        /// <param name="braet">Spillebræts arrayet</param>
+        static void TegnBaade(int skibsLaengde, string[,] braet)
         {
-            string baad = "■ ";
-            bool tegnBaade = true;
-            while (tegnBaade)
+            // Variabler
+            string skib = "■ ";
+            bool tegnSkibe = true;
+
+            //Genere et skib et tilfældigt sted. Det gør den ved at vælge to tilfældige koordinater. Hvis skibet ikke kollidere med et andet skib eller er uden for brættet, vil Tjekplacering 
+            //returnere true. Hvis den returnere false, vil der blive generet nye tilfældige kooordinater. Når den har tegnet skibet, vil tegnSkibe ændres til false og stoppet loopet 
+            while (tegnSkibe)
             {
                 Random random = new Random();
                 int randomOritering = random.Next(0, 2);
-                int baadPlacering1 = random.Next(1, braet.GetLength(0) - baadLaengde);
-                int baadPlacering2 = random.Next(1, braet.GetLength(1) - 1);
+                int skibPlacering1 = random.Next(1, braet.GetLength(0) - skibsLaengde);
+                int skibPlacering2 = random.Next(1, braet.GetLength(1) - 1);
 
-                bool placering = TjekPlacering(randomOritering, baadLaengde, baadPlacering1, baadPlacering2, braet);
+                bool placering = TjekPlacering(randomOritering, skibsLaengde, skibPlacering1, skibPlacering2, braet); //Tjekker om skibet kan placeres
 
-                if (!placering)
+                if (!placering) //Genere nye placeringer
                 {
                     continue;
                 }
 
                 if (randomOritering == 0)
                 {
-                    for (int i = 0; i < baadLaengde; i++)
+                    for (int i = 0; i < skibsLaengde; i++)
                     {
-                        braet[baadPlacering1 + i, baadPlacering2] = baad;
-                        if (i == baadLaengde-1)
+                        braet[skibPlacering1 + i, skibPlacering2] = skib;
+                        if (i == skibsLaengde-1) // Afslutter loopet
                         {
-                            tegnBaade = false;
+                            tegnSkibe = false;
                         }
                     }
                 }
                 else
                 {
-                    for (int i = 0; i < baadLaengde; i++)
+                    for (int i = 0; i < skibsLaengde; i++)
                     {
-                        braet[baadPlacering2, baadPlacering1 + i] = baad ;
-                        if (i == baadLaengde - 1)
+                        braet[skibPlacering2, skibPlacering1 + i] = skib ;
+                        if (i == skibsLaengde - 1) // Afslutter loopet
                         {
-                            tegnBaade = false;
+                            tegnSkibe = false;
                         }
                     }
                 }
@@ -277,23 +292,25 @@ namespace Rikke
         /// Tjekker for at bådene ikke collidere med hinanden
         /// </summary>
         /// <param name="orientering"></param>
-        /// <param name="baadLaengde"></param>
-        /// <param name="baadPlacering1"></param>
-        /// <param name="baadPlacering2"></param>
-        /// <param name="mitBraet"></param>
+        /// <param name="skibslaengde"></param>
+        /// <param name="skibPlacering1"></param>
+        /// <param name="skibPlacering2"></param>
+        /// <param name="braet"></param>
         /// <returns></returns>
-        static bool TjekPlacering (int orientering, int baadLaengde, int baadPlacering1, int baadPlacering2, string[,] braet)
+        static bool TjekPlacering (int orientering, int skibslaengde, int skibPlacering1, int skibPlacering2, string[,] braet)
         {
-            string baad = "■ ";
+            string skib = "■ ";
+
+            //Tjekker for om et skib vil collidere med et andet skib eller er uden for brættet. Den returnere false, hvis skibet ikke kan oprettes. 
             if (orientering == 0)
             {
-                for (int j = 0; j < baadLaengde; j++)
+                for (int j = 0; j < skibslaengde; j++)
                 {
-                    if (baadPlacering1 + j == 11)
+                    if (skibPlacering1 + j == 11) //Den vil være uden for brættet
                     {
                         return false;
                     }
-                    if (braet[baadPlacering1 + j, baadPlacering2].Contains(baad))
+                    if (braet[skibPlacering1 + j, skibPlacering2].Contains(skib))
                     {
                         return false;
                     }
@@ -302,18 +319,19 @@ namespace Rikke
             }
             else
             {
-                for (int i = 0; i < baadLaengde; i++)
+                for (int i = 0; i < skibslaengde; i++) 
                 {
-                    if (baadPlacering1 + i == 11)
+                    if (skibPlacering1 + i == 11) //Den vil være uden for brættet
                     {
                         return false;
                     }
-                    if (braet[baadPlacering2, baadPlacering1 + i].Contains(baad))
+                    if (braet[skibPlacering2, skibPlacering1 + i].Contains(skib))
                     {
                         return false;
                     }
                 }
             }
+            //Kan oprette skibet 
             return true;
         }
 
@@ -327,7 +345,7 @@ namespace Rikke
         static int SkydBaad (string[,] pcBraetSkibe, string[,] spillerBraet, int spillerScore)
         {
             //Chars        
-            string baad = "■ "; //Båd
+            string skib = "■ "; //Skib
             string forbi = "X "; //Forbier
 
             //Vælg et koordinat at ramme
@@ -367,13 +385,11 @@ namespace Rikke
                     angrebBogstav = randomBogstav; break;
             }
 
-            Console.WriteLine(pcBraetSkibe[angrebTal, angrebBogstav]);
-
             //Tjekker om den har ramt et skib
-            if (pcBraetSkibe[angrebTal, angrebBogstav].Contains(baad))
+            if (pcBraetSkibe[angrebTal, angrebBogstav].Contains(skib))
             {
                 Console.WriteLine("Du ramte et skib");
-                spillerBraet[angrebTal, angrebBogstav] = baad;
+                spillerBraet[angrebTal, angrebBogstav] = skib;
                 spillerScore++;
                 return spillerScore;
             }
@@ -411,7 +427,7 @@ namespace Rikke
         static int PCSkydBaad(string[,] spillerBraetSkibe, string[,] pcBraet, int pcScore)
         {
             //Variabler        
-            string baad = "■ "; //Båd
+            string skib = "■ "; //Skib
             string forbi = "X "; //Forbier
             bool pcSkyde = true;
 
@@ -419,24 +435,24 @@ namespace Rikke
             {
                 //Skyder et random sted i arrayet
                 Random random = new Random();
-                int baadPlacering1 = random.Next(1, 10);
-                int baadPlacering2 = random.Next(1, 10);
+                int skibPlacering1 = random.Next(1, 10);
+                int skibPlacering2 = random.Next(1, 10);
 
 
-                Console.WriteLine(spillerBraetSkibe[baadPlacering1, baadPlacering2]);
+                Console.WriteLine(spillerBraetSkibe[skibPlacering1, skibPlacering2]);
 
                 //Tjekker om den har ramt et skib
-                if (spillerBraetSkibe[baadPlacering1, baadPlacering2].Contains("_ "))
+                if (spillerBraetSkibe[skibPlacering1, skibPlacering2].Contains("_ "))
                 {
                     Console.WriteLine("PCen ramte forbi");
-                    pcBraet[baadPlacering1, baadPlacering2] = forbi;
+                    pcBraet[skibPlacering1, skibPlacering2] = forbi;
                     pcSkyde = false;
                     return pcScore;
                 }
-                if (spillerBraetSkibe[baadPlacering1, baadPlacering2].Contains(baad))
+                if (spillerBraetSkibe[skibPlacering1, skibPlacering2].Contains(skib))
                 {
                     Console.WriteLine("PCen ramte dit skib");
-                    pcBraet[baadPlacering1, baadPlacering2] = baad;
+                    pcBraet[skibPlacering1, skibPlacering2] = skib;
                     pcScore++;
                     pcSkyde = false;
                     return pcScore;
