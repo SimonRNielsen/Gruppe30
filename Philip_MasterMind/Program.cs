@@ -67,6 +67,7 @@ namespace Philip_MasterMind
                     Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.WriteLine("Runde:" + runde);
                     Console.ResetColor();
+                    
                     for (int i = 0; i < kodeTal.Length; i++)
                     {
                         Console.WriteLine("Hvilken farve gætter du på plads " + (i + 1) + "?" +
@@ -146,7 +147,7 @@ namespace Philip_MasterMind
                         Console.ResetColor();
                         stemningForSpil = Afslut();
                     }
-                    tidlGaet[runde] =
+                    tidlGaet[runde] = //Gemmer rundens gæt og resultat i tidlGaet array, på denne rundes plads.
                         "Runde " + runde + ": \n" +
                         Convert.ToString(spillerGaet[0])
                         + " | " + Convert.ToString(spillerGaet[1])
@@ -155,7 +156,6 @@ namespace Philip_MasterMind
                         + $"\n\nDu havde {rigtigFarve} sort(e) brik(ker). Det er farve(r) der optræder i koden, men på den forkerte plads\n" +
                             $"og {rigtigPlace} hvid(e) brik(ker). Det er farver på den rigtige plads\n";
 
-                    runde++;
                     rigtigFarve = 0; //Sætter rigtigFarve til 0, så det kun er den aktuelle rundes gæt der evalueres. 
                     rigtigPlace = 0; //Sætter rigtigPlace til 0, så det kun er den aktuelle rundes gæt der evalueres.
                     for (int i = 0; i < kodeTal.Length; i++) //Resetter de brugte gæt og placeringer
@@ -164,15 +164,87 @@ namespace Philip_MasterMind
                         gaetBrugt[i] = false;
                     }
                     Console.Clear(); //Sletter alt i konsollen, i dette scope.
+                    runde++;
+                    #region TidligereGæt
                     Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.WriteLine("Tidligere gæt: ");
+                    Console.WriteLine("\nTidligere gæt: ");
                     Console.ResetColor();
-                    for (int i = 0; i < runde; i++) //Skriver spillerens tidligere gæt og resultater for foregående runder. 
+                    switch (runde)
                     {
-                        Console.WriteLine(tidlGaet[i]);
-                    }
+                        case 2:
+                            Console.WriteLine(tidlGaet[1]);
+                            break;
+                        case 3:
+                            Console.WriteLine(tidlGaet[1]);
+                            Console.WriteLine(tidlGaet[2]);
+                            break;
+                        case 4:
+                            Console.WriteLine(tidlGaet[1]);
+                            Console.WriteLine(tidlGaet[2]);
+                            Console.WriteLine(tidlGaet[3]);
+                            break;
+                        case 5:
+                            Console.WriteLine(tidlGaet[1]);
+                            Console.WriteLine(tidlGaet[2]);
+                            Console.WriteLine(tidlGaet[3]);
+                            Console.WriteLine(tidlGaet[4]);
+                            break;
+                        case 6:
+                            Console.WriteLine(tidlGaet[1]);
+                            Console.WriteLine(tidlGaet[2]);
+                            Console.WriteLine(tidlGaet[3]);
+                            Console.WriteLine(tidlGaet[4]);
+                            Console.WriteLine(tidlGaet[5]);
+                            break;
+                        case 7:
+                            Console.WriteLine(tidlGaet[1]);
+                            Console.WriteLine(tidlGaet[2]);
+                            Console.WriteLine(tidlGaet[3]);
+                            Console.WriteLine(tidlGaet[4]);
+                            Console.WriteLine(tidlGaet[5]);
+                            Console.WriteLine(tidlGaet[6]);
+                            break;
+                        case 8:
+                            Console.WriteLine(tidlGaet[1]);
+                            Console.WriteLine(tidlGaet[2]);
+                            Console.WriteLine(tidlGaet[3]);
+                            Console.WriteLine(tidlGaet[4]);
+                            Console.WriteLine(tidlGaet[5]);
+                            Console.WriteLine(tidlGaet[6]);
+                            Console.WriteLine(tidlGaet[7]);
+                            break;
+                        case 9:
+                            Console.WriteLine(tidlGaet[1]);
+                            Console.WriteLine(tidlGaet[2]);
+                            Console.WriteLine(tidlGaet[3]);
+                            Console.WriteLine(tidlGaet[4]);
+                            Console.WriteLine(tidlGaet[5]);
+                            Console.WriteLine(tidlGaet[6]);
+                            Console.WriteLine(tidlGaet[7]);
+                            Console.WriteLine(tidlGaet[8]);
+                            break;
+                        case 10:
+                            Console.WriteLine(tidlGaet[1]);
+                            Console.WriteLine(tidlGaet[2]);
+                            Console.WriteLine(tidlGaet[3]);
+                            Console.WriteLine(tidlGaet[4]);
+                            Console.WriteLine(tidlGaet[5]);
+                            Console.WriteLine(tidlGaet[6]);
+                            Console.WriteLine(tidlGaet[7]);
+                            Console.WriteLine(tidlGaet[8]);
+                            Console.WriteLine(tidlGaet[9]);
+                            break;
 
+                            /*for (int i = 0; i < runde; i++) //Skriver spillerens tidligere gæt og resultater for foregående runder. 
+                            {
+                                Console.WriteLine(tidlGaet[i]);
+                            }
+                            VIRKER IKKE OPTIMALT, da Console.Clear ikke er inde for dets scope.
+                            */
+                            #endregion
+                    }
                 }
+                Console.Clear();
             } while (stemningForSpil);
         }
 
@@ -251,6 +323,5 @@ God fornøjelse!");
                 }
             }
         }
-
     }
 }
