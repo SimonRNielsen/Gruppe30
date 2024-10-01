@@ -28,11 +28,11 @@ namespace Philip_MasterMind
             bool[] gaetBrugt = new bool[kodeTal.Length];
             string[] tidlGaet = new string[11];//Array til at gemme spillerens gæt fra tidligere runder.
 
-            Velkomst();//Funktion til velkosmtbesked, fordi den er så lang.
 
             do //Loop, der egentlig bare tager højde for om spilleren stadig vil spille.
                //Spilleren kan ændre mening efter runde 10, eller hvis de har vundet.
             {
+                Velkomst();//Funktion til velkosmtbesked, fordi den er så lang.
                 //For loop, der genererer random tal, på hver plads i kodeTal array
                 for (byte i = 0; i < kodeTal.Length; i++)
                 {
@@ -49,19 +49,17 @@ namespace Philip_MasterMind
                 {
                     tidlGaet[i] = "";
                 }
-
-                /* 
+                /*
                 //Udskriver den kode der skal gættes til konsollen:
                 foreach (Farver farve in kodeFarver)
                     Console.WriteLine(farve);
                 */
-
                 Console.WriteLine("\nLad os først starte med dit navn. Hvad vil du gerne kaldes?");
                 string spillerNavn = Console.ReadLine();
-                Console.WriteLine($"\nHej med dig {spillerNavn},\n" +
+                Console.WriteLine($"\nHej med dig {spillerNavn}!\n" +
                     $"Tryk på en vilkårlig tast, for at begynde spillet!");
                 Console.ReadKey();
-                
+
                 while (runde < 11) //Loop med selve spille, fra runde 1-10
                 {
                     Console.Clear(); //Sletter konsollens indhold. BEMÆRK! KUN EN HVIS DEL, SVARENDE TIL HVAD DER KAN VÆRE I ET VINDUE!
@@ -71,7 +69,7 @@ namespace Philip_MasterMind
                         Console.WriteLine("Tidligere gæt: ");
                         Console.ResetColor();
                         for (int i = 1; i < runde; i++) //Skriver spillerens tidligere gæt og resultater for foregående runder. 
-                        {   
+                        {
                             Console.WriteLine(tidlGaet[i]);
                         }
                     }
@@ -86,7 +84,10 @@ namespace Philip_MasterMind
                         inSvar = GodkendSvar(); //Funktion der beder om input, kontrollerer at det er gyldigt og returere et gyldigt svar som string
                         spillerGaet[i] = (Farver)Enum.Parse(typeof(Farver), inSvar); //Svaret gemmes i array med spillerens gæt
                     }
-                    Console.WriteLine("\n\nDit gæt er:\n");
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("Dit gæt er:\n");
+                    Console.ResetColor();
                     for (int i = 0; i < kodeTal.Length; i++)
                         Console.Write(spillerGaet[i] + " | ");
 
@@ -96,6 +97,7 @@ namespace Philip_MasterMind
                         spillerGaet[2] == kodeFarver[2] &&
                         spillerGaet[3] == kodeFarver[3])
                     {
+                        Console.Clear();
                         //Besked med tillykke og score
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("\nTillykke du svarede rigtigt! \n" +
@@ -128,7 +130,6 @@ namespace Philip_MasterMind
                         //Loop der kontrollerer om gættet svarer til en farve uden rigtig placering(sort brik)
                         //Hvid-loopet er kørt, så alle pladser hvor gættet er rigtigt placeret, er allerede udfyldt.
                         //Hvis gættet allerede har gættet en hvid, tælles det heller ikke igen.
-
                         for (int i = 0; i < spillerGaet.Length; i++)
                         {
                             for (int j = 0; j < kodeFarver.Length; j++)
@@ -150,8 +151,7 @@ namespace Philip_MasterMind
                         Console.ResetColor();
                         Console.ReadKey();
                     }
-
-                    if (runde == 10) //Hvis vi er i runde 10, spørges spilleren om de vil afslutte eller forsætte
+                    if (runde == 10) //Hvis vi er i runde 10, er spillet slut og spilleren spørges om de vil afslutte eller forsætte
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Du nåede desværre ikke at gætte koden inden for 10 runder.");
@@ -165,7 +165,6 @@ namespace Philip_MasterMind
                         + " | " + spillerGaet[2]
                         + " | " + spillerGaet[3] + " | "
                         + $"Du havde: {rigtigFarve} sort(e) brik(ker) og {rigtigPlace} hvid(e) brik(ker).\n";
-
                     rigtigFarve = 0; //Sætter rigtigFarve til 0, så det kun er den aktuelle rundes gæt der evalueres. 
                     rigtigPlace = 0; //Sætter rigtigPlace til 0, så det kun er den aktuelle rundes gæt der evalueres.
                     for (int i = 0; i < kodeTal.Length; i++) //Resetter de brugte gæt og placeringer
