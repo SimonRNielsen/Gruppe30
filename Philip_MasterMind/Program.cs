@@ -10,7 +10,7 @@ namespace Philip_MasterMind
 {
     internal class Program
     {
-        enum Farver { rød, blå, gul, grøn, lilla, brun}
+        enum Farver { rød, blå, gul, grøn, lilla, brun }
         static void Main(string[] args)
         {
             byte[] kodeTal = new byte[4]; //Array der skal indeholde 4 tilfældigt generede tal, der skal bruges til gætte-koden.
@@ -28,6 +28,7 @@ namespace Philip_MasterMind
             int rigtigPlace = 0; //Variabel der skal gemme antal farver, på den rigtige plads, som spilleren har gættet
             bool[] placeBrugt = new bool[kodeTal.Length];
             bool[] gaetBrugt = new bool[kodeTal.Length];
+            string[] tidlGaet = new string[10];//Array til at gemme spillerens gæt fra tidligere runder.
 
             Velkomst();//Funktion til velkosmtbesked, fordi den er så lang.
 
@@ -45,7 +46,12 @@ namespace Philip_MasterMind
                     kodeFarver[i] = (Farver)kodeTal[i];
                 }
                 runde = 1; /*Sætter runde til 1. Man vender kun tilbage til dette loop,
-                            hvis man har vundet, eller tabt, og valgt at fortsætte */ 
+                            hvis man har vundet, eller tabt, og valgt at fortsætte */
+                for (int i = 0; i < tidlGaet.Length; i++) //Resetter de brugte gæt og placeringer
+                {
+                    tidlGaet[i] = "";
+
+                }
 
                 //SLET IGEN:
                 foreach (Farver farve in kodeFarver)
@@ -61,14 +67,13 @@ namespace Philip_MasterMind
                     Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.WriteLine("Runde:" + runde);
                     Console.ResetColor();
-                    for (int i =0; i < kodeTal.Length; i++)
+                    for (int i = 0; i < kodeTal.Length; i++)
                     {
-                        Console.WriteLine("Hvilken farve gætter du på plads " +(i+1) + "?" +
+                        Console.WriteLine("Hvilken farve gætter du på plads " + (i + 1) + "?" +
                             "\nHusk at du kan vælge imellem: Rød, Blå, Gul, Grøn, Lilla, Brun");
                         inSvar = GodkendSvar();
                         spillerGaet[i] = (Farver)Enum.Parse(typeof(Farver), inSvar);
                     }
-                    Console.Clear();
                     Console.WriteLine("\n\nDit gæt er:\n");
                     for (int i = 0; i < kodeTal.Length; i++)
                         Console.Write(spillerGaet[i] + " | ");
@@ -95,7 +100,7 @@ namespace Philip_MasterMind
                         stemningForSpil = Afslut(); //Tjekker om de vil afslutte spillet
                         break; //Breaker ud, så man ender i "do...while" loopet
                     }
-                    else
+                    else //Håndtering af hvis spilleren ikke vandt med sit gæt
                     {
                         Console.WriteLine("\nDu gættede ikke rigtigt.\n");
                         //Loop, der kontrollere om spillerens gæt svarer til rigtige farver med rigtig palcering (hvid brik)
@@ -124,19 +129,31 @@ namespace Philip_MasterMind
                                 }
                             }
 
-                        } 
+                        }
                         //Feedback til spilleren, der svarer til de sorte/hvide brikker i klassisk MasterMind.
                         Console.WriteLine($"Du har {rigtigFarve} sort(e) brik(ker). Det er farve(r) der optræder i koden, men på den forkerte plads\n" +
                             $"og {rigtigPlace} hvid(e) brik(ker). Det er farver på den rigtige plads\n");
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.WriteLine("Tryk på en knap for at forsætte til næste runde");
+                        Console.ResetColor();
+                        Console.ReadKey();
                     }
 
-                    if (runde ==10) //Hvis vi er i runde 10, spørges spilleren om de vil afslutte eller forsætte
+                    if (runde == 10) //Hvis vi er i runde 10, spørges spilleren om de vil afslutte eller forsætte
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Du nåede desværre ikke at gætte koden inden for 10 runder.");
                         Console.ResetColor();
                         stemningForSpil = Afslut();
                     }
+                    tidlGaet[runde] =
+                        "Runde " + runde + ": \n" +
+                        Convert.ToString(spillerGaet[0])
+                        + " | " + Convert.ToString(spillerGaet[1])
+                        + " | " + Convert.ToString(spillerGaet[2])
+                        + " | " + Convert.ToString(spillerGaet[3]) + " | "
+                        + $"\n\nDu havde {rigtigFarve} sort(e) brik(ker). Det er farve(r) der optræder i koden, men på den forkerte plads\n" +
+                            $"og {rigtigPlace} hvid(e) brik(ker). Det er farver på den rigtige plads\n";
 
                     runde++;
                     rigtigFarve = 0; //Sætter rigtigFarve til 0, så det kun er den aktuelle rundes gæt der evalueres. 
@@ -146,6 +163,15 @@ namespace Philip_MasterMind
                         placeBrugt[i] = false;
                         gaetBrugt[i] = false;
                     }
+                    Console.Clear(); //Sletter alt i konsollen, i dette scope.
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("Tidligere gæt: ");
+                    Console.ResetColor();
+                    for (int i = 0; i < runde; i++) //Skriver spillerens tidligere gæt og resultater for foregående runder. 
+                    {
+                        Console.WriteLine(tidlGaet[i]);
+                    }
+
                 }
             } while (stemningForSpil);
         }
@@ -199,7 +225,7 @@ God fornøjelse!");
         static string GodkendSvar()
         {
             string svar;
-            while(true)
+            while (true)
             {
                 svar = Console.ReadLine()
                     .ToLower()
@@ -223,7 +249,7 @@ God fornøjelse!");
                     Console.WriteLine("\nDu har ikke indtastet et gyldigt svar.\nDu skal gætte på en af de nævnte farver\nPrøv igen:");
                     Console.ResetColor();
                 }
-            } 
+            }
         }
 
     }
