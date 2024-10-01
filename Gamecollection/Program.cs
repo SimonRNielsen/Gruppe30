@@ -21,8 +21,7 @@ namespace Gamecollection
             int newMarker = 0;
             //String array with name of games
             string[] games = new string[4] {"Minestryger", "Jeopardy", "Sænke Slagskibe", "Mastermind"};
-            //Strings with path to game executables, which are added to same basefolder as "Gamecollection.exe" by referencing it in the project
-            /*
+            /* Strings with path to game executables, which are added to same basefolder as "Gamecollection.exe" by referencing it in the project
             string minesweeper = Directory.GetCurrentDirectory() + @"\Minesweeper_simon.exe";
             string jeopardy = Directory.GetCurrentDirectory() + @"\Jeopardy_Irene.exe";
             string battleships = Directory.GetCurrentDirectory() + @"\Rikke.exe";
@@ -72,7 +71,7 @@ namespace Gamecollection
                     {
                         case 0:
                             Console.Clear();
-                            Minesweeper();
+                            Minesweeper_Simon();
                             //Process.Start(minesweeper);
                             break;
                         case 1:
@@ -131,7 +130,7 @@ namespace Gamecollection
                     break;
             }
         }
-        static void Minesweeper()
+        static void Minesweeper_Simon()
         {
             bool board_created;
             bool exit = false;
@@ -147,12 +146,14 @@ namespace Gamecollection
             int newInput_x;
             int newInput_y;
             int score;
-            //int[] highscore_values = new int[10];
             string difficulty;
-            //string[] highscore_players = new string[10];
             string player;
-            //string exitDirectory = Directory.GetCurrentDirectory() + @"\Gamecollection.exe";
             /*
+            //Arrays for use with highscores
+            int[] highscore_values = new int[10];
+            string[] highscore_players = new string[10];
+            //String defining the executable for main project
+            string exitDirectory = Directory.GetCurrentDirectory() + @"\Gamecollection.exe";
             #region Highscore_Table
             //Checks if there's a highscore file, if not = it makes one
             if (File.Exists("highscores.txt"))
@@ -396,10 +397,6 @@ namespace Gamecollection
                     }
                     //Resets colors to standard
                     Console.ResetColor();
-                    /*
-                    Console.BackgroundColor = ConsoleColor.Black;
-                    Console.ForegroundColor = ConsoleColor.White;
-                    */
                     Console.WriteLine();
                     Console.WriteLine($"Der er i alt {bomb_amount} bomber på brættet");
                     Console.WriteLine($"Du har markeret {flag_count} potentielle bomber");
@@ -722,7 +719,7 @@ namespace Gamecollection
             //Process.Start(exitDirectory);
         }
         /// <summary>
-        /// Enum to change 9 with X and 0 to O in a visual representation
+        /// Enum to change numbers to characters in a visual representation
         /// </summary>
         enum Board_UI_simon : int
         {
@@ -823,10 +820,6 @@ namespace Gamecollection
             }
             //(Re)sets colors to standard
             Console.ResetColor();
-            /*
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.ForegroundColor = ConsoleColor.White;
-            */
         }
         /// <summary>
         /// Function to record and act on player input
@@ -885,7 +878,5 @@ namespace Gamecollection
                     break;
             }
         }
-
-       
     }
 }
