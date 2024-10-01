@@ -68,7 +68,7 @@ namespace Philip_MasterMind
                         Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.WriteLine("\nTidligere gæt: ");
                         Console.ResetColor();
-                        for (int i = 0; i < runde; i++) //Skriver spillerens tidligere gæt og resultater for foregående runder. 
+                        for (int i = runde; i < runde; i++) //Skriver spillerens tidligere gæt og resultater for foregående runder. 
                         {   
                             Console.WriteLine(tidlGaet[i]);
                         }
