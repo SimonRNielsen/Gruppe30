@@ -45,11 +45,16 @@ namespace Rikke
 
             // TEGNE SKIBE
             // SPILLERENS SKIBE
+            /*
             TegnBaade(5, spillerBraetBaade); //Hangarskib
             TegnBaade(4, spillerBraetBaade); //Slagskib
             TegnBaade(3, spillerBraetBaade); //Destroyer
             TegnBaade(3, spillerBraetBaade); //Ubåd
             TegnBaade(2, spillerBraetBaade); //Patrujlebåd
+            */
+            SpillerTegnBaade(5, pcBraetBaade);
+
+
 
             //COMPUTERENS SKIBE
             TegnBaade(5, pcBraetBaade); //Hangarskib
@@ -61,8 +66,8 @@ namespace Rikke
 
             Console.WriteLine("Spillerens skibe");
             PrintBraet(spillerBraetBaade);
-            Console.WriteLine("Spillerens plade");
-            PrintBraet(spillerBraet);
+            //Console.WriteLine("Spillerens plade");
+            //PrintBraet(spillerBraet);
             
 
             while (spilstarter)
@@ -70,7 +75,6 @@ namespace Rikke
                 spillerScore = SkydBaad(pcBraetBaade, spillerBraet, spillerScore);
 
                 pcScore =PCSkydBaad(spillerBraetBaade, pcBraet, pcScore);
-
 
                 Console.WriteLine("Spillerens skibe");
                 PrintBraet(spillerBraetBaade);
@@ -94,13 +98,105 @@ namespace Rikke
             }
 
             //Printe brættet
-            Console.WriteLine("Spillerens bræt");
-            PrintBraet(spillerBraet);
+            //Console.WriteLine("Spillerens bræt");
+            //PrintBraet(spillerBraet);
             Console.WriteLine("Spillerens skibe");
             PrintBraet(spillerBraetBaade);
             
             Console.ReadKey();
         }
+
+
+        static void SpillerTegnBaade (int baadLaengde, string[,] spillerBraetBaade)
+        {
+            Console.WriteLine("Hvor vil du sætte dit skib?");
+            Console.WriteLine("Hvilken orientering?  0 for for horisontal → 1 for vertikal ↓");
+            int orientering = Convert.ToInt32(Console.ReadLine());
+
+            //Hvilke begrænsning har spilleren for at sætte skibet 
+            if (orientering == 0)
+            {
+                switch (baadLaengde)
+                {
+                    case (5): Console.WriteLine("Skibet kan ligge mellem A-F"); break;
+                    case (4): Console.WriteLine("Skibet kan ligge mellem A-G"); break;
+                    case (3): Console.WriteLine("Skibet kan ligge mellem A-H"); break;
+                    case (2): Console.WriteLine("Skibet kan ligge mellem A-I"); break;
+                }
+            }
+            else
+            {
+                switch (baadLaengde)
+                {
+                    case (5): Console.WriteLine("Skibet kan ligge mellem 1-6"); break;
+                    case (4): Console.WriteLine("Skibet kan ligge mellem 1-7"); break;
+                    case (3): Console.WriteLine("Skibet kan ligge mellem 1-8"); break;
+                    case (2): Console.WriteLine("Skibet kan ligge mellem 1-9"); break;
+                }
+            }
+
+            //Indtastning af koordinat
+            Console.WriteLine("Hvilket bogstav:");
+            string inputBogstav = Console.ReadLine().ToLower();
+            Console.WriteLine("Hvilket tal:");
+            int angrebTal = Convert.ToInt32(Console.ReadLine());
+
+            //Hvis spilleren indtaster et invalid koordinat
+            Random random = new Random();
+            int randomBogstav = random.Next(1, 10);
+            if (angrebTal < 1 || angrebTal > 10)
+            {
+                int randomTal = random.Next(1, 10);
+                angrebTal = randomTal;
+            }
+            int angrebBogstav = -1;
+
+            //Switch til at konvertere bogstav inputtet om til et koordinat
+            switch (inputBogstav)
+            {
+                case ("a"): angrebBogstav = 1; break;
+                case ("b"): angrebBogstav = 2; break;
+                case ("c"): angrebBogstav = 3; break;
+                case ("d"): angrebBogstav = 4; break;
+                case ("e"): angrebBogstav = 5; break;
+                case ("f"): angrebBogstav = 6; break;
+                case ("g"): angrebBogstav = 7; break;
+                case ("h"): angrebBogstav = 8; break;
+                case ("i"): angrebBogstav = 9; break;
+                case ("j"): angrebBogstav = 10; break;
+                default:
+                    Console.WriteLine("Du indtastede et indvalid svar, derfor er der valgt et tilfældigt bogstav.");
+                    angrebBogstav = randomBogstav; break;
+            }
+
+            //Tjekker om skibet kolidere med et andet skib
+            bool placering = TjekPlacering(orientering, baadLaengde, angrebBogstav, angrebTal, spillerBraetBaade);
+            string baad = "■ ";
+
+
+            if (placering)
+            {
+                if (orientering == 0)
+                {
+                    for (int i = 0; i < baadLaengde; i++)
+                    {
+                        spillerBraetBaade[angrebBogstav + i, angrebTal] = baad;
+                    }
+                }
+                if (orientering ==1)
+                {
+                    for (int i = 0; i < baadLaengde; i++)
+                    {
+                        spillerBraetBaade[angrebBogstav, angrebTal + i] = baad;
+                    }
+                }
+            }
+            if (!placering)
+            {
+                TegnBaade(baadLaengde, spillerBraetBaade);
+            }
+        }
+
 
         /// <summary>
         /// Udyldelse af et bræt på 10x10 med nummering af 1-10 og A-J
