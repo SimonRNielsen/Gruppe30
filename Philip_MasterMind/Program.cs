@@ -50,11 +50,10 @@ namespace Philip_MasterMind
                 {
                     tidlGaet[i] = "";
                 }
-                /*
                 //Udskriver den kode der skal gættes til konsollen:
                 foreach (Farver farve in kodeFarver)
                     Console.WriteLine(farve);
-                */
+                
                 Console.WriteLine("\nLad os først starte med dit navn. Hvad vil du gerne kaldes?");
                 string spillerNavn = Console.ReadLine();
                 Console.WriteLine($"\nHej med dig {spillerNavn}!\n" +
@@ -99,7 +98,17 @@ namespace Philip_MasterMind
                         //Besked med tillykke og score
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("\nTillykke du svarede rigtigt! \n" +
-                            "Koden var: " + kodeFarver[0] + " | " + kodeFarver[1] + " | " + kodeFarver[2] + " | " + kodeFarver[3] + " |\n");
+                            "Koden var: ");
+                        skiftFarve(kodeFarver[0]);
+                        Console.Write(kodeFarver[0] + " ");
+                        skiftFarve(kodeFarver[1]);
+                        Console.Write(kodeFarver[1] + " ");
+                        skiftFarve(kodeFarver[2]);
+                        Console.Write(kodeFarver[2] + " ");
+                        skiftFarve(kodeFarver[3]);
+                        Console.Write(kodeFarver[3] + "\n");
+                        Console.ResetColor();
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("Du gjorde på det på " + runde + " runder!");
                         if (runde < highscoreRunde) //Tjekker om man har slået highscoren
                         {
