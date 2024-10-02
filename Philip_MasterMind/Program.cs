@@ -27,7 +27,7 @@ namespace Philip_MasterMind
             int rigtigPlace = 0; //Variabel der skal gemme antal farver, på den rigtige plads, som spilleren har gættet
             bool[] placeBrugt = new bool[kodeTal.Length];
             bool[] gaetBrugt = new bool[kodeTal.Length];
-            Farver[,] tidlGaet = new Farver[11,4];//Array til at gemme spillerens gæt fra tidligere runder.
+            Farver[,] tidlGaet = new Farver[11, 4];//Array til at gemme spillerens gæt fra tidligere runder.
             int[,] tidlRes = new int[11, 2]; //Array til at gemme sorte/hvide fra tidligere runder
 
             do //Loop, der egentlig bare tager højde for om spilleren stadig vil spille.
@@ -46,10 +46,12 @@ namespace Philip_MasterMind
                 }
                 runde = 1; /*Sætter runde til 1. Man vender kun tilbage til dette loop,
                             hvis man har vundet, eller tabt, og valgt at fortsætte */
-                //Udskriver den kode der skal gættes til konsollen:
-                foreach (Farver farve in kodeFarver)
-                    Console.WriteLine(farve);
-                
+                /*
+                 //Udskriver den kode der skal gættes til konsollen:
+                 foreach (Farver farve in kodeFarver)
+                     Console.WriteLine(farve);
+                */
+
                 Console.WriteLine("\nLad os først starte med dit navn. Hvad vil du gerne kaldes?");
                 string spillerNavn = Console.ReadLine();
                 Console.WriteLine($"\nHej med dig {spillerNavn}!\n" +
@@ -62,7 +64,7 @@ namespace Philip_MasterMind
                     if (runde > 1) //Skriver spillerens tidligere gæt og resultater for foregående runder, hvis nuvræende runde >1.
                     {
                         Philip_SkrivCyan("Tidligere gæt: ");
-                        for (int i = 1; i < runde; i++)  
+                        for (int i = 1; i < runde; i++)
                         {
                             Console.WriteLine("Runde " + i);
                             for (int j = 0; j < tidlGaet.GetLength(1); j++)
@@ -268,27 +270,27 @@ God fornøjelse!");
                 case Farver.brun:
                     Console.ForegroundColor = ConsoleColor.DarkYellow;
                     Console.Write(tekst);
-                    Console.ResetColor(); 
+                    Console.ResetColor();
                     break;
                 case Farver.grøn:
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write(tekst);
-                    Console.ResetColor(); 
+                    Console.ResetColor();
                     break;
                 case Farver.gul:
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.Write(tekst);
-                    Console.ResetColor(); 
+                    Console.ResetColor();
                     break;
                 case Farver.lilla:
                     Console.ForegroundColor = ConsoleColor.Magenta;
                     Console.Write(tekst);
-                    Console.ResetColor(); 
+                    Console.ResetColor();
                     break;
                 case Farver.rød:
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write(tekst);
-                    Console.ResetColor(); 
+                    Console.ResetColor();
                     break;
 
             }
