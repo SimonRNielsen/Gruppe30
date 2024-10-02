@@ -12,7 +12,7 @@ namespace Philip_MasterMind
     internal class Program
     {
         enum Farver { rød, blå, gul, grøn, lilla, brun }
-        static void Philip_MasterMind(string[] args)
+        static void main(string[] args)
         {
             byte[] kodeTal = new byte[4]; //Array der skal indeholde 4 tilfældigt generede tal, der skal bruges til gætte-koden.
             Farver[] kodeFarver = new Farver[kodeTal.Length];//Enum array, der indeholder de fire farver der udgør koden. 
