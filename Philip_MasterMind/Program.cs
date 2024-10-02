@@ -27,8 +27,8 @@ namespace Philip_MasterMind
             int rigtigPlace = 0; //Variabel der skal gemme antal farver, på den rigtige plads, som spilleren har gættet
             bool[] placeBrugt = new bool[kodeTal.Length];
             bool[] gaetBrugt = new bool[kodeTal.Length];
-            string[] tidlGaet = new string[11];//Array til at gemme spillerens gæt fra tidligere runder.
-
+            Farver[,] tidlGaet = new Farver[11,4];//Array til at gemme spillerens gæt fra tidligere runder.
+            int[,] tidlRes = new int[11, 2]; //Array til at gemme sorte/hvide fra tidligere runder
 
             do //Loop, der egentlig bare tager højde for om spilleren stadig vil spille.
                //Spilleren kan ændre mening efter runde 10, eller hvis de har vundet.
@@ -46,10 +46,6 @@ namespace Philip_MasterMind
                 }
                 runde = 1; /*Sætter runde til 1. Man vender kun tilbage til dette loop,
                             hvis man har vundet, eller tabt, og valgt at fortsætte */
-                for (int i = 0; i < tidlGaet.Length; i++) //Resetter de tidligere gæt
-                {
-                    tidlGaet[i] = "";
-                }
                 //Udskriver den kode der skal gættes til konsollen:
                 foreach (Farver farve in kodeFarver)
                     Console.WriteLine(farve);
@@ -68,7 +64,12 @@ namespace Philip_MasterMind
                         SkrivCyan("Tidligere gæt: ");
                         for (int i = 1; i < runde; i++) //Skriver spillerens tidligere gæt og resultater for foregående runder. 
                         {
-                            Console.WriteLine(tidlGaet[i]);
+                            Console.WriteLine("Runde " + i);
+                            for (int j = 0; j < tidlGaet.GetLength(1); j++)
+                            {
+                                skrivFarve(tidlGaet[i, j], Convert.ToString(tidlGaet[i, j]) + " ");
+                            }
+                            Console.WriteLine($"Du havde {tidlRes[i, 0]} sorte brikker og {tidlRes[i, 1]} hvide brikker.\n");
                         }
                     }
                     SkrivCyan("Runde " + runde);
@@ -83,9 +84,7 @@ namespace Philip_MasterMind
                     SkrivCyan("Dit gæt er:\n");
                     for (int i = 0; i < kodeTal.Length; i++)
                     {
-                        skiftFarve(spillerGaet[i]);
-                        Console.Write(spillerGaet[i] + " | ");
-                        Console.ResetColor();
+                        skrivFarve(spillerGaet[i], spillerGaet[i] + " ");
                     }
 
                     //If statement, der tjekker om spilleren har vundet ved at gætte koden
@@ -99,15 +98,10 @@ namespace Philip_MasterMind
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("\nTillykke du svarede rigtigt! \n" +
                             "Koden var: ");
-                        skiftFarve(kodeFarver[0]);
-                        Console.Write(kodeFarver[0] + " ");
-                        skiftFarve(kodeFarver[1]);
-                        Console.Write(kodeFarver[1] + " ");
-                        skiftFarve(kodeFarver[2]);
-                        Console.Write(kodeFarver[2] + " ");
-                        skiftFarve(kodeFarver[3]);
-                        Console.Write(kodeFarver[3] + "\n");
-                        Console.ResetColor();
+                        skrivFarve(kodeFarver[0], kodeFarver[0] + " ");
+                        skrivFarve(kodeFarver[1],kodeFarver[1] + " ");
+                        skrivFarve(kodeFarver[2], kodeFarver[1] + " ");
+                        skrivFarve(kodeFarver[3], kodeFarver[1] + " ");
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("Du gjorde på det på " + runde + " runder!");
                         if (runde < highscoreRunde) //Tjekker om man har slået highscoren
@@ -163,13 +157,13 @@ namespace Philip_MasterMind
                         Console.ResetColor();
                         stemningForSpil = Afslut();
                     }
-                    tidlGaet[runde] = //Gemmer rundens gæt og resultat i tidlGaet array, på denne rundes plads.
-                        "Runde " + runde + ": \n" +
-                        spillerGaet[0]
-                        + " | " + spillerGaet[1]
-                        + " | " + spillerGaet[2]
-                        + " | " + spillerGaet[3] + " | "
-                        + $"Du havde: {rigtigFarve} sort(e) brik(ker) og {rigtigPlace} hvid(e) brik(ker).\n";
+                    tidlGaet[runde, 0] = spillerGaet[0]; //Gemmer rundens gæt og resultat i tidlGaet array, på denne rundes plads.
+                    tidlGaet[runde, 1] = spillerGaet[1];
+                    tidlGaet[runde, 2] = spillerGaet[2];
+                    tidlGaet[runde, 3] = spillerGaet[3];
+                    tidlRes[runde, 0] = rigtigFarve;
+                    tidlRes[runde, 1] = rigtigPlace;
+
                     rigtigFarve = 0; //Sætter rigtigFarve til 0, så det kun er den aktuelle rundes gæt der evalueres. 
                     rigtigPlace = 0; //Sætter rigtigPlace til 0, så det kun er den aktuelle rundes gæt der evalueres.
                     for (int i = 0; i < kodeTal.Length; i++) //Resetter de brugte gæt og placeringer
@@ -262,27 +256,39 @@ God fornøjelse!");
             Console.WriteLine(tekst);
             Console.ResetColor();
         }
-        static void skiftFarve(Farver farve)
+        static void skrivFarve(Farver farve, string tekst)
         {
             switch (farve)
             {
                 case Farver.blå:
                     Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.Write(tekst);
+                    Console.ResetColor();
                     break;
                 case Farver.brun:
                     Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    Console.Write(tekst);
+                    Console.ResetColor(); 
                     break;
                 case Farver.grøn:
                     Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write(tekst);
+                    Console.ResetColor(); 
                     break;
                 case Farver.gul:
                     Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.Write(tekst);
+                    Console.ResetColor(); 
                     break;
                 case Farver.lilla:
                     Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.Write(tekst);
+                    Console.ResetColor(); 
                     break;
                 case Farver.rød:
                     Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write(tekst);
+                    Console.ResetColor(); 
                     break;
 
             }
