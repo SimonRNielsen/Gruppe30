@@ -76,7 +76,7 @@ namespace Gamecollection
                             break;
                         case 1:
                             Console.Clear();
-                            //Process.Start(mastermind);
+                            //Process.Start(jeopardy);
                             break;
                         case 2:
                             Console.Clear();
@@ -85,7 +85,7 @@ namespace Gamecollection
                         case 3:
                             Console.Clear();
                             Philip_MasterMind();
-                            //Process.Start(jeopardy);
+                            //Process.Start(mastermind);
                             break;
                     }
                 }
@@ -151,8 +151,8 @@ namespace Gamecollection
             int newInput_y;
             int score;
             string difficulty;
-            string player;
             /*
+            string player;
             //Arrays for use with highscores
             int[] highscore_values = new int[10];
             string[] highscore_players = new string[10];
@@ -190,8 +190,10 @@ namespace Gamecollection
             #endregion
             */
             Console.WriteLine("Velkommen til minestryger");
+            /*
             Console.WriteLine("Skriv venligst dit navn");
             player = Console.ReadLine();
+            */
             //Loops until player chooses to exit the game
             while (!exit)
             {
