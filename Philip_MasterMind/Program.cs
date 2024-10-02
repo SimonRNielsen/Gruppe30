@@ -59,10 +59,10 @@ namespace Philip_MasterMind
                 while (runde < 11) //Loop med selve spille, fra runde 1-10
                 {
                     Console.Clear(); //Sletter konsollens indhold. BEMÆRK! KUN EN HVIS DEL, SVARENDE TIL HVAD DER KAN VÆRE I ET VINDUE!
-                    if (runde > 1)
+                    if (runde > 1) //Skriver spillerens tidligere gæt og resultater for foregående runder, hvis nuvræende runde >1.
                     {
                         SkrivCyan("Tidligere gæt: ");
-                        for (int i = 1; i < runde; i++) //Skriver spillerens tidligere gæt og resultater for foregående runder. 
+                        for (int i = 1; i < runde; i++)  
                         {
                             Console.WriteLine("Runde " + i);
                             for (int j = 0; j < tidlGaet.GetLength(1); j++)
@@ -73,7 +73,7 @@ namespace Philip_MasterMind
                         }
                     }
                     SkrivCyan("Runde " + runde);
-                    for (int i = 0; i < kodeTal.Length; i++) //Loop hvor spilleren indataster sine 4 (kodeTal.Length) gæt. 
+                    for (int i = 0; i < kodeTal.Length; i++) //Loop hvor spilleren indtaster sine 4 (kodeTal.Length) gæt. 
                     {
                         Console.WriteLine("Hvilken farve gætter du på plads " + (i + 1) + "?" +
                             "\nHusk at du kan vælge imellem: Rød, Blå, Gul, Grøn, Lilla, Brun");
@@ -99,11 +99,11 @@ namespace Philip_MasterMind
                         Console.WriteLine("\nTillykke du svarede rigtigt! \n" +
                             "Koden var: ");
                         skrivFarve(kodeFarver[0], kodeFarver[0] + " ");
-                        skrivFarve(kodeFarver[1],kodeFarver[1] + " ");
-                        skrivFarve(kodeFarver[2], kodeFarver[1] + " ");
-                        skrivFarve(kodeFarver[3], kodeFarver[1] + " ");
+                        skrivFarve(kodeFarver[1], kodeFarver[1] + " ");
+                        skrivFarve(kodeFarver[2], kodeFarver[2] + " ");
+                        skrivFarve(kodeFarver[3], kodeFarver[3] + " ");
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("Du gjorde på det på " + runde + " runder!");
+                        Console.WriteLine("\nDu gjorde på det på " + runde + " runder!");
                         if (runde < highscoreRunde) //Tjekker om man har slået highscoren
                         {
                             Console.WriteLine("Du har slået highscoren!");
@@ -117,7 +117,7 @@ namespace Philip_MasterMind
                     }
                     else //Håndtering af hvis spilleren ikke vandt med sit gæt
                     {
-                        Console.WriteLine("\nDu gættede ikke rigtigt.\n");
+                        Console.WriteLine("\n\nDu gættede ikke rigtigt.\n");
                         //Loop, der kontrollere om spillerens gæt svarer til rigtige farver med rigtig palcering (hvid brik)
                         for (int i = 0; i < kodeFarver.Length; i++)
                         {
