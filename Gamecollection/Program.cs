@@ -189,7 +189,8 @@ namespace Gamecollection
             }
             #endregion
             */
-            Console.WriteLine("Velkommen til minestryger");
+            Console.WriteLine("Velkommen til minestryger, tryk en tast for at fortsætte");
+            Console.ReadLine();
             /*
             Console.WriteLine("Skriv venligst dit navn");
             player = Console.ReadLine();
