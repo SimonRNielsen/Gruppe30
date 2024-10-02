@@ -61,30 +61,30 @@ namespace Philip_MasterMind
                     Console.Clear(); //Sletter konsollens indhold. BEMÆRK! KUN EN HVIS DEL, SVARENDE TIL HVAD DER KAN VÆRE I ET VINDUE!
                     if (runde > 1) //Skriver spillerens tidligere gæt og resultater for foregående runder, hvis nuvræende runde >1.
                     {
-                        SkrivCyan("Tidligere gæt: ");
+                        Philip_SkrivCyan("Tidligere gæt: ");
                         for (int i = 1; i < runde; i++)  
                         {
                             Console.WriteLine("Runde " + i);
                             for (int j = 0; j < tidlGaet.GetLength(1); j++)
                             {
-                                skrivFarve(tidlGaet[i, j], Convert.ToString(tidlGaet[i, j]) + " ");
+                                Philip_SkrivFarve(tidlGaet[i, j], Convert.ToString(tidlGaet[i, j]) + " ");
                             }
                             Console.WriteLine($"Du havde {tidlRes[i, 0]} sorte brikker og {tidlRes[i, 1]} hvide brikker.\n");
                         }
                     }
-                    SkrivCyan("Runde " + runde);
+                    Philip_SkrivCyan("Runde " + runde);
                     for (int i = 0; i < kodeTal.Length; i++) //Loop hvor spilleren indtaster sine 4 (kodeTal.Length) gæt. 
                     {
                         Console.WriteLine("Hvilken farve gætter du på plads " + (i + 1) + "?" +
                             "\nHusk at du kan vælge imellem: Rød, Blå, Gul, Grøn, Lilla, Brun");
-                        inSvar = GodkendSvar(); //Funktion der beder om input, kontrollerer at det er gyldigt og returere et gyldigt svar som string
+                        inSvar = Philip_GodkendSvar(); //Funktion der beder om input, kontrollerer at det er gyldigt og returere et gyldigt svar som string
                         spillerGaet[i] = (Farver)Enum.Parse(typeof(Farver), inSvar); //Svaret gemmes i array med spillerens gæt
                     }
                     Console.Clear();
-                    SkrivCyan("Dit gæt er:\n");
+                    Philip_SkrivCyan("Dit gæt er:\n");
                     for (int i = 0; i < kodeTal.Length; i++)
                     {
-                        skrivFarve(spillerGaet[i], spillerGaet[i] + " ");
+                        Philip_SkrivFarve(spillerGaet[i], spillerGaet[i] + " ");
                     }
 
                     //If statement, der tjekker om spilleren har vundet ved at gætte koden
@@ -98,10 +98,10 @@ namespace Philip_MasterMind
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("\nTillykke du svarede rigtigt! \n" +
                             "Koden var: ");
-                        skrivFarve(kodeFarver[0], kodeFarver[0] + " ");
-                        skrivFarve(kodeFarver[1], kodeFarver[1] + " ");
-                        skrivFarve(kodeFarver[2], kodeFarver[2] + " ");
-                        skrivFarve(kodeFarver[3], kodeFarver[3] + " ");
+                        Philip_SkrivFarve(kodeFarver[0], kodeFarver[0] + " ");
+                        Philip_SkrivFarve(kodeFarver[1], kodeFarver[1] + " ");
+                        Philip_SkrivFarve(kodeFarver[2], kodeFarver[2] + " ");
+                        Philip_SkrivFarve(kodeFarver[3], kodeFarver[3] + " ");
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("\nDu gjorde på det på " + runde + " runder!");
                         if (runde < highscoreRunde) //Tjekker om man har slået highscoren
@@ -112,7 +112,7 @@ namespace Philip_MasterMind
                             Console.WriteLine(highscore);
                         }
                         Console.ResetColor();
-                        stemningForSpil = Afslut(); //Tjekker om de vil afslutte spillet
+                        stemningForSpil = Philip_Afslut(); //Tjekker om de vil afslutte spillet
                         break; //Breaker ud, så man ender i "do...while" loopet
                     }
                     else //Håndtering af hvis spilleren ikke vandt med sit gæt
@@ -147,7 +147,7 @@ namespace Philip_MasterMind
                         //Feedback til spilleren, der svarer til de sorte/hvide brikker i klassisk MasterMind.
                         Console.WriteLine($"Du har {rigtigFarve} sort(e) brik(ker). Det er farve(r) der optræder i koden, men på den forkerte plads\n" +
                             $"og {rigtigPlace} hvid(e) brik(ker). Det er farver på den rigtige plads\n");
-                        SkrivCyan("Tryk på en knap for at forsætte til næste runde");
+                        Philip_SkrivCyan("Tryk på en knap for at forsætte til næste runde");
                         Console.ReadKey();
                     }
                     if (runde == 10) //Hvis vi er i runde 10, er spillet slut og spilleren spørges om de vil afslutte eller forsætte
@@ -155,7 +155,7 @@ namespace Philip_MasterMind
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Du nåede desværre ikke at gætte koden inden for 10 runder.");
                         Console.ResetColor();
-                        stemningForSpil = Afslut();
+                        stemningForSpil = Philip_Afslut();
                     }
                     tidlGaet[runde, 0] = spillerGaet[0]; //Gemmer rundens gæt og resultat i tidlGaet array, på denne rundes plads.
                     tidlGaet[runde, 1] = spillerGaet[1];
@@ -182,7 +182,7 @@ namespace Philip_MasterMind
         /// </summary>
         static void Velkomst()
         {
-            SkrivCyan(@"Velkommen til MasterMind!
+            Philip_SkrivCyan(@"Velkommen til MasterMind!
 
 Her er spillets regler:
 
@@ -205,7 +205,7 @@ God fornøjelse!");
         /// Funktion der spørger om spilleren vil afslutte. Hvis de vil, reutrnere funktionen false. Ellers returnere den true.
         /// </summary>
         /// <returns></returns>
-        static bool Afslut()
+        static bool Philip_Afslut()
         {
             bool afslutRes = true;
             Console.WriteLine("\nØnsker du at afslutte? Hvis ja: skriv \"quit\" og tryk enter.\nHvis du vil spille igen, tryk enter");
@@ -221,7 +221,7 @@ God fornøjelse!");
         /// Returnere en string, med det gyldige svar.
         /// </summary>
         /// <returns></returns>
-        static string GodkendSvar()
+        static string Philip_GodkendSvar()
         {
             string svar;
             while (true)
@@ -250,13 +250,13 @@ God fornøjelse!");
                 }
             }
         }
-        static void SkrivCyan(string tekst)
+        static void Philip_SkrivCyan(string tekst)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine(tekst);
             Console.ResetColor();
         }
-        static void skrivFarve(Farver farve, string tekst)
+        static void Philip_SkrivFarve(Farver farve, string tekst)
         {
             switch (farve)
             {
