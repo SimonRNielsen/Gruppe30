@@ -53,9 +53,14 @@ namespace Test_Jeopardy
             Console.Write(skakArray[x, y] + " ");*/
 
 
+<<<<<<< Updated upstream
             /*
             //breaker loops op så vi får rækker i boardet
             Console.Write("\n");
+=======
+         //breaker loops op så vi får rækker i boardet
+        Console.Write("\n");
+>>>>>>> Stashed changes
 
             while (randomNumber1 = ;)
                 {

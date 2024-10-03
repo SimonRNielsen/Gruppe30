@@ -4,22 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Jeopardy_Irene
+namespace Test2
 {
     internal class Program
     {
         static void Main(string[] args)
         {
+            //Jeopardy-blå
             Console.BackgroundColor = ConsoleColor.DarkBlue;
             Console.Clear();
 
 
             //string[] rigtigSvar = new string[] { "Kat", "Mario" };
             string rigtigSvar = "kat";
-
-
-
-            //Console.ResetColor();
 
 
             #region Intro - spiller navneArray
@@ -29,11 +26,11 @@ namespace Jeopardy_Irene
             Console.WriteLine("Der kan være mellem 1-3 spillere. Hvor mange spillere er I?");
             int antalSpillere = Convert.ToInt32(Console.ReadLine()); //////////////////// bool antalSpillere == 0<x || x<4 ?? så bed om x antal spilleres navne
 
-            //string[] navneArray = new string[3];
-            //navneArray[0] = spillerEt;
-            //navneArray[1] = spillerTo;
-            //navneArray[2] = spillerTre;
+            int[,] spillerPoint = new int [3,3];
 
+            string spillerEt;
+            string spillerTo;
+            string spillerTre;
 
             for (int i = 0; i < antalSpillere; i++)
             {///////////////////////////////////////////////////////////// start spillet forfra ///////////////////////////////////////////////////////////////////////////////
@@ -51,13 +48,13 @@ namespace Jeopardy_Irene
                 switch (i)
                 {
                     case 0:
-                        string spillerEt = Console.ReadLine();
+                        spillerEt = Console.ReadLine();
                         break;
                     case 1:
-                        string spillerTo = Console.ReadLine();
+                        spillerTo = Console.ReadLine();
                         break;
                     case 2:
-                        string spillerTre = Console.ReadLine();
+                        spillerTre = Console.ReadLine();
                         break;
 
                 }
@@ -71,6 +68,7 @@ namespace Jeopardy_Irene
             int aktivSpiller = randomNumber;
 
 
+            #endregion
 
             #region Kategori array
             string[,] kategoriArray = new string[6, 6];
@@ -137,34 +135,21 @@ namespace Jeopardy_Irene
 
 
 
-
-            #endregion
-
-
-            #region spiller scoreBoard
-            //int scoreBoard = 0;
-            #endregion
-
-
-
-            #region spilRunde - loop?
-            string spillerSvar = Console.ReadLine();
-
             //if (spillerSvar.Equals(rigtigSvar)) //ignore case, så man ikke får forkert svar på grund af casing
             //{
             //    StringComparison.OrdinalIgnoreCase;
             //}
 
-
+            string spillerSvar = Console.ReadLine();
             Console.WriteLine($"Spiller {aktivSpiller} starter");
 
-            //
-            //Console.Clear();
-            //
+            //clear intro, gør plads til board
+            Console.Clear();
+            
 
             Console.WriteLine("Hvilken kategori vælger du?");
             string spillerKategoriValg = Console.ReadLine().ToLower();
-            #endregion
+
 
             #region switch med spørgsmål
 
@@ -184,9 +169,10 @@ namespace Jeopardy_Irene
                         if (spillerSvar.Contains(rigtigSvar))
                         {
                             //læg point sammen
-
-                            Console.WriteLine($"Korrekt! Stillingen er nu: PRINTscoreBoard");
+                            spillerPoint[0, 0] = + spillerVærdiValg;
+                            Console.WriteLine($"Korrekt! Stillingen er nu: {spillerPoint[0,0]}");
                             Console.WriteLine($"\nDet er spiller {aktivSpiller + 1}'s tur");
+                            break;
                         }
                         else
                         {
@@ -381,14 +367,8 @@ namespace Jeopardy_Irene
                         break;
                 }
             }
-
+            Console.ReadKey();
             #endregion
-
-
         }
-
-
-
-
     }
 }
