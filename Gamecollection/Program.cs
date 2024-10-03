@@ -20,7 +20,7 @@ namespace Gamecollection
             int marker = 0;
             int newMarker = 0;
             //String array with name of games
-            string[] games = new string[4] {"Minestryger", "Jeopardy", "Sænke Slagskibe", "Mastermind"};
+            string[] games = new string[4] { "Minestryger", "Jeopardy", "Sænke Slagskibe", "Mastermind" };
             /* Strings with path to game executables, which are added to same basefolder as "Gamecollection.exe" by referencing it in the project
             string minesweeper = Directory.GetCurrentDirectory() + @"\Minesweeper_simon.exe";
             string jeopardy = Directory.GetCurrentDirectory() + @"\Jeopardy_Irene.exe";
@@ -93,13 +93,11 @@ namespace Gamecollection
             //Loops selection progress
             while (!exit);
             //Displays farewell message if no program was initiated
-            if (exit && !input)
-            {
-                Console.WriteLine("Tak fordi du gad at spille med os!");
-                Console.WriteLine("Hilsen Irene, Rikke, Philip og Simon");
-                Console.WriteLine("Tryk på en tast for at afslutte");
-                Console.ReadKey();
-            }
+
+            Console.WriteLine("Tak fordi du gad at spille med os!");
+            Console.WriteLine("Hilsen Irene, Rikke, Philip og Simon");
+            Console.WriteLine("Tryk på en tast for at afslutte");
+            Console.ReadKey();
         }
         /// <summary>
         /// Detects playerinput
