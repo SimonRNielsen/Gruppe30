@@ -897,13 +897,12 @@ namespace Gamecollection
             string inSvar; //Variabel der gemmer spillerens input, så de kan valideres
             int rigtigFarve = 0; //Variabel der skal gemme antal farver, uden rigtig plads, som spilleren har gættet
             int rigtigPlace = 0; //Variabel der skal gemme antal farver, på den rigtige plads, som spilleren har gættet
-            bool[] placeBrugt = new bool[kodeTal.Length];
-            bool[] gaetBrugt = new bool[kodeTal.Length];
+            bool[] placeBrugt = new bool[kodeTal.Length]; //Array der bruges til gemme om en plads en plads i koden allerede er gættet
+            bool[] gaetBrugt = new bool[kodeTal.Length]; //Array der bruges til gemme om en plads en plads i spiller gæt allerede er brugt
             Farver[,] tidlGaet = new Farver[11, 4];//Array til at gemme spillerens gæt fra tidligere runder.
             int[,] tidlRes = new int[11, 2]; //Array til at gemme sorte/hvide fra tidligere runder
 
             do //Loop, der egentlig bare tager højde for om spilleren stadig vil spille.
-               //Spilleren kan ændre mening efter runde 10, eller hvis de har vundet.
             {
                 Velkomst();//Funktion til velkosmtbesked, fordi den er så lang.
                 //For loop, der genererer random tal, på hver plads i kodeTal array
@@ -917,7 +916,7 @@ namespace Gamecollection
                     kodeFarver[i] = (Farver)kodeTal[i];
                 }
                 runde = 1; /*Sætter runde til 1. Man vender kun tilbage til dette loop,
-                            hvis man har vundet, eller tabt, og valgt at fortsætte */
+                            hvis man har vundet, eller tabt, og valgt at fortsætte eææer afsluttet spillet */
                 /*
                  //Udskriver den kode der skal gættes til konsollen:
                  foreach (Farver farve in kodeFarver)
@@ -926,12 +925,12 @@ namespace Gamecollection
 
                 Console.WriteLine("\nLad os først starte med dit navn. Hvad vil du gerne kaldes?");
                 string spillerNavn = Console.ReadLine();
-                if (spillerNavn.ToLower() == "exit")
+                if (spillerNavn.ToLower() == "exit") //Giver mulighed for at vende tilbage til fælles menu
                     break;
                 Console.WriteLine($"\nHej med dig {spillerNavn}!\n" +
                     $"Tryk på en vilkårlig tast, for at begynde spillet! Eller tryk Escape for at vende tilbage til menuen.");
                 var tast = Console.ReadKey();
-                if (tast.Key == ConsoleKey.Escape)
+                if (tast.Key == ConsoleKey.Escape) //Giver mulighed for at vende tilbage til fælles menu med esc tryk
                     break;
 
                 while (runde < 11) //Loop med selve spille, fra runde 1-10
@@ -1026,7 +1025,7 @@ namespace Gamecollection
                         Console.WriteLine($"Du har {rigtigFarve} sort(e) brik(ker). Det er farve(r) der optræder i koden, men på den forkerte plads\n" +
                             $"og {rigtigPlace} hvid(e) brik(ker). Det er farver på den rigtige plads\n");
                         Philip_SkrivCyan("Tryk på en knap for at forsætte til næste runde.\nTryk Escape for at genstarte spillet.");
-                        tast = Console.ReadKey();
+                        tast = Console.ReadKey(); //Giver mulighed for at vende tilbage til spillets startmenu
                         if (tast.Key == ConsoleKey.Escape)
                             break;
                     }
@@ -1037,11 +1036,11 @@ namespace Gamecollection
                         Console.ResetColor();
                         stemningForSpil = Philip_Afslut();
                     }
-                    tidlGaet[runde, 0] = spillerGaet[0]; //Gemmer rundens gæt og resultat i tidlGaet array, på denne rundes plads.
+                    tidlGaet[runde, 0] = spillerGaet[0]; //Gemmer rundens gæt og resultat i tidlGaet array, på denne rundes række.
                     tidlGaet[runde, 1] = spillerGaet[1];
                     tidlGaet[runde, 2] = spillerGaet[2];
                     tidlGaet[runde, 3] = spillerGaet[3];
-                    tidlRes[runde, 0] = rigtigFarve;
+                    tidlRes[runde, 0] = rigtigFarve; //Gemmer rundens resultat med sorte(hvide brikker, i tidlRes array, på denne rundes række
                     tidlRes[runde, 1] = rigtigPlace;
 
                     rigtigFarve = 0; //Sætter rigtigFarve til 0, så det kun er den aktuelle rundes gæt der evalueres. 
