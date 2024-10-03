@@ -1133,12 +1133,22 @@ God fornøjelse!");
                 }
             }
         }
+        /// <summary>
+        /// Modtager en string som den udskriver til konsollen i farven cyan. 
+        /// </summary>
+        /// <param name="tekst"> Den tekst, som string, man vil have udskrevet</param>
         static void Philip_SkrivCyan(string tekst)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine(tekst);
             Console.ResetColor();
         }
+        /// <summary>
+        /// Modtager en farve (enum Farver) som første argument, og en tekst som string som andet argument. 
+        /// Udskriver teksten i den angivne farve. 
+        /// </summary>
+        /// <param name="farve">Farven til teskten. Type: enum Farve</param>
+        /// <param name="tekst">Den tekst der skal udskrives til konsollen.</param>
         static void Philip_SkrivFarve(Farver farve, string tekst)
         {
             switch (farve)
