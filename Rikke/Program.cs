@@ -180,7 +180,7 @@ namespace Rikke
             }
             else
             {
-                TegnSkibe(skibslængde, spillerBraetSkibe);
+                TegnSkibe(skibslængde, spillerBraetSkibe, random);
             }
             Console.Clear();
 
@@ -203,8 +203,7 @@ namespace Rikke
             
             if (int.TryParse(input, out output)) // Hvis input ikke kan konvertere til en int
             {
-                Console.WriteLine("Dit input kan ikke konverteres til en int, derfor bliver der generet en ramdom int inden for intervalet. ");
-                return randomInput;
+                return Convert.ToInt32(input);
             }
             else if (input == "")
             {
@@ -212,7 +211,8 @@ namespace Rikke
             }
             else //Komvertere input til en int uagtet om det er inden for intervalet 
             {
-                return Convert.ToInt32(input);
+                Console.WriteLine("Dit input kan ikke konverteres til en int, derfor bliver der generet en ramdom int inden for intervalet. ");
+                return randomInput;
             }
 
             
@@ -363,14 +363,12 @@ namespace Rikke
             Console.WriteLine("Vær opmærsom på, at du kan vælge et koordinat, som du allerede har gættet. Hvis du gør det, får du ikke et nyt forsøg.");
             Console.WriteLine("Hvis du ved et uheld indtaster et indvalid svar, vil der blive valgt et tilfældigt koordinat.");
             Console.WriteLine("Hvilket koordinat vil du ramme?");
-            Console.WriteLine("Hvilket bogstav:");
-            string inputBogstav = Console.ReadLine().ToLower();
             
-            Console.WriteLine("Hvilket tal:");
-            string inputAngrebTal = Console.ReadLine();
-            int angrebTal = InvalidInput(inputAngrebTal, 1, 10, random);
+            Console.WriteLine("Hvilket bogstav:");
+            
+            string inputBogstav = Console.ReadLine().ToLower();
             //Switch til at konvertere bogstav inputtet om til et koordinat
-            int angrebBogstav = -1;
+            int angrebBogstav;
             switch (inputBogstav)
             {
                 case ("a"): angrebBogstav = 1; break;
@@ -385,12 +383,16 @@ namespace Rikke
                 case ("j"): angrebBogstav = 10; break;
                 default:
                     Console.WriteLine("Du indtastede et indvalid svar, derfor er der valgt et tilfældigt bogstav.");
-                    angrebBogstav = random.Next(1,11); break;
+                    angrebBogstav = random.Next(1, 11); break;
             }
 
-            //Hvis spilleren indtaster et invalid koordinat
-            if (angrebTal<1 || angrebTal>10)
+            Console.WriteLine("Hvilket tal:");
+            string inputAngrebTal = Console.ReadLine();
+            int angrebTal = InvalidInput(inputAngrebTal, 1, 10, random);
+            //Hvis spilleren indtaster et tal, som kan konvertes men er udenfor intervallet
+            if (angrebTal < 1 || angrebTal > 10)
             {
+                Console.WriteLine("Du har indtastet en int, som er udenfor intervallet. Der er generet en tilfældig int");
                 angrebTal = random.Next(1, 11);
             }
             Console.Clear();
@@ -401,6 +403,11 @@ namespace Rikke
                 Console.WriteLine("Du ramte et skib");
                 spillerBraet[angrebTal, angrebBogstav] = skib;
                 spillerScore++;
+                return spillerScore;
+            }
+            else if (pcBraetSkibe[angrebTal, angrebBogstav].Contains(forbi) && spillerBraet[angrebTal, angrebBogstav].Contains("_ "))
+            {
+                Console.WriteLine("Du har allerede ramt koordinatet og er en forbier");
                 return spillerScore;
             }
             else
@@ -449,13 +456,7 @@ namespace Rikke
                 int skibPlacering2 = random.Next(1, 10);
 
                 //Tjekker om den har ramt et skib
-                if (spillerBraetSkibe[skibPlacering1, skibPlacering2].Contains("_ "))
-                {
-                    Console.WriteLine("PCen ramte forbi");
-                    pcBraet[skibPlacering1, skibPlacering2] = forbi;
-                    pcSkyde = false;
-                    return pcScore;
-                }
+
                 if (spillerBraetSkibe[skibPlacering1, skibPlacering2].Contains(skib) && pcBraet[skibPlacering1, skibPlacering2].Contains("_ "))
                 {
                     Console.WriteLine("PCen ramte dit skib");
@@ -464,7 +465,20 @@ namespace Rikke
                     pcSkyde = false;
                     return pcScore;
                 }
+                else if(pcBraet[skibPlacering1, skibPlacering2].Contains(forbi))
+                {
+                    continue;
+                }
+                else 
+                {
+                    Console.WriteLine("PCen ramte forbi");
+                    pcBraet[skibPlacering1, skibPlacering2] = forbi;
+                    pcSkyde = false;
+                    return pcScore;
+                }
+
             }
+            Console.Clear();
             return 100;
         }
 
