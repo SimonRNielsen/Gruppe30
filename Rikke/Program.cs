@@ -14,7 +14,8 @@ namespace Rikke
         static void Main(string[] args)
         {
             //Oprettelse af array brættet
-            Random random = new Random();
+            Random random = new Random(); //Random variabel som oprettes fra starten, da der er flere metoder, som bruger Random. 
+
             string[,] spillerBraet = new string[11, 11]; //Spillerens bræt til at skyde skibe ned med
             TegnBraet(spillerBraet);
             string[,] spillerBraetSkib = new string[11, 11]; //Spillerens bræt med skibe
@@ -57,11 +58,11 @@ namespace Rikke
             SpillerTegnSkibe(2, spillerBraetSkib, random);
 
             //COMPUTERENS SKIBE
-            TegnSkibe(5, pcBraetSkib); //Hangarskib
-            TegnSkibe(4, pcBraetSkib); //Slagskib
-            TegnSkibe(3, pcBraetSkib); //Destroyer
-            TegnSkibe(3, pcBraetSkib); //Ubåd
-            TegnSkibe(2, pcBraetSkib); //Patrujlebåd
+            TegnSkibe(5, pcBraetSkib, random); //Hangarskib
+            TegnSkibe(4, pcBraetSkib, random); //Slagskib
+            TegnSkibe(3, pcBraetSkib, random); //Destroyer
+            TegnSkibe(3, pcBraetSkib, random); //Ubåd
+            TegnSkibe(2, pcBraetSkib, random); //Patrujlebåd
 
             //Clear console vinduet for at indikere, at man går til en ny fase i spillet
             Console.Clear();
@@ -76,7 +77,7 @@ namespace Rikke
             {
                 spillerScore = SkydSkib(pcBraetSkib, spillerBraet, spillerScore, random); 
 
-                pcScore =PCSkydSkib(spillerBraetSkib, pcBraet, pcScore);
+                pcScore =PCSkydSkib(spillerBraetSkib, pcBraet, pcScore, random);
 
                 Console.WriteLine("Spillerens skibe");
                 PrintBraet(spillerBraetSkib);
@@ -107,6 +108,7 @@ namespace Rikke
         /// </summary>
         /// <param name="skibslængde">Skibets længde</param>
         /// <param name="spillerBraetSkibe">Array brættet</param>
+        /// <param name="random">Random variabel som er oprettet fra starten</param>
         static void SpillerTegnSkibe (int skibslængde, string[,] spillerBraetSkibe, Random random)
         {
             //I tilfælde af, at spilleren indtaster et invalid input
@@ -191,6 +193,7 @@ namespace Rikke
         /// <param name="input">Indtastet input fra spilleren</param>
         /// <param name="inputMin">Min værdig for intervallet</param>
         /// <param name="inputMax">Max værdig for intervallet</param>
+        /// <param name="random">Random variabel som er oprettet fra starten</param>
         /// <returns></returns>
         static int InvalidInput (string input, int inputMin, int inputMax, Random random)
         {
@@ -244,7 +247,8 @@ namespace Rikke
         /// </summary>
         /// <param name="skibsLaengde">Bådens længde</param>
         /// <param name="braet">Spillebræts arrayet</param>
-        static void TegnSkibe(int skibsLaengde, string[,] braet)
+        /// <param name="random">Random variabel som er oprettet fra starten</param>
+        static void TegnSkibe(int skibsLaengde, string[,] braet, Random random)
         {
             // Variabler
             string skib = "■ ";
@@ -254,7 +258,6 @@ namespace Rikke
             //returnere true. Hvis den returnere false, vil der blive generet nye tilfældige kooordinater. Når den har tegnet skibet, vil tegnSkibe ændres til false og stoppet loopet 
             while (tegnSkibe)
             {
-                Random random = new Random();
                 int randomOritering = random.Next(0, 2);
                 int skibPlacering1 = random.Next(1, braet.GetLength(0) - skibsLaengde);
                 int skibPlacering2 = random.Next(1, braet.GetLength(1) - 1);
@@ -348,6 +351,7 @@ namespace Rikke
         /// <param name="pcBraetSkibe">modstanderens bræt (pc)</param>
         /// <param name="spillerBraet">eget bræt</param>
         /// <param name="spillerScore">Spillers score</param>
+        /// <param name="random">Random variabel som er oprettet fra starten</param>
         /// <returns>Spillerens score</returns>
         static int SkydSkib (string[,] pcBraetSkibe, string[,] spillerBraet, int spillerScore, Random random)
         {
@@ -429,8 +433,9 @@ namespace Rikke
         /// <param name="spillerBraetSkibe">Spillerens bræt</param>
         /// <param name="pcBraet">PCen bræt</param>
         /// <param name="pcScore"> PC score</param>
-        /// <returns>Computerens score</returns>
-        static int PCSkydSkib(string[,] spillerBraetSkibe, string[,] pcBraet, int pcScore)
+        /// <param name="random">Random variabel som er oprettet fra starten</param>
+        /// <returns>Returnere PC'ens score</returns>
+        static int PCSkydSkib(string[,] spillerBraetSkibe, string[,] pcBraet, int pcScore, Random random)
         {
             //Variabler        
             string skib = "■ "; //Skib
@@ -440,7 +445,6 @@ namespace Rikke
             while (pcSkyde)
             {
                 //Skyder et random sted i arrayet
-                Random random = new Random();
                 int skibPlacering1 = random.Next(1, 10);
                 int skibPlacering2 = random.Next(1, 10);
 
