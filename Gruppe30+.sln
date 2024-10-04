@@ -8,11 +8,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Philip_MasterMind", "Philip_MasterMind\Philip_MasterMind.csproj", "{1F7614FF-DEB0-4D5E-B1B8-563BB59CC2D4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minesweeper_simon", "Gamecollection\Minesweeper_simon\Minesweeper_simon.csproj", "{E7E1E164-62F2-42B5-9245-A1EC0CF5266E}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rikke", "Rikke\Rikke.csproj", "{382B950D-2DBF-43C8-9017-16D0806B690A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jeopardy_Irene", "Jeopaprdy_Irene\Jeopardy_Irene.csproj", "{E50FC8EC-D31F-4AC0-87E8-8954CE10C931}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test2", "Test2\Test2.csproj", "{28F487F7-CE3A-4D00-B3C9-EA1E1E3E0050}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jeopardy_Irene", "Test2\Jeopardy_Irene.csproj", "{28F487F7-CE3A-4D00-B3C9-EA1E1E3E0050}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,10 +35,6 @@ Global
 		{382B950D-2DBF-43C8-9017-16D0806B690A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{382B950D-2DBF-43C8-9017-16D0806B690A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{382B950D-2DBF-43C8-9017-16D0806B690A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E50FC8EC-D31F-4AC0-87E8-8954CE10C931}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E50FC8EC-D31F-4AC0-87E8-8954CE10C931}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E50FC8EC-D31F-4AC0-87E8-8954CE10C931}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E50FC8EC-D31F-4AC0-87E8-8954CE10C931}.Release|Any CPU.Build.0 = Release|Any CPU
 		{28F487F7-CE3A-4D00-B3C9-EA1E1E3E0050}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{28F487F7-CE3A-4D00-B3C9-EA1E1E3E0050}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28F487F7-CE3A-4D00-B3C9-EA1E1E3E0050}.Release|Any CPU.ActiveCfg = Release|Any CPU
